@@ -106,7 +106,7 @@ const AdminLogin = () => {
     });
 
     try {
-      const response = await axios.post('https://elexdontech.com/mc_api/admin_login.php', { email, password });
+      const response = await axios.post('https://www.mikeconnect.com/mc_api/admin_login.php', { email, password });
 
       if (response.data.success) {
         Swal.fire({

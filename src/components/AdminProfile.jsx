@@ -191,14 +191,14 @@ const AdminDetailsPage = ({ adminId, onNavigate, onLogout }) => {
   useEffect(() => {
     if (!adminId) return;
     axios
-      .get(`https://elexdontech.com/mc_api/get_admin_by_id.php?id=${adminId}`)
+      .get(`https://www.mikeconnect.com/mc_api/get_admin_by_id.php?id=${adminId}`)
       .then((res) => res.data.success && setAdmin(res.data.user))
       .catch(() => Swal.fire("Error", "Failed to load admin", "error"));
   }, [adminId]);
 
   const savePhone = () => {
     axios
-      .post("https://elexdontech.com/mc_api/update_admin_phone.php", {
+      .post("https://www.mikeconnect.com/mc_api/update_admin_phone.php", {
         id: admin.id,
         phone: newPhone,
       })

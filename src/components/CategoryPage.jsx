@@ -293,54 +293,65 @@
 
 
 
-
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Context } from "./Context";
 
-
-
 export default function CategoryPage() {
-
-const {categories}=useContext(Context)
-
+  const { categories = [] } = useContext(Context);
   const { id } = useParams();
-  const categoryId = parseInt(id);
+
+  const categoryId = Number(id);
+  const isValidCategoryId = Number.isInteger(categoryId);
 
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const category = categories.find(c => c.id === categoryId);
+  console.log(categoryId)
+
+  const category = useMemo(() => {
+    return categories.find(c => Number(c.id) === categoryId);
+  }, [categories, categoryId]);
 
   useEffect(() => {
-    setLoading(true);
+    if (!isValidCategoryId) return;
 
-    fetch(`https://elexdontech.com/mc_api/get_posts_by_category.php?category=${categoryId}`)
+    setLoading(true);
+    setError(null);
+
+    fetch(
+      `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${categoryId}`
+    )
       .then(res => res.json())
       .then(data => {
         if (data.success) {
           setPosts(data.posts);
         } else {
           setPosts([]);
+          setError(data.error || "Failed to load posts");
         }
-        setLoading(false);
       })
-      .catch(() => {
+      .catch((error) => {
+        setError("Network error");
         setPosts([]);
-        setLoading(false);
-      });
-  }, [categoryId]);
+        console.error(error)
+      })
+      .finally(() => setLoading(false));
+  }, [categoryId, isValidCategoryId]);
 
   return (
     <PageWrapper>
       <CategoryTitle>
-        {category ? category.title : "Category"}
+        {category?.title || "Category"}
       </CategoryTitle>
 
-      {loading ? (
-        <Loading>Loading posts...</Loading>
-      ) : posts.length > 0 ? (
+      {loading && <Loading>Loading posts...</Loading>}
+
+      {error && <NoBlogs>{error}</NoBlogs>}
+
+      {!loading && !error && posts.length > 0 && (
         <BlogsGrid>
           {posts.map(post => (
             <BlogCard key={post.id}>
@@ -348,26 +359,31 @@ const {categories}=useContext(Context)
                 src="https://images.unsplash.com/photo-1524985069026-dd778a71c7b4"
                 alt={post.title}
               />
+
               <h3>{post.title}</h3>
 
-              <Excerpt
-                dangerouslySetInnerHTML={{
-                  __html: post.content.substring(0, 120) + "..."
-                }}
-              />
+              <Excerpt>
+                {post.content
+                  .replace(/<[^>]+>/g, "")
+                  .slice(0, 120)}...
+              </Excerpt>
 
               <BlogMeta>
-                <span>{new Date(post.created_at).toDateString()}</span>
+                {new Date(post.created_at).toDateString()}
               </BlogMeta>
             </BlogCard>
           ))}
         </BlogsGrid>
-      ) : (
+      )}
+
+      {!loading && !error && posts.length === 0 && (
         <NoBlogs>No posts available in this category.</NoBlogs>
       )}
     </PageWrapper>
   );
 }
+
+
 
 /* ================= STYLES ================= */
 

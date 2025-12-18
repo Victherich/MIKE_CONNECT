@@ -152,7 +152,7 @@ const AdminSignup = () => {
 
     try {
       const response = await fetch(
-        '        https://elexdontech.com/mc_api/admin_signup.php',
+        'https://www.mikeconnect.com/mc_api/admin_signup.php',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
