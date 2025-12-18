@@ -293,10 +293,238 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { useContext, useEffect, useState, useMemo } from "react";
+// import { useParams } from "react-router-dom";
+// import styled from "styled-components";
+// import { Context } from "./Context";
+// import axios from "axios";
+
+// export default function CategoryPage() {
+//   const { categories = [] } = useContext(Context);
+//   const { id } = useParams();
+
+//   const categoryId = Number(id);
+//   const isValidCategoryId = Number.isInteger(categoryId);
+
+//   const [posts, setPosts] = useState([]);
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState(null);
+
+//   console.log(categoryId)
+
+//   const category = useMemo(() => {
+//     return categories.find(c => Number(c.id) === categoryId);
+//   }, [categories, categoryId]);
+
+//   // useEffect(() => {
+//   //   if (!isValidCategoryId) return;
+
+//   //   setLoading(true);
+//   //   setError(null);
+
+//   //   fetch(
+//   //     `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${categoryId}`
+//   //   )
+//   //     .then(res => res.json())
+//   //     .then(data => {
+//   //       if (data.success) {
+//   //         setPosts(data.posts);
+//   //       } else {
+//   //         setPosts([]);
+//   //         setError(data.error || "Failed to load posts");
+//   //       }
+//   //     })
+//   //     .catch((error) => {
+//   //       setError("Network error");
+//   //       setPosts([]);
+//   //       console.error(error)
+//   //     })
+//   //     .finally(() => setLoading(false));
+//   // }, [categoryId, isValidCategoryId]);
+
+ 
+  
+
+
+// useEffect(() => {
+//   if (!isValidCategoryId) return;
+
+//   setLoading(true);
+//   setError(null);
+
+//   axios.get(`https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${categoryId}`)
+//     .then(res => {
+//       // Ensure data is an object
+//       console.log(res.data)
+//       if (res.data && res.data.success) {
+//         setPosts(res.data.posts);
+//       } else {
+//         setPosts([]);
+//         setError(res.data?.error || "Failed to load posts");
+//       }
+//     })
+//     .catch(err => {
+//       // Try to log raw response for debugging
+//       console.error("Axios error:", err?.response?.data || err.message);
+//       setPosts([]);
+//       setError("Network or server error");
+//     })
+//     .finally(() => setLoading(false));
+// }, [categoryId, isValidCategoryId]);
+
+  
+//   return (
+//     <PageWrapper>
+//       <CategoryTitle>
+//         {category?.title || "Category"}
+//       </CategoryTitle>
+
+//       {loading && <Loading>Loading posts...</Loading>}
+
+//       {error && <NoBlogs>{error}</NoBlogs>}
+
+//       {!loading && !error && posts.length > 0 && (
+//         <BlogsGrid>
+//           {posts.map(post => (
+//             <BlogCard key={post.id}>
+//               <BlogImage
+//                 src="https://images.unsplash.com/photo-1524985069026-dd778a71c7b4"
+//                 alt={post.title}
+//               />
+
+//               <h3>{post.title}</h3>
+
+//               <Excerpt>
+//                 {post.content
+//                   .replace(/<[^>]+>/g, "")
+//                   .slice(0, 120)}...
+//               </Excerpt>
+
+//               <BlogMeta>
+//                 {new Date(post.created_at).toDateString()}
+//               </BlogMeta>
+//             </BlogCard>
+//           ))}
+//         </BlogsGrid>
+//       )}
+
+//       {!loading && !error && posts.length === 0 && (
+//         <NoBlogs>No posts available in this category.</NoBlogs>
+//       )}
+//     </PageWrapper>
+//   );
+// }
+
+
+
+// /* ================= STYLES ================= */
+
+// const PageWrapper = styled.div`
+//   max-width: 1000px;
+//   margin: 50px auto;
+//   padding: 0 20px;
+//   font-family: "Poppins", sans-serif;
+// `;
+
+// const CategoryTitle = styled.h1`
+//   font-size: 2.4rem;
+//   margin-bottom: 30px;
+//   color: #4f46e5;
+//   text-align: center;
+// `;
+
+// const BlogsGrid = styled.div`
+//   display: grid;
+//   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+//   gap: 24px;
+// `;
+
+// const BlogCard = styled.div`
+//   background: white;
+//   padding: 18px;
+//   border-radius: 14px;
+//   box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+//   transition: transform .3s;
+
+//   &:hover {
+//     transform: translateY(-6px);
+//   }
+
+//   h3 {
+//     font-size: 1.15rem;
+//     margin: 12px 0 8px;
+//   }
+// `;
+
+// const BlogImage = styled.img`
+//   width: 100%;
+//   height: 180px;
+//   object-fit: cover;
+//   border-radius: 10px;
+// `;
+
+// const BlogMeta = styled.div`
+//   font-size: 0.85rem;
+//   color: #666;
+//   margin-top: 8px;
+// `;
+
+// const Excerpt = styled.div`
+//   font-size: 0.9rem;
+//   color: #555;
+// `;
+
+// const Loading = styled.p`
+//   text-align: center;
+//   font-size: 1.2rem;
+//   color: #666;
+// `;
+
+// const NoBlogs = styled.p`
+//   text-align: center;
+//   font-size: 1.1rem;
+//   color: #777;
+// `;
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useContext, useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Context } from "./Context";
+import axios from "axios";
 
 export default function CategoryPage() {
   const { categories = [] } = useContext(Context);
@@ -309,147 +537,133 @@ export default function CategoryPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  console.log(categoryId)
-
   const category = useMemo(() => {
     return categories.find(c => Number(c.id) === categoryId);
   }, [categories, categoryId]);
 
-  useEffect(() => {
-    if (!isValidCategoryId) return;
+ useEffect(() => {
+  if (!isValidCategoryId) return;
 
-    setLoading(true);
-    setError(null);
+  setLoading(true);
+  setError(null);
 
-    fetch(
-      `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${categoryId}`
-    )
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          setPosts(data.posts);
-        } else {
-          setPosts([]);
-          setError(data.error || "Failed to load posts");
-        }
-      })
-      .catch((error) => {
-        setError("Network error");
+  axios.get(`https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${categoryId}&t=${Date.now()}`)
+    .then(res => {
+      if (res.data?.success) {
+        setPosts(res.data.posts);
+      } else {
         setPosts([]);
-        console.error(error)
-      })
-      .finally(() => setLoading(false));
-  }, [categoryId, isValidCategoryId]);
+        setError(res.data?.error || "No posts found");
+      }
+    })
+    .catch(err => {
+      console.error("Axios error:", err?.response?.data || err.message);
+      setPosts([]);
+      setError("Network or server error");
+    })
+    .finally(() => setLoading(false));
+}, [categoryId, isValidCategoryId]);
 
   return (
     <PageWrapper>
-      <CategoryTitle>
-        {category?.title || "Category"}
-      </CategoryTitle>
+      <CategoryTitle>{category?.title || "Category"}</CategoryTitle>
 
       {loading && <Loading>Loading posts...</Loading>}
-
       {error && <NoBlogs>{error}</NoBlogs>}
 
       {!loading && !error && posts.length > 0 && (
         <BlogsGrid>
           {posts.map(post => (
             <BlogCard key={post.id}>
-              <BlogImage
-                src="https://images.unsplash.com/photo-1524985069026-dd778a71c7b4"
-                alt={post.title}
-              />
-
+              <BlogImage src="https://images.unsplash.com/photo-1524985069026-dd778a71c7b4" alt={post.title} />
               <h3>{post.title}</h3>
-
-              <Excerpt>
-                {post.content
-                  .replace(/<[^>]+>/g, "")
-                  .slice(0, 120)}...
-              </Excerpt>
-
-              <BlogMeta>
-                {new Date(post.created_at).toDateString()}
-              </BlogMeta>
+              <Excerpt>{post.content.replace(/<[^>]+>/g, "").slice(0, 120)}...</Excerpt>
+              <BlogMeta>{new Date(post.created_at).toDateString()}</BlogMeta>
             </BlogCard>
           ))}
         </BlogsGrid>
       )}
 
-      {!loading && !error && posts.length === 0 && (
-        <NoBlogs>No posts available in this category.</NoBlogs>
-      )}
+      {!loading && !error && posts.length === 0 && <NoBlogs>No posts available in this category.</NoBlogs>}
     </PageWrapper>
   );
 }
 
-
-
 /* ================= STYLES ================= */
+const PageWrapper = styled.div`max-width: 1000px; margin: 50px auto; padding: 0 20px; font-family: "Poppins", sans-serif;`;
+const CategoryTitle = styled.h1`font-size: 2.4rem; margin-bottom: 30px; color: #4f46e5; text-align: center;`;
+const BlogsGrid = styled.div`display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;`;
+const BlogCard = styled.div`background: white; padding: 18px; border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); transition: transform .3s; &:hover {transform: translateY(-6px);} h3{font-size:1.15rem;margin:12px 0 8px;}`;
+const BlogImage = styled.img`width: 100%; height: 180px; object-fit: cover; border-radius: 10px;`;
+const BlogMeta = styled.div`font-size: 0.85rem; color: #666; margin-top: 8px;`;
+const Excerpt = styled.div`font-size: 0.9rem; color: #555;`;
+const Loading = styled.p`text-align: center; font-size: 1.2rem; color: #666;`;
+const NoBlogs = styled.p`text-align: center; font-size: 1.1rem; color: #777;`;
 
-const PageWrapper = styled.div`
-  max-width: 1000px;
-  margin: 50px auto;
-  padding: 0 20px;
-  font-family: "Poppins", sans-serif;
-`;
 
-const CategoryTitle = styled.h1`
-  font-size: 2.4rem;
-  margin-bottom: 30px;
-  color: #4f46e5;
-  text-align: center;
-`;
 
-const BlogsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
-`;
 
-const BlogCard = styled.div`
-  background: white;
-  padding: 18px;
-  border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-  transition: transform .3s;
 
-  &:hover {
-    transform: translateY(-6px);
-  }
 
-  h3 {
-    font-size: 1.15rem;
-    margin: 12px 0 8px;
-  }
-`;
 
-const BlogImage = styled.img`
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 10px;
-`;
 
-const BlogMeta = styled.div`
-  font-size: 0.85rem;
-  color: #666;
-  margin-top: 8px;
-`;
+// import React, { useState, useEffect } from "react";
+// import styled from "styled-components";
+// import axios from "axios";
 
-const Excerpt = styled.div`
-  font-size: 0.9rem;
-  color: #555;
-`;
+// export default function CategoryPage({ categoryId }) {
+//   const [posts, setPosts] = useState([]);
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState(null);
 
-const Loading = styled.p`
-  text-align: center;
-  font-size: 1.2rem;
-  color: #666;
-`;
+//   useEffect(() => {
+//     if (!categoryId) return;
 
-const NoBlogs = styled.p`
-  text-align: center;
-  font-size: 1.1rem;
-  color: #777;
-`;
+//     setLoading(true);
+//     setError(null);
+
+//     axios.get(`https://www.mikeconnect.com/mc_api/get_posts.php?category=${categoryId}`)
+//       .then(res => {
+//         if (res.data?.success) {
+//           setPosts(res.data.posts);
+//         } else {
+//           setPosts([]);
+//           setError(res.data?.error || "No posts found");
+//         }
+//       })
+//       .catch(err => {
+//         console.error("Error fetching posts:", err);
+//         setError("Network or server error");
+//         setPosts([]);
+//       })
+//       .finally(() => setLoading(false));
+//   }, [categoryId]);
+
+//   return (
+//     <PageWrapper>
+//       <h1>Categorfuetyruiyfeuiyr {categoryId}</h1>
+
+//       {loading && <Loading>Loading posts...</Loading>}
+//       {error && <ErrorMsg>{error}</ErrorMsg>}
+
+//       <PostsGrid>
+//         {posts.map(post => (
+//           <PostCard key={post.id}>
+//             <h3>{post.title}hjhjhjhlkkh</h3>
+//             <p>{post.content.slice(0, 100)}...</p>
+//             <small>{new Date(post.created_at).toLocaleString()}</small>
+//           </PostCard>
+//         ))}
+//       </PostsGrid>
+
+//       {!loading && !error && posts.length === 0 && <p>No posts in this category.</p>}
+//     </PageWrapper>
+//   );
+// }
+
+// /* ===== STYLES ===== */
+// const PageWrapper = styled.div`max-width: 800px; margin: 50px auto; padding: 0 20px;`;
+// const Loading = styled.p`text-align: center;`;
+// const ErrorMsg = styled.p`color: red; text-align: center;`;
+// const PostsGrid = styled.div`display: grid; grid-gap: 20px;`;
+// const PostCard = styled.div`padding: 15px; border: 1px solid #ddd; border-radius: 10px;`;

@@ -83,7 +83,7 @@ const {categories}=useContext(Context);
       {/* CATEGORIES */}
       <Categories>
         {categories.map((cat) => {
-          const isActive = location.pathname === `/posts/${cat.id}`;
+          const isActive = location.pathname === `/category/${cat.id}`;
           return (
             <CategoryItem
               key={cat.id}
