@@ -19,6 +19,7 @@ import AdminDashboard from './components/AdminDashborad';
 import PrivateAdminDashboard from './components/PrivateAdminDashboard'
 import AdminLogin from './components/AdminLogin';
 import AdminSignup from './components/AdminSignUp';
+import PostPage from './components/PostPage';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
     <Route path='/resources' element={<ResourcesPage/>}/>
     <Route path='/login' element={<LoginPage/>}/>
     <Route path='/signup' element={<SignupPage/>}/>
+    <Route path='/post/:id' element={<PostPage/>}/>
 
 
 

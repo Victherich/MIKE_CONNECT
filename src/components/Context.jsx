@@ -22,7 +22,9 @@ const categories = [
     { id: 12, title: "Religion" },
     { id: 13, title: "Entertainment" },
     { id: 14, title: "Travel" },
-    {id:15, title:"Finance"}
+    {id:15, title:"Finance"},
+     {id:16, title:"Sports"},
+     {id:17, title:"Beauty"}
 ];
 
 
