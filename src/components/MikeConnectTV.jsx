@@ -89,7 +89,7 @@ const handleComingSoon = () => {
   >
     Watch on YouTube
   </a>
-  <button onClick={handleComingSoon}>Play Video</button>
+  {/* <button onClick={handleComingSoon}>Play Video</button> */}
 </VideoButtons>
               </Slide>
             </VideoContent>

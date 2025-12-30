@@ -235,6 +235,13 @@ const AdminDetailsPage = ({ adminId, onNavigate, onLogout }) => {
         <ActionArea>
           <Title>Admin Actions</Title>
           <Grid>
+
+             <ActionCard onClick={() => onNavigate("manageblogposts")}>
+              <Icon><FaUserShield /></Icon>
+              <Label>Manage Blog Posts</Label>
+              <Desc>Create, Edit, Delete posts</Desc>
+            </ActionCard>
+
             <ActionCard onClick={() => onNavigate("alladmin")}>
               <Icon><FaUserShield /></Icon>
               <Label>Admins</Label>

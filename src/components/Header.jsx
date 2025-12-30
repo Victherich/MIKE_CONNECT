@@ -81,7 +81,7 @@ const {categories}=useContext(Context);
     
 
       {/* CATEGORIES */}
-      <Categories>
+    {location.pathname!=='/admindashboard'&&  <Categories>
         {categories.map((cat) => {
           const isActive = location.pathname === `/category/${cat.id}`;
           return (
@@ -94,7 +94,7 @@ const {categories}=useContext(Context);
             </CategoryItem>
           );
         })}
-      </Categories>
+      </Categories>}
     </HeaderContainer>
   );
 }

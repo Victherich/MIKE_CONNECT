@@ -7,6 +7,7 @@ import { adminLogout } from '../Features/Slice';
 import AdminDetailsPage from './AdminProfile';
 import AdminSignup from './AdminSignUp.jsx';
 import DashboardHomeButton from './DashboardHomeButton.jsx';
+import BlogPostsManager from './BlogPostsManager.jsx';
 
 // ================== THEME ==================
 const colors = {
@@ -156,6 +157,9 @@ const AdminDashboard = () => {
 
       case 'adminsignup':
         return <AdminSignup />;
+
+        case 'manageblogposts':
+        return <BlogPostsManager />;
 
       default:
         return (

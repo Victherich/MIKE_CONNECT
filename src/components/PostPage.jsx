@@ -1,8 +1,33 @@
 
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
+
+
+
+function formatContentWithLinks(content) {
+  if (!content) return "";
+
+  let formatted = content.replace(/\r\n/g, "\n");
+
+  // 🔗 Convert URLs to clickable links
+  formatted = formatted.replace(
+    /((https?:\/\/|www\.)[^\s<]+)/gi,
+    (url) => {
+      const href = url.startsWith("http") ? url : `https://${url}`;
+      return `<a href="${href}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+    }
+  );
+
+  // 🧱 Break sentences into new lines
+  formatted = formatted.replace(/\. +/g, ".<br /><br />");
+
+  return formatted;
+}
+
+
+
 
 export default function PostPage() {
   const { id } = useParams();
@@ -11,6 +36,7 @@ export default function PostPage() {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!postId) return;
@@ -39,6 +65,13 @@ export default function PostPage() {
       .finally(() => setLoading(false));
   }, [postId]);
 
+
+
+
+
+
+
+
   if (loading) return <Status>Loading post...</Status>;
   if (error) return <Status>{error}</Status>;
   if (!post) return null;
@@ -53,11 +86,52 @@ export default function PostPage() {
         </HeroContent>
       </Hero>
 
+      {/* <ContentWrapper>
+    
+
+<Article
+  dangerouslySetInnerHTML={{
+    __html: formatContentWithLinks(post.content),
+  }}
+/>
+
+
+
+      </ContentWrapper> */}
+
+
       <ContentWrapper>
-        <Article
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
-      </ContentWrapper>
+  <Article
+    dangerouslySetInnerHTML={{
+      __html: formatContentWithLinks(post.content),
+    }}
+  />
+
+  {post.links && post.links.length > 0 && (
+    <LinksSection>
+      <LinksTitle>References / Links</LinksTitle>
+      {post.links.map((link, i) => (
+        <LinkItem key={i}>
+          <a
+            href={link.url.startsWith("http") ? link.url : `https://${link.url}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {link.description || link.url}
+          </a>
+        </LinkItem>
+      ))}
+    </LinksSection>
+  )}
+</ContentWrapper>
+
+
+      <BackWrapper>
+  <BackButton onClick={() => navigate(-1)}>
+    ← Back
+  </BackButton>
+</BackWrapper>
+
     </Wrapper>
   );
 }
@@ -69,10 +143,10 @@ const Wrapper = styled.div`
 `;
 
 const Hero = styled.div`
-//   height: 60vh;
-//   min-height: 320px;
-  background-size: cover;
-  background-position: center;
+  height: 60vh;
+  min-height: 320px;
+
+  background-position: top;
   position: relative;
   display: flex;
   align-items: flex-end;
@@ -143,33 +217,91 @@ const ContentWrapper = styled.div`
 `;
 
 const Article = styled.div`
-  font-size: 1.05rem;
-  line-height: 1.8;
+  font-size: 1.1rem;
+  line-height: 1.9;
   color: #333;
 
-  p {
-    margin-bottom: 1.2rem;
-  }
-
-  img {
-    max-width: 100%;
-    border-radius: 12px;
-    margin: 20px 0;
-  }
-
-  h2, h3 {
-    margin: 30px 0 15px;
-  }
-
   a {
-    color: #4f46e5;
+    color: #2563eb;
+    font-weight: 500;
     text-decoration: underline;
+    word-break: break-word;
+  }
+
+  a:hover {
+    color: #1e40af;
+  }
+
+  br {
+    display: block;
+    margin-bottom: 12px;
   }
 `;
+
 
 const Status = styled.div`
   text-align: center;
   margin-top: 120px;
   font-size: 1.3rem;
   color: #555;
+`;
+
+
+const BackWrapper = styled.div`
+  margin-top: 60px;
+  margin-bottom:60px;
+  display: flex;
+  justify-content: center;
+`;
+
+const BackButton = styled.button`
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  color: white;
+  border: none;
+  padding: 14px 36px;
+  font-size: 1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(79, 70, 229, 0.35);
+  transition: all 0.25s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(79, 70, 229, 0.45);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    max-width: 280px;
+  }
+`;
+
+
+const LinksSection = styled.div`
+  margin-top: 30px;
+`;
+
+const LinksTitle = styled.h4`
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+`;
+
+const LinkItem = styled.div`
+  margin-bottom: 8px;
+
+  a {
+    color: #2563eb;
+    font-weight: 500;
+    text-decoration: underline;
+
+    &:hover {
+      color: #1e40af;
+    }
+  }
 `;

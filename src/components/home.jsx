@@ -1,5 +1,5 @@
 
-import React from "react";
+import React , {useState, useEffect} from "react";
 import EntertainmentPosts from "./EntertainmentPosts";
 import RelationshipPosts from "./RelationshipPosts";
 import styled from "styled-components";
@@ -10,6 +10,7 @@ import h3 from '../Images/h3.png'
 import h4 from '../Images/h4.png'; // adjust path if needed
 import ms1 from '../Images/ms1.png'; // adjust path as needed
 import Swal from 'sweetalert2'
+import axios from "axios";
 
 
 import {
@@ -22,8 +23,49 @@ import {
 } from "react-awesome-reveal";
 
 export default function HomePage() {
+  const categoryId=0
 
     const navigate = useNavigate();
+
+
+
+      const [posts, setPosts] = useState([]);
+      const [loading, setLoading] = useState(true);
+      const [error, setError] = useState(null);
+    
+      useEffect(() => {
+        const fetchPosts = async () => {
+          setLoading(true);
+          setError(null);
+    
+          try {
+            const res = await axios.get(
+              `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${categoryId}&t=${Date.now()}`
+            );
+    
+            if (res.data?.success) {
+              const fetchedPosts = res.data.posts || [];
+              const lastFourPosts = fetchedPosts.slice(0,4); // Take only last 4 posts
+              setPosts(lastFourPosts);
+            } else {
+              setPosts([]);
+              setError(res.data?.error || "No posts found");
+            }
+          } catch (err) {
+            setPosts([]);
+            setError("Network error");
+          } finally {
+            setLoading(false);
+          }
+        };
+    
+        fetchPosts();
+      }, []);
+
+
+
+
+
   return (
     <Wrapper>
 
@@ -100,27 +142,11 @@ export default function HomePage() {
         </Slide>
         <Fade cascade duration={3000}>
           <BlogGrid>
-            {[
-              {
-                img: "https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=600&q=80",
-                title: "Over 14m Children Remain Unvaccinated Globally – UN",
-                date: "July 17, 2025",
-              },
-              {
-                img: "https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=600&q=80",
-                title: "Over 11m People Living With Diabetes In Nigeria – Expert",
-                date: "April 24, 2025",
-              },
-              {
-                img: "https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=600&q=80",
-                title: "How Does the Premium for a Family Floater Plan Change if I Add a Child?",
-                date: "April 17, 2025",
-              },
-            ].map((blog, i) => (
-              <BlogCard key={i} as={Link} to={`/posts/${encodeURIComponent(blog.title)}`}>
-                <img src={blog.img} alt="" />
+            {posts.slice(0,3).map((blog, i) => (
+              <BlogCard key={i} as={Link} to={`/post/${blog.id}`}>
+                <img src={blog.image} alt="" />
                 <h3>{blog.title}</h3>
-                <span>admin • {blog.date}</span>
+                <span>{blog.date}</span>
               </BlogCard>
             ))}
           </BlogGrid>

@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Context } from "./Context";
 import axios from "axios";
+import SidebarPostTicker from "./SidebarPostTicker";
 
 export default function CategoryPage() {
   const { categories = [] } = useContext(Context);
@@ -79,7 +80,8 @@ export default function CategoryPage() {
   };
 
   return (
-    <PageWrapper>
+    <Layout>
+ <PageWrapper>
       <CategoryTitle>
         {category?.title || "Category"} 
      
@@ -131,6 +133,11 @@ export default function CategoryPage() {
         <NoBlogs>No posts available in this category.</NoBlogs>
       )}
     </PageWrapper>
+    
+<SidebarPostTicker/>
+
+    </Layout>
+   
   );
 }
 
@@ -165,6 +172,7 @@ const PageWrapper = styled.div`
   margin: 50px auto;
   padding: 0 20px;
   font-family: "Poppins", sans-serif;
+  width:100%;
 `;
 const CategoryTitle = styled.h1`
   font-size: 2.4rem;
@@ -257,3 +265,18 @@ const BlogMeta = styled.div`
   font-style:italic;
 `;
 
+// const Layout = styled.div`
+//   display: grid;
+//   // grid-template-columns: 1fr 320px;
+//   gap: 30px;
+
+//   @media (max-width: 1100px) {
+//     grid-template-columns: 1fr;
+//   }
+// `;
+
+
+const Layout = styled.div`
+display:flex;
+
+`

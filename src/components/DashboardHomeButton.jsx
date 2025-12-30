@@ -6,22 +6,23 @@ import { FaHome } from "react-icons/fa";
 
 const ButtonWrapper = styled.div`
   position: fixed;
-  top: 80px;
+  top: 150px;
   right: 5px;
   z-index: 200;
   display: flex;
   align-items: center;
-  background: #006400;
+  background: orange;
   color: white;
   border-radius: 30px;
   padding: 8px 14px;
   font-size: 0.9rem;
+  font-weight:bold;
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
   transition: all 0.3s ease;
 
   &:hover {
-    background: #004d00;
+    background: blue;
     transform: translateY(-2px);
   }
 
