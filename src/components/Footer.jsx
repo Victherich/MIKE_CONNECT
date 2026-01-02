@@ -43,12 +43,34 @@ export default function Footer() {
 
       </FooterGrid>
 
+        <BottomBar>
+ 
+      Disclaimer: Every Mike-Connect Forum member is solely responsible for anything that he/she posts or uploads on Mike-Connect.
+    
+      </BottomBar>
+
       <BottomBar>
         © {new Date().getFullYear()} Mike-Connect — All Rights Reserved.
       </BottomBar>
-    </Container>
+
+      <BottomBar 
+      style={{cursor:"pointer",
+        textDecoration:"underline",
+        color:"rgba(255,255,255,0.7)"
+      }}
+      onClick={()=>window.open('https://elexdontech.com/',"_blank")}
+      >
+        POWERED BY ELEXDON DIGITAL TECHNOLOGIES LIMITED
+      </BottomBar>
+</Container>
   );
 }
+
+//  #9933ff,
+//     #9933ff,
+//     // #00ccff,
+//     #ff9900,
+//     #9933ff
 
 /* ---------------------- STYLED COMPONENTS ---------------------- */
 
@@ -57,9 +79,10 @@ const Container = styled.footer`
   padding: 50px 30px 20px 30px;
   background: linear-gradient(
     135deg,
-    #9933ff,
-    #00ccff,
-    #ff9900,
+    #451774ff,
+    #331055ff,
+    // #00ccff,
+    #5e3800ff,
     #9933ff
   );
   font-family: "Poppins", sans-serif;

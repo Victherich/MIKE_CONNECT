@@ -1,13 +1,14 @@
 
-import React from "react";
+import React , {useEffect, useState} from "react";
 import styled from "styled-components";
 import { Zoom, Slide } from "react-awesome-reveal";
 import t1 from '../Images/t1.png'
 import Swal from "sweetalert2";
+import axios from "axios";
 
 export default function MikeConnectTV() {
 
-
+ const [items, setItems] = useState([]);
 
 const handleComingSoon = () => {
   Swal.fire({
@@ -17,6 +18,18 @@ const handleComingSoon = () => {
     confirmButtonText: "Okay",
   });
 };
+
+ const fetchItems = () => {
+    axios
+      .get(`https://www.mikeconnect.com/mc_api/get_mike_connect_tv_posts.php`)
+      .then(res => {
+        if (res.data?.success) setItems(res.data.items);
+      });
+  };
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
 
 
   return (
@@ -44,58 +57,43 @@ const handleComingSoon = () => {
       </Hero>
 
       {/* 🟢 VIDEO PREVIEWS */}
-      <Section>
-        {[
-          {
-            title: "DON'T WASTE YOUR LIFE",
-            desc: "Even at your single age, you can still break world records and achieve all your dreams as a male or female……",
-          },
-          {
-            title: "IF you do this between age 18 - 45, God will open doors for you.",
-            desc: "Watch this life-saving and thrilling video in order to gain knowledge of the essentials of tomorrow.",
-          },
-          {
-            title: "The Real Reason You Procrastinate.",
-            desc: "Do you know why you procrastinate? Watch this video and get the real reason behind your procrastination.",
-          },
-          {
-            title: "The Power of You. Your Dreams Deserve More.",
-            desc: "What is the extent and power of your subconscious mind? Watch this video and find out more.",
-          },
-        ].map((video, i) => (
-          <VideoCard key={i}>
-            <VideoThumbnail />
-            <VideoContent>
-              <Zoom duration={3000} triggerOnce={false}>
-                <h2>{video.title}</h2>
-              </Zoom>
 
-              <Slide direction="up" duration={3000} triggerOnce={false}>
-                <p>{video.desc}</p>
-              </Slide>
-
-              <Slide direction="up" duration={3000} triggerOnce={false}>
-              
-// In your component
-<VideoButtons>
-  <a
-    href="#"
-    onClick={(e) => {
-      e.preventDefault(); // prevent navigation
-      handleComingSoon();
-    }}
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    Watch on YouTube
-  </a>
-  {/* <button onClick={handleComingSoon}>Play Video</button> */}
-</VideoButtons>
-              </Slide>
-            </VideoContent>
-          </VideoCard>
-        ))}
-      </Section>
+            <Section>
+              {items.map((item, i) => (
+                <VideoCard key={i}>
+                  <VideoThumbnail bg={item.image} />
+                  <VideoContent>
+                    <Zoom duration={3000} triggerOnce={false}>
+                      <h2>{item.title}</h2>
+                    </Zoom>
+      
+                    <Slide direction="up" duration={3000} triggerOnce={false}>
+                      <p>{item.description}</p>
+                    </Slide>
+      
+                    <Slide direction="up" duration={3000} triggerOnce={false}>
+                    
+      // In your component
+      <VideoButtons>
+        <a
+          href="#"
+          onClick={() => {
+            window.open(`${item.url}`,"_blank")
+        
+          }}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Watch on YouTube
+        </a>
+      
+      </VideoButtons>
+                    </Slide>
+     
+                  </VideoContent>
+                </VideoCard>
+              ))}
+            </Section>
 
       {/* 🟢 FOOTER CTA */}
       <CTASection>
@@ -199,7 +197,7 @@ const VideoCard = styled.div`
 const VideoThumbnail = styled.div`
   flex: 1 1 300px;
   min-height: 220px;
-  background: url("https://via.placeholder.com/400x220") center/cover no-repeat;
+    background-image: url(${p => p.bg});
 `;
 
 const VideoContent = styled.div`

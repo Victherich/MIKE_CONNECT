@@ -10,6 +10,8 @@ import {
   FaPhoneAlt,
   FaIdCard,
   FaKey,
+  FaBlog,
+  FaTv,
 } from "react-icons/fa";
 
 /* ================= THEME ================= */
@@ -237,8 +239,14 @@ const AdminDetailsPage = ({ adminId, onNavigate, onLogout }) => {
           <Grid>
 
              <ActionCard onClick={() => onNavigate("manageblogposts")}>
-              <Icon><FaUserShield /></Icon>
+              <Icon><FaBlog /></Icon>
               <Label>Manage Blog Posts</Label>
+              <Desc>Create, Edit, Delete posts</Desc>
+            </ActionCard>
+
+              <ActionCard onClick={() => onNavigate("managemikeconnecttv")}>
+              <Icon><FaTv /></Icon>
+              <Label>Manage Mike Connect TV</Label>
               <Desc>Create, Edit, Delete posts</Desc>
             </ActionCard>
 

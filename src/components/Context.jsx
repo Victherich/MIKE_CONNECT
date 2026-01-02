@@ -8,7 +8,7 @@ const ContextProvider = ({children}) => {
 
 
 const categories = [
-  { id: 1, title: "News" },
+  // { id: 1, title: "News" },
     { id: 2, title: "Relationship" },
     { id: 3, title: "Entrepreneurship/Business" },
     { id: 4, title: "Inspire/Motivate" },
@@ -16,15 +16,20 @@ const categories = [
     { id: 6, title: "Education" },
     { id: 7, title: "Family" },
     { id: 8, title: "Food" },
-    { id: 9, title: "Life Issues" },
+    // { id: 9, title: "Life Issues" },
     { id: 10, title: "Health" },
     { id: 11, title: "Viral Gist" },
     { id: 12, title: "Religion" },
     { id: 13, title: "Entertainment" },
     { id: 14, title: "Travel" },
-    {id:15, title:"Finance"},
+    {id:15, title:"Finance & Investment"},
      {id:16, title:"Sports"},
-     {id:17, title:"Beauty"}
+     {id:17, title:"Beauty"},
+     {id:18, title:"Trending News"},
+      {id:19, title:"Tech & AI Tools"},
+       {id:20, title:"Kids Zone"},
+        {id:21, title:"Gaming"}
+
 ];
 
 

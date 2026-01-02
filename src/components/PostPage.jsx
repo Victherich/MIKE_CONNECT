@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
+import Comments from "./Comments";
 
 
 
@@ -86,18 +87,7 @@ export default function PostPage() {
         </HeroContent>
       </Hero>
 
-      {/* <ContentWrapper>
-    
 
-<Article
-  dangerouslySetInnerHTML={{
-    __html: formatContentWithLinks(post.content),
-  }}
-/>
-
-
-
-      </ContentWrapper> */}
 
 
       <ContentWrapper>
@@ -131,7 +121,9 @@ export default function PostPage() {
     ← Back
   </BackButton>
 </BackWrapper>
-
+<Comments
+postId={postId}
+/>
     </Wrapper>
   );
 }
@@ -188,7 +180,7 @@ const HeroContent = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 2.8rem;
+  font-size: 2rem;
   line-height: 1.2;
   margin-bottom: 12px;
 

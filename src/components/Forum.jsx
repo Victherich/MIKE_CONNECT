@@ -1,3 +1,6 @@
+
+
+
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaBars, FaTimes } from 'react-icons/fa';
@@ -9,6 +12,7 @@ import AdminSignup from './AdminSignUp.jsx';
 import DashboardHomeButton from './DashboardHomeButton.jsx';
 import BlogPostsManager from './BlogPostsManager.jsx';
 import MikeConnectTVManager from './MikeConnectTVManager.jsx';
+import ForumPage from './ForumPage.jsx';
 
 // ================== THEME ==================
 const colors = {
@@ -107,9 +111,9 @@ const Overlay = styled.div`
 `;
 
 // ================== MAIN COMPONENT ==================
-const AdminDashboard = () => {
+const Forum = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeMenu, setActiveMenu] = useState('profile');
+  const [activeMenu, setActiveMenu] = useState('forumpage');
 
   const adminInfo = useSelector((state) => state.adminInfo);
   const dispatch = useDispatch();
@@ -147,28 +151,28 @@ const AdminDashboard = () => {
 
   const renderContent = () => {
     switch (activeMenu) {
-      case 'profile':
-        return (
-          <AdminDetailsPage
-            adminId={adminInfo?.id}
-            onNavigate={handleMenuClick}
-            onLogout={handleLogout}
-          />
-        );
+    //   case 'profile':
+        // return (
+        //   <AdminDetailsPage
+        //     adminId={adminInfo?.id}
+        //     onNavigate={handleMenuClick}
+        //     onLogout={handleLogout}
+        //   />
+        // );
 
-      case 'adminsignup':
-        return <AdminSignup />;
+    //   case 'adminsignup':
+    //     return <AdminSignup />;
 
-        case 'manageblogposts':
-        return <BlogPostsManager />;
+    //     case 'manageblogposts':
+    //     return <BlogPostsManager />;
 
-         case 'managemikeconnecttv':
-        return <MikeConnectTVManager/>;
+         case 'forumpage':
+        return <ForumPage user={adminInfo}/>;
 
       default:
         return (
           <h2 style={{ textAlign: 'center', color: colors.primary }}>
-            Welcome to your Dashboard
+            Welcome to Our Forum
           </h2>
         );
     }
@@ -183,21 +187,14 @@ const AdminDashboard = () => {
       <Overlay isOpen={menuOpen} onClick={closeMenu} />
 
       <Sidebar isOpen={menuOpen}>
-        <SidebarHeader>Admin Dashboard</SidebarHeader>
+        <SidebarHeader>Forum</SidebarHeader>
 
         <SidebarMenu>
           <SidebarMenuItem
-            active={activeMenu === 'profile'}
-            onClick={() => handleMenuClick('profile')}
+            active={activeMenu === 'forumpage'}
+            onClick={() => handleMenuClick('forumpage')}
           >
             Hi, {adminInfo?.name}
-          </SidebarMenuItem>
-
-          <SidebarMenuItem
-            active={activeMenu === 'adminsignup'}
-            onClick={() => handleMenuClick('adminsignup')}
-          >
-            Register Admin
           </SidebarMenuItem>
 
           <SidebarMenuItem onClick={handleLogout}>
@@ -213,4 +210,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default Forum;

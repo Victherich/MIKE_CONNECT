@@ -92,7 +92,7 @@ const TickerContainer = styled.div`
 const Ticker = styled.div`
   display: flex;
   flex-direction: column;
-  animation: ${slideUp} 25s linear infinite;
+  animation: ${slideUp} 100s linear infinite;
 `;
 
 const PostItem = styled.div`

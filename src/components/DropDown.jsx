@@ -260,7 +260,7 @@ const Trigger = styled.button`
 const Label = styled.span`
   flex: 1;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.8rem;
   color: #1e3a8a;
   text-align: left;
 `;
@@ -308,6 +308,8 @@ const Item = styled.li`
   span {
     flex: 1;
     color: inherit; /* ensures text is always visible */
+    font-size:0.8rem;
+    font-weight:700;
   }
 `;
 

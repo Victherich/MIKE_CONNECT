@@ -175,7 +175,7 @@ const PageWrapper = styled.div`
   width:100%;
 `;
 const CategoryTitle = styled.h1`
-  font-size: 2.4rem;
+  font-size: 2rem;
   margin-bottom: 30px;
   color: #4f46e5;
   text-align: center;

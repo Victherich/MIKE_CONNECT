@@ -77,6 +77,13 @@ const {categories}=useContext(Context);
         </Link>
 
           <BeautifulDropdown/>
+
+          <Link
+          to="/forum"
+          className={location.pathname === "/forum" ? "active" : ""}
+        >
+          Forum
+        </Link>
       </Menu>
     
 
@@ -106,7 +113,19 @@ const HeaderContainer = styled.header`
   padding: 25px;
   font-family: "Poppins", sans-serif;
   color: white;
-  background: linear-gradient(135deg, #ff4d4d, #ff9900, #00ccff, #9933ff);
+  background: linear-gradient(135deg,
+  //  #ff4d4d, 
+  //  #ff9900, 
+  //  #00ccff, 
+  //  #9933ff
+
+   #4a187cff,
+    #611ea5ff,
+    // #00ccff,
+    #5e3800ff,
+    #9933ff
+   
+   );
 `;
 
 const TopRow = styled.div`
