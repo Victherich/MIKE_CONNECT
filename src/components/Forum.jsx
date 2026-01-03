@@ -1,18 +1,19 @@
 
 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
-import { adminLogout } from '../Features/Slice';
-import AdminDetailsPage from './AdminProfile';
-import AdminSignup from './AdminSignUp.jsx';
+import { userLogout, adminLogout } from '../Features/Slice';
+// import userDetailsPage from './userProfile';
+// import userSignup from './userSignUp.jsx';
 import DashboardHomeButton from './DashboardHomeButton.jsx';
 import BlogPostsManager from './BlogPostsManager.jsx';
 import MikeConnectTVManager from './MikeConnectTVManager.jsx';
 import ForumPage from './ForumPage.jsx';
+import UserLoginModal from './UserLoginModal.jsx';
 
 // ================== THEME ==================
 const colors = {
@@ -114,12 +115,29 @@ const Overlay = styled.div`
 const Forum = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState('forumpage');
+  const [showLoginPage, setShowLoginPage]=useState(false);
 
-  const adminInfo = useSelector((state) => state.adminInfo);
+  // const userInfo = useSelector((state) => state.adminInfo);
+
+  const userInfo = useSelector((state) => {
+  if (state.adminInfo) return state.adminInfo;
+  if (state.userInfo) return state.userInfo;
+  return null;
+});
+
   const dispatch = useDispatch();
 
   const toggleMenu = () => setMenuOpen((prev) => !prev);
   const closeMenu = () => setMenuOpen(false);
+
+
+
+
+
+const showLogout = !!userInfo && userInfo.role?.toLowerCase() !== "admin";
+
+
+// console.log(showLogout)
 
   const handleMenuClick = (menu) => {
     window.scrollTo(0, 0);
@@ -138,7 +156,10 @@ const Forum = () => {
       confirmButtonText: 'Yes, log out',
     }).then((result) => {
       if (result.isConfirmed) {
+    
+        dispatch(userLogout());
         dispatch(adminLogout());
+
         Swal.fire({
           icon: 'success',
           title: 'Logged out',
@@ -151,23 +172,9 @@ const Forum = () => {
 
   const renderContent = () => {
     switch (activeMenu) {
-    //   case 'profile':
-        // return (
-        //   <AdminDetailsPage
-        //     adminId={adminInfo?.id}
-        //     onNavigate={handleMenuClick}
-        //     onLogout={handleLogout}
-        //   />
-        // );
-
-    //   case 'adminsignup':
-    //     return <AdminSignup />;
-
-    //     case 'manageblogposts':
-    //     return <BlogPostsManager />;
 
          case 'forumpage':
-        return <ForumPage user={adminInfo}/>;
+        return <ForumPage user={userInfo}/>;
 
       default:
         return (
@@ -187,25 +194,33 @@ const Forum = () => {
       <Overlay isOpen={menuOpen} onClick={closeMenu} />
 
       <Sidebar isOpen={menuOpen}>
-        <SidebarHeader>Forum</SidebarHeader>
+        <SidebarHeader>Mike Connect Forum</SidebarHeader>
 
         <SidebarMenu>
-          <SidebarMenuItem
+         {showLogout? <SidebarMenuItem
             active={activeMenu === 'forumpage'}
             onClick={() => handleMenuClick('forumpage')}
           >
-            Hi, {adminInfo?.name}
-          </SidebarMenuItem>
+            Hi, {userInfo?.name}
+          </SidebarMenuItem>:
+          <SidebarMenuItem onClick={()=>setShowLoginPage(true)}>
+            Login / Signup
+            </SidebarMenuItem>}
 
-          <SidebarMenuItem onClick={handleLogout}>
+          {showLogout&&<SidebarMenuItem onClick={handleLogout}>
             Logout
-          </SidebarMenuItem>
+          </SidebarMenuItem>}
         </SidebarMenu>
       </Sidebar>
 
-      <DashboardHomeButton onGoHome={() => setActiveMenu('profile')} />
+   
 
       <ContentArea isOpen={menuOpen}>{renderContent()}</ContentArea>
+     <UserLoginModal
+  isOpen={showLoginPage}
+  onClose={() => setShowLoginPage(false)}
+/>
+
     </DashboardContainer>
   );
 };

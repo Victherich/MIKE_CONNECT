@@ -264,7 +264,7 @@ const PostCard = styled.div.withConfig({
   background: white;
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0px 8px 25px rgba(0,0,0,0.08);
+  box-shadow: 0px 8px 25px rgba(0,0,0,0.1);
   transition: 0.3s;
   cursor: pointer;
 

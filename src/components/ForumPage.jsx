@@ -4,7 +4,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-const API_BASE = "https://www.cwmsrfupre.com.ng/api";
+const API_BASE = "https://www.mikeconnect.com/mc_api";
 
 const ForumPage = ({ user }) => {
   const [posts, setPosts] = useState([]);
@@ -41,7 +41,7 @@ const ForumPage = ({ user }) => {
 
     const formData = new FormData();
     formData.append("user_id", user.id);
-    formData.append("user_type", user.role ? user.role.toLowerCase() : "student");
+    formData.append("user_type", user.role ? user.role.toLowerCase() : "user1");
     formData.append("content", newMsg);
     if (replyTo) formData.append("reply_to", replyTo.id);
 
@@ -90,7 +90,7 @@ const ForumPage = ({ user }) => {
     const formData = new FormData();
     formData.append("post_id", postId);
     formData.append("user_id", user.id);
-    formData.append("user_type", user.role ? user.role.toLowerCase() : "student");
+    formData.append("user_type", user.role ? user.role.toLowerCase() : "user1");
     formData.append("content", editContent);
 
     try {
@@ -123,7 +123,7 @@ const ForumPage = ({ user }) => {
   const formData = new FormData();
   formData.append("post_id", id);
   formData.append("user_id", user.id);
-  formData.append("user_type", user.role ? user.role.toLowerCase() : "student");
+  formData.append("user_type", user.role ? user.role.toLowerCase() : "user1");
 
   try {
     const res = await fetch(`${API_BASE}/forum_delete_post.php`, {
@@ -153,7 +153,7 @@ const ForumPage = ({ user }) => {
 
       <ChatArea ref={chatAreaRef}>
         {posts.sort((a, b) => a.id - b.id).map((m) => {
-          const mine = m.user_id === user.id;
+          const mine = m.user_id === user?.id;
           const createdTime = new Date(m.created_at);
           const now = new Date();
           const canEdit = mine && (now - createdTime) / 60000 < 5;
@@ -193,7 +193,7 @@ const ForumPage = ({ user }) => {
                   {canEdit && (
                     <EditLink onClick={() => onEditClick(m)}>Edit</EditLink>
                   )}
-                    {m.user_id === user.id && (
+                    {m.user_id === user?.id && (
       <DeleteLink onClick={() => deleteMessage(m.id)}>🗑 Delete</DeleteLink>
     )}
                 </div>

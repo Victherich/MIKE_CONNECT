@@ -6,7 +6,7 @@ import { FaHome } from "react-icons/fa";
 
 const ButtonWrapper = styled.div`
   position: fixed;
-  top: 150px;
+  top: 90px;
   right: 5px;
   z-index: 200;
   display: flex;

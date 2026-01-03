@@ -306,7 +306,7 @@ const FeatureCard = styled.div`
   border-radius: 14px;
   overflow: hidden;
   cursor: pointer;
-  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1);
   transition: 0.3s;
 
   &:hover {
@@ -348,10 +348,10 @@ const SmallCards = styled.div`
 const SmallCard = styled.div`
   display: flex;
   gap: 12px;
-  background: #fff0f5;
+  background: white;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.06);
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: 0.3s;
 

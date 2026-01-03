@@ -1,8 +1,9 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import BeautifulDropdown from "./DropDown";
 import { Context } from "./Context";
+import { FaHome } from "react-icons/fa";
 
 export default function Header() {
   const [search, setSearch] = useState("");
@@ -16,12 +17,26 @@ const {categories}=useContext(Context);
     navigate(`/category/${cat.id}`);
   };
 
+
+  const [catShow, setCatShow]=useState(false);
+
+  useEffect(()=>{
+if(location.pathname==="/forum"||location.pathname==="/admindashboard"){
+  setCatShow(false)
+}else{
+  setCatShow(true)
+}
+  },[location])
+
   return (
     <HeaderContainer>
       <TopRow>
-        <Title>MIKE-CONNECT</Title>
+        <Title onClick={()=>navigate('/home')}>MIKE-CONNECT</Title>
 
         <SearchBox>
+          <button style={{fontSize:"28px", padding:"1px 20px"}}
+          onClick={()=>navigate('/home')}
+          ><FaHome/></button>
           <input
             type="text"
             placeholder="Search"
@@ -33,7 +48,7 @@ const {categories}=useContext(Context);
       </TopRow>
 
       {/* MENU LINKS */}
-      <Menu>
+     {catShow&& <Menu>
         <Link
           to="/home"
           className={location.pathname === "/home" ? "active" : ""}
@@ -84,11 +99,11 @@ const {categories}=useContext(Context);
         >
           Forum
         </Link>
-      </Menu>
+      </Menu>}
     
 
       {/* CATEGORIES */}
-    {location.pathname!=='/admindashboard'&&  <Categories>
+    {catShow&&  <Categories>
         {categories.map((cat) => {
           const isActive = location.pathname === `/category/${cat.id}`;
           return (
@@ -140,6 +155,7 @@ const Title = styled.h1`
   font-weight: 900;
   text-shadow: 2px 2px #0006;
   letter-spacing: 2px;
+  cursor:pointer;
 `;
 
 const SearchBox = styled.div`
