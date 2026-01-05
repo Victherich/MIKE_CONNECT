@@ -358,6 +358,13 @@ const SmallCards = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+    @media(max-width:768px){
+  flex-direction:row;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:center;
+  }
 `;
 
 const SmallCard = styled.div`
@@ -370,7 +377,9 @@ const SmallCard = styled.div`
   cursor: pointer;
   transition: 0.3s;
   &:hover { transform: translateY(-5px); }
-  @media (max-width: 768px) { flex-direction: column; }
+  @media (max-width: 768px) { flex-direction: column;
+  width:300px;
+  }
 `;
 
 const SmallImage = styled.img`

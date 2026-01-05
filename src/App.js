@@ -21,6 +21,9 @@ import AdminLogin from './components/AdminLogin';
 import AdminSignup from './components/AdminSignUp';
 import PostPage from './components/PostPage';
 import Forum from './components/Forum';
+import SearchPage from './components/SearchPage';
+import ScrollToTopButton from './components/ScrollToTopButton';
+import PrivacyPolicy from './components/PrivacyPolicy';
 
 function App() {
   return (
@@ -41,6 +44,10 @@ function App() {
     <Route path='/signup' element={<SignupPage/>}/>
     <Route path='/post/:id' element={<PostPage/>}/>
     <Route path='/forum' element ={<Forum/>}/>
+    <Route path="/search" element={<SearchPage />} />
+    <Route path='/privacypolicy' element={<PrivacyPolicy/>}/>
+    
+
 
 
 
@@ -54,6 +61,7 @@ function App() {
 
 
   </Routes>
+  <ScrollToTopButton/>
   <Footer/>
   </BrowserRouter>
   );

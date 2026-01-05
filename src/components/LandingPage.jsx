@@ -146,7 +146,7 @@ const getCategoryNames = (categoryString) => {
       </EditorialsGrid>
 
       {/* CATEGORIES SECTION */}
-      <SectionTitle>📌 Categories Spotlight</SectionTitle>
+      <SectionTitle2>📌 Categories Spotlight</SectionTitle2>
       <CategoryGrid>
         {categories.map((c, i) => (
           <CategoryCard key={i}>
@@ -173,6 +173,10 @@ const PageContainer = styled.div`
   font-family: "Poppins", sans-serif;
   background: #f9f9f9;
   color: #222;
+
+  @media(max-width:768px){
+    padding:10px;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -182,6 +186,20 @@ const SectionTitle = styled.h2`
   background: linear-gradient(90deg, #ff4d4d, #ff9900, #00ccff, #9933ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+`;
+
+const SectionTitle2 = styled.h2`
+  font-size: 26px;
+  font-weight: 700;
+  margin: 40px 0 20px;
+  background: linear-gradient(90deg, #ff4d4d, #ff9900, #00ccff, #9933ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+@media(max-width:768px){
+display:none;
+}
+
 `;
 
 /* ---------- CAROUSEL ---------- */
@@ -289,6 +307,10 @@ const CategoryGrid = styled.div`
   flex-wrap: wrap;
   justify-content:space-between;
   gap: 12px;
+
+  @media(max-width:768px){
+  display:none;
+  }
 `;
 const CategoryCard = styled.div`
 //   flex: 1 1 150px;

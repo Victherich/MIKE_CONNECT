@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import styled from 'styled-components';
 import { adminLogin } from '../Features/Slice';
-import { UseDispatch, useDispatch } from 'react-redux';
+import { UseDispatch, useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 // Styled Components
@@ -75,6 +75,8 @@ const AdminLogin = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const adminInfo = useSelector(state=>state.adminInfo)
+  console.log(adminInfo);
 
   // Handle input change
   const handleChange = (e) => {
@@ -141,6 +143,12 @@ const AdminLogin = () => {
       });
     }
   };
+
+  useEffect(()=>{
+    if(adminInfo){
+    navigate('/admindashboard')
+    }
+  },[])
 
   return (
     <Container>

@@ -1,10 +1,57 @@
-
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Slide, Zoom } from "react-awesome-reveal";
-import t1 from '../Images/t1.png'
+import Swal from "sweetalert2";
+import t1 from "../Images/t1.png";
 
 export default function ContactPage() {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!form.name || !form.email || !form.phone || !form.message) {
+      Swal.fire("Error", "All fields are required", "error");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch(
+        "https://www.mikeconnect.com/mc_api/contact_form_endpoint.php",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        }
+      );
+
+      const data = await res.json();
+
+      if (data.success) {
+        Swal.fire("Success", data.message, "success");
+        setForm({ name: "", email: "", phone: "", message: "" });
+      } else {
+        Swal.fire("Error", data.error || "Failed to send message", "error");
+      }
+    } catch (err) {
+      Swal.fire("Error", "Network error. Please try again.", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const Animated = ({ children, effect = "slide", duration = 3000 }) => {
     if (effect === "zoom") return <Zoom duration={duration}>{children}</Zoom>;
     return <Slide direction="up" duration={duration}>{children}</Slide>;
@@ -12,32 +59,11 @@ export default function ContactPage() {
 
   return (
     <Wrapper>
-      {/* HERO SECTION */}
+      {/* HERO */}
       <Hero>
-        <Animated>
-          <h1>Contact Us</h1>
-        </Animated>
-        <Animated>
-          <p>We are humbled by your interest in booking Mike-Connect</p>
-        </Animated>
+        <Animated><h1>Contact Us</h1></Animated>
+        <Animated><p>We are humbled by your interest in Mike-Connect</p></Animated>
       </Hero>
-
-      {/* ABOUT / BOOKING */}
-      <Section>
-        <Animated effect="zoom">
-          <BookingText>
-            <p>
-              We are humbled by your interest in booking Mike-Connect for your personal or organization event!
-            </p>
-          </BookingText>
-        </Animated>
-
-        <InfoGrid>
-          <Animated><Card><h3>WEBSITE</h3><p>www.mikeconnect.com</p></Card></Animated>
-          <Animated><Card><h3>CALL US</h3><p>+234 8185609702</p></Card></Animated>
-          <Animated><Card><h3>EMAIL</h3><p>admin@mikeconnect.com</p></Card></Animated>
-        </InfoGrid>
-      </Section>
 
       {/* FORM */}
       <FormSection>
@@ -45,29 +71,46 @@ export default function ContactPage() {
           <FormTitle>Send us a message</FormTitle>
         </Animated>
 
-        <FormCard>
-          <Animated><FormRow><Input type="text" placeholder="Full Name *" /></FormRow></Animated>
-          <Animated><Input type="email" placeholder="Email *" /></Animated>
-          <Animated><Input type="phone" placeholder="Phone *" /></Animated>
-          <Animated><Textarea placeholder="Comment or Message *" rows={5} /></Animated>
-          <Animated><SubmitButton>Submit</SubmitButton></Animated>
+        <FormCard onSubmit={handleSubmit}>
+          <Input
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            placeholder="Full Name *"
+          />
+
+          <Input
+            name="email"
+            type="email"
+            value={form.email}
+            onChange={handleChange}
+            placeholder="Email *"
+          />
+
+          <Input
+            name="phone"
+            value={form.phone}
+            onChange={handleChange}
+            placeholder="Phone *"
+          />
+
+          <Textarea
+            name="message"
+            rows={5}
+            value={form.message}
+            onChange={handleChange}
+            placeholder="Comment or Message *"
+          />
+
+          <SubmitButton disabled={loading}>
+            {loading ? "Sending..." : "Submit"}
+          </SubmitButton>
         </FormCard>
       </FormSection>
-
-      {/* SOCIAL MEDIA */}
-      <SocialSection>
-        <Animated effect="zoom"><h2>Let's get connected</h2></Animated>
-        <Animated><p>Connect With MIKE-CONNECT On Social Media</p></Animated>
-        <SocialLinks>
-          <Animated effect="zoom"><a href="#" target="_blank" rel="noreferrer">Facebook-f</a></Animated>
-          <Animated effect="zoom"><a href="#" target="_blank" rel="noreferrer">Twitter</a></Animated>
-          <Animated effect="zoom"><a href="#" target="_blank" rel="noreferrer">Instagram</a></Animated>
-          <Animated effect="zoom"><a href="#" target="_blank" rel="noreferrer">Youtube</a></Animated>
-        </SocialLinks>
-      </SocialSection>
     </Wrapper>
   );
 }
+
 
 /* ================= STYLES ================= */
 const Wrapper = styled.div`

@@ -3,6 +3,8 @@
 // ForumPage.jsx
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import Swal from 'sweetalert2'
+import { useSelector } from "react-redux";
 
 const API_BASE = "https://www.mikeconnect.com/mc_api";
 
@@ -15,7 +17,14 @@ const ForumPage = ({ user }) => {
   const chatEndRef = useRef(null);
   const chatAreaRef = useRef(null);
 
-  console.log(user)
+    const userInfo = useSelector((state) => {
+    if (state.adminInfo) return state.adminInfo;
+    if (state.userInfo) return state.userInfo;
+    return null;
+  });
+  
+
+  console.log(posts)
 
   // fetch posts
   const fetchForumData = async () => {
@@ -38,6 +47,11 @@ const ForumPage = ({ user }) => {
   const sendMessage = async (e) => {
     e.preventDefault();
     if (!newMsg.trim()) return;
+
+    if(!userInfo){
+        Swal.fire({text:"Please login to start posting"})
+        return;
+    }
 
     const formData = new FormData();
     formData.append("user_id", user.id);
@@ -117,28 +131,61 @@ const ForumPage = ({ user }) => {
 
 
 
-  const deleteMessage = async (id) => {
-  if (!window.confirm("Are you sure you want to delete this message?")) return;
+const deleteMessage = async (id) => {
+  Swal.fire({
+    title: 'Delete message?',
+    text: 'Are you sure you want to delete this message? This action cannot be undone.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#5B6CFF',
+    confirmButtonText: 'Yes, delete it',
+    cancelButtonText: 'Cancel',
+  }).then(async (result) => {
+    if (!result.isConfirmed) return;
 
-  const formData = new FormData();
-  formData.append("post_id", id);
-  formData.append("user_id", user.id);
-  formData.append("user_type", user.role ? user.role.toLowerCase() : "user1");
+    const formData = new FormData();
+    formData.append("post_id", id);
+    formData.append("user_id", user.id);
+    formData.append(
+      "user_type",
+      user.role ? user.role.toLowerCase() : "user1"
+    );
 
-  try {
-    const res = await fetch(`${API_BASE}/forum_delete_post.php`, {
-      method: "POST",
-      body: formData,
-    });
-    const data = await res.json();
-    if (data.success) {
-      setPosts((prev) => prev.filter((p) => p.id !== id));
-    } else {
-      alert(data.error || "Failed to delete post");
+    try {
+      const res = await fetch(`${API_BASE}/forum_delete_post.php`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setPosts((prev) => prev.filter((p) => p.id !== id));
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Deleted',
+          text: 'The message has been deleted.',
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Delete failed',
+          text: data.error || 'Failed to delete post.',
+        });
+      }
+    } catch (err) {
+      console.error('Delete error:', err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Something went wrong while deleting the message.',
+      });
     }
-  } catch (err) {
-    console.error("Delete error:", err);
-  }
+  });
 };
 
 
@@ -149,7 +196,7 @@ const ForumPage = ({ user }) => {
   // --- Render ---
   return (
     <ChatWrapper>
-      <Title>💬 CWMSRFUPRE COMMUNITY FORUM</Title>
+      <Title>💬 MIKE CONNECT FORUM</Title>
 
       <ChatArea ref={chatAreaRef}>
         {posts.sort((a, b) => a.id - b.id).map((m) => {
@@ -160,7 +207,29 @@ const ForumPage = ({ user }) => {
 
           return (
             <MsgBubble key={m.id} id={`msg-${m.id}`} $mine={mine}>
-              <MsgHeader>{(m.email || "unknown").split("@")[0]}</MsgHeader>
+              <MsgHeader>{(m.email || "unknown").split("@")[0]} 
+          
+  {m.user_type === "admin" ?
+      <span
+  style={{
+    display: "inline-block",
+    background: "linear-gradient(135deg, #5B6CFF, #7C4DFF)",
+    color: "#fff",
+    fontSize: "0.6rem",
+    fontWeight: 600,
+    padding: "1px 6px",
+    borderRadius: "8px",
+    marginLeft: "6px",
+    textTransform: "uppercase",
+    letterSpacing: "0.5px"
+  }}
+>
+  {m.user_type}
+  </span>
+   : ""}
+
+
+                </MsgHeader>
 
               {m.reply_to && (
                 <ReplyPreview onClick={() => scrollToMessage(m.reply_to)}>
@@ -236,9 +305,9 @@ export default ForumPage;
 
 /* ====== Styles ====== */
 const ChatWrapper = styled.div`
-  margin: 12px auto;
-  max-width: 820px;
-  height: 80vh;
+//   margin: 12px auto;
+//   max-width: 820px;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   border-radius: 8px;
@@ -259,9 +328,9 @@ const ChatArea = styled.div`
 const MsgBubble = styled.div`
   align-self: ${(p) => (p.$mine ? "flex-end" : "flex-start")};
   background: ${(p) => (p.$mine ? "#dcf8c6" : "#fff")};
-  padding: 10px 14px; border-radius: 12px; max-width: 78%;
+  padding: 2px 10px; border-radius: 12px; max-width: 78%;
 `;
-const MsgHeader = styled.div`font-weight: 700; color: #075e54; margin-bottom: 6px;`;
+const MsgHeader = styled.div`font-weight: 700; color: #075e54; margin-bottom: 3px;`;
 const ReplyPreview = styled.div`
   background: #f2f2f2; border-left: 3px solid #34b7f1; padding: 6px 8px;
   margin-bottom: 8px; border-radius: 6px; cursor: pointer;
@@ -270,7 +339,7 @@ const ReplyPreview = styled.div`
 const MsgText = styled.div`font-size: 15px; color: #111;`;
 const FooterRow = styled.div`
   display: flex; gap: 12px; justify-content: space-between;
-  align-items: center; margin-top: 8px;
+  align-items: center; margin-top: 4px;
 `;
 const MsgTime = styled.small`color: #666; font-size: 12px;`;
 const ReplyLink = styled.span`color: #34b7f1; font-size: 13px; cursor: pointer; margin-left: 8px;`;

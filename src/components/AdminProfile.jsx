@@ -13,6 +13,7 @@ import {
   FaBlog,
   FaTv,
 } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 /* ================= THEME ================= */
 const colors = {
@@ -189,6 +190,7 @@ const AdminDetailsPage = ({ adminId, onNavigate, onLogout }) => {
   const [admin, setAdmin] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
   const [newPhone, setNewPhone] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!adminId) return;
@@ -250,13 +252,13 @@ const AdminDetailsPage = ({ adminId, onNavigate, onLogout }) => {
               <Desc>Create, Edit, Delete posts</Desc>
             </ActionCard>
 
-            <ActionCard onClick={() => onNavigate("alladmin")}>
+            <ActionCard onClick={() => onNavigate("manageadmins")}>
               <Icon><FaUserShield /></Icon>
-              <Label>Admins</Label>
+              <Label>Manage Admins</Label>
               <Desc>Manage admins</Desc>
             </ActionCard>
 
-            <ActionCard onClick={() => onNavigate("forum")}>
+            <ActionCard onClick={() => navigate('/forum')}>
               <Icon><FaComments /></Icon>
               <Label>Forum</Label>
               <Desc>Community discussions</Desc>
@@ -266,6 +268,12 @@ const AdminDetailsPage = ({ adminId, onNavigate, onLogout }) => {
               <Icon><FaUsers /></Icon>
               <Label>Add Admin</Label>
               <Desc>Create new admin</Desc>
+            </ActionCard>
+
+            <ActionCard onClick={() => onNavigate("manageusers")}>
+              <Icon><FaUsers /></Icon>
+              <Label>Manage forum Users</Label>
+              {/* <Desc>Create new admin</Desc> */}
             </ActionCard>
 
             <ActionCard onClick={onLogout}>

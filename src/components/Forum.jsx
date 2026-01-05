@@ -89,8 +89,8 @@ const ContentArea = styled.div`
 
 const Hamburger = styled.div`
   position: fixed;
-  top: 70px;
-  left: 20px;
+  top: 120px;
+  right: 10px;
   background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});
   color: white;
   padding: 12px;
@@ -134,7 +134,7 @@ const Forum = () => {
 
 
 
-const showLogout = !!userInfo && userInfo.role?.toLowerCase() !== "admin";
+const showLogout = !!userInfo && userInfo.role?.toLowerCase() === "admin";
 
 
 // console.log(showLogout)
@@ -196,7 +196,7 @@ const showLogout = !!userInfo && userInfo.role?.toLowerCase() !== "admin";
       <Sidebar isOpen={menuOpen}>
         <SidebarHeader>Mike Connect Forum</SidebarHeader>
 
-        <SidebarMenu>
+        {/* <SidebarMenu>
          {showLogout? <SidebarMenuItem
             active={activeMenu === 'forumpage'}
             onClick={() => handleMenuClick('forumpage')}
@@ -210,7 +210,68 @@ const showLogout = !!userInfo && userInfo.role?.toLowerCase() !== "admin";
           {showLogout&&<SidebarMenuItem onClick={handleLogout}>
             Logout
           </SidebarMenuItem>}
-        </SidebarMenu>
+        </SidebarMenu> */}
+        <SidebarMenu>
+  {/* If a normal user is logged in */}
+  {userInfo && userInfo.role?.toLowerCase() !== "admin" && (
+    <>
+      <SidebarMenuItem
+        active={activeMenu === "forumpage"}
+        onClick={() => handleMenuClick("forumpage")}
+      >
+        Hi,  {userInfo?.name?.split(' ')[0]}
+      </SidebarMenuItem>
+      <SidebarMenuItem onClick={handleLogout}>
+        Logout
+      </SidebarMenuItem>
+    </>
+  )}
+
+  {/* If admin is logged in */}
+  {userInfo && userInfo.role?.toLowerCase() === "admin" && (
+    <SidebarMenuItem
+      active={activeMenu === "forumpage"}
+      onClick={() => handleMenuClick("forumpage")}
+      style={{
+        fontWeight: 600,
+        color: colors.primary,
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
+      Hi,
+      <span
+        style={{
+          display: "inline-block",
+          background: "linear-gradient(135deg, #5B6CFF, #7C4DFF)",
+          color: "#fff",
+          fontSize: "0.75rem",
+          fontWeight: 600,
+          padding: "2px 6px",
+          borderRadius: "8px",
+          marginLeft: "6px",
+          marginRight:"6px",
+          textTransform: "uppercase",
+          letterSpacing: "0.5px",
+        }}
+      >
+        {userInfo?.role} 
+      </span> 
+      {userInfo?.name?.split(' ')[0]}
+
+    </SidebarMenuItem>
+  )}
+
+  {/* If nobody is logged in */}
+  {!userInfo && (
+    <SidebarMenuItem onClick={() => setShowLoginPage(true)}>
+      Login / Signup
+    </SidebarMenuItem>
+  )}
+</SidebarMenu>
+
+      
+      
       </Sidebar>
 
    

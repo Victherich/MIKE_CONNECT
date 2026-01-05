@@ -116,7 +116,7 @@ const Hero = styled.section`
   background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${c1}) no-repeat center/cover;
 
   h1 {
-    font-size: 3rem;
+    font-size: 2rem;
     margin-bottom: 12px;
   }
 

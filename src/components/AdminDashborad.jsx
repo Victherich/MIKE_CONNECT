@@ -9,6 +9,8 @@ import AdminSignup from './AdminSignUp.jsx';
 import DashboardHomeButton from './DashboardHomeButton.jsx';
 import BlogPostsManager from './BlogPostsManager.jsx';
 import MikeConnectTVManager from './MikeConnectTVManager.jsx';
+import ManageForumUsers from './ManageForumUsers.jsx';
+import ManageAdmins from './ManageAdmins.jsx';
 
 // ================== THEME ==================
 const colors = {
@@ -84,14 +86,15 @@ const ContentArea = styled.div`
 
 const Hamburger = styled.div`
   position: fixed;
-  top: 70px;
+  top: 110px;
   left: 20px;
-  background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});
+  background:orange;
+  // background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});
   color: white;
   padding: 12px;
   border-radius: 50%;
   cursor: pointer;
-  z-index: 300;
+  z-index: 200;
 
   @media (min-width: 768px) {
     display: none;
@@ -164,6 +167,12 @@ const AdminDashboard = () => {
 
          case 'managemikeconnecttv':
         return <MikeConnectTVManager/>;
+
+           case 'manageusers':
+        return <ManageForumUsers/>;
+
+        case 'manageadmins':
+        return <ManageAdmins/>;
 
       default:
         return (

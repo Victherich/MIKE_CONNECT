@@ -96,7 +96,7 @@ const Hero = styled.section`
   color: white;
 
   h1 {
-    font-size: 3rem;
+    font-size: 2rem;
     margin-bottom: 16px;
   }
 
@@ -114,7 +114,7 @@ const Section = styled.section`
   padding: 0 20px;
   display: grid;
   gap: 30px;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 `;
 
 const ResourceCard = styled.div`

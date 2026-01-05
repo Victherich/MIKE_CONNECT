@@ -27,7 +27,7 @@ const ButtonWrapper = styled.div`
   }
 
   @media(max-width:768px){
-    top: 70px;
+    top: 110px;
     right: 15px;
     padding: 6px 12px;
     font-size: 0.8rem;

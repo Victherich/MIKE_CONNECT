@@ -29,7 +29,7 @@ export default function Footer() {
           <SectionTitle>Help</SectionTitle>
           <StyledLink to="/contact">CONTACT US</StyledLink>
           <StyledLink to="/terms">TERMS AND CONDITIONS</StyledLink>
-          <StyledLink to="/privacy">OUR PRIVACY POLICY</StyledLink>
+          <StyledLink to="/privacypolicy">OUR PRIVACY POLICY</StyledLink>
         </FooterSection>
 
         {/* SOCIAL */}

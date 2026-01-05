@@ -438,6 +438,7 @@ const CommentsWrapper = styled.div`
   max-width: 900px;
   margin-left: auto;
   margin-right: auto;
+  padding:20px;
 `;
 
 const CommentsHeader = styled.h3`

@@ -228,7 +228,7 @@ const Select = styled.select`
 
 const BlogsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 28px;
 `;
 
@@ -309,6 +309,10 @@ const FloatingButton = styled.button`
   font-size: 1.6rem;
   cursor: pointer;
   box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+
+  @media(max-width:768px){
+  bottom:100px;
+  }
 `;
 
 /* PAGINATION (SAME AS CATEGORY PAGE) */
@@ -317,6 +321,8 @@ const PaginationWrapper = styled.div`
   justify-content: center;
   margin-top: 40px;
   gap: 10px;
+flex-wrap:wrap;
+
 `;
 
 const PageButton = styled.button`

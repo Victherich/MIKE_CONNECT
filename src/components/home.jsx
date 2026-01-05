@@ -32,6 +32,61 @@ export default function HomePage() {
       const [posts, setPosts] = useState([]);
       const [loading, setLoading] = useState(true);
       const [error, setError] = useState(null);
+
+
+      // Inside HomePage component
+
+const [newsletter, setNewsletter] = useState({
+  firstName: "",
+  lastName: "",
+  email: "",
+});
+const [submitting, setSubmitting] = useState(false);
+
+const handleNewsletterChange = (e) => {
+  setNewsletter({ ...newsletter, [e.target.name]: e.target.value });
+};
+
+const handleNewsletterSubmit = async () => {
+  const { firstName, lastName, email } = newsletter;
+
+  if (!firstName || !lastName || !email) {
+    Swal.fire("Error", "All fields are required", "error");
+    return;
+  }
+
+  if (!/^\S+@\S+\.\S+$/.test(email)) {
+    Swal.fire("Error", "Please enter a valid email", "error");
+    return;
+  }
+
+  setSubmitting(true);
+
+  try {
+    const res = await fetch(
+      "https://www.mikeconnect.com/mc_api/newsletter_subscribe.php",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newsletter),
+      }
+    );
+
+    const data = await res.json();
+
+    if (data.success) {
+      Swal.fire("Success", data.message, "success");
+      setNewsletter({ firstName: "", lastName: "", email: "" });
+    } else {
+      Swal.fire("Error", data.error || "Subscription failed", "error");
+    }
+  } catch (err) {
+    Swal.fire("Error", "Network error. Please try again.", "error");
+  } finally {
+    setSubmitting(false);
+  }
+};
+
     
       useEffect(() => {
         const fetchPosts = async () => {
@@ -112,7 +167,7 @@ export default function HomePage() {
           <h2>MIKE-CONNECT Programs</h2>
           <p>Mike-Connect specialised on six main areas of life</p>
         </JackInTheBox>
-        <Slide direction="up" duration={3000}>
+        <Slide direction="left" duration={3000}>
           <ProgramsGrid>
             {[
               "INSPIRATION AND MOTIVATION",
@@ -278,12 +333,30 @@ textDecoration:"underline"
           <h2>Sign up For Our Newsletter</h2>
         </Slide>
         <Fade duration={3000}>
-          <NewsletterForm>
-            <input placeholder="First Name*" />
-            <input placeholder="Last Name*" />
-            <input placeholder="Email*" />
-            <button>Send</button>
-          </NewsletterForm>
+      <NewsletterForm>
+  <input
+    name="firstName"
+    placeholder="First Name*"
+    value={newsletter.firstName}
+    onChange={handleNewsletterChange}
+  />
+  <input
+    name="lastName"
+    placeholder="Last Name*"
+    value={newsletter.lastName}
+    onChange={handleNewsletterChange}
+  />
+  <input
+    name="email"
+    placeholder="Email*"
+    value={newsletter.email}
+    onChange={handleNewsletterChange}
+  />
+  <button type="button" onClick={handleNewsletterSubmit} disabled={submitting}>
+    {submitting ? "Submitting..." : "Send"}
+  </button>
+</NewsletterForm>
+
         </Fade>
         <Zoom duration={3000}>
           <p>READ. WATCH. LISTEN & LEARN.</p>
@@ -326,6 +399,11 @@ const HeroContent = styled.div`
   h1 {
     font-size: 2rem;
     margin-bottom: 20px;
+
+    @media(max-width:768px){
+    text-align:center;
+    }
+    
   }
 
   p {
@@ -337,6 +415,11 @@ const HeroContent = styled.div`
 const HeroButtons = styled.div`
   display: flex;
   gap: 15px;
+
+  @media(max-width:768px){
+   justify-content:center; 
+  }
+ 
 
   button {
     padding: 12px 28px;
@@ -498,6 +581,10 @@ const NewsletterForm = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   margin-bottom: 15px;
+
+  @media(max-width:768px){
+  flex-direction:column;
+  }
 
   input {
     padding: 10px 14px;

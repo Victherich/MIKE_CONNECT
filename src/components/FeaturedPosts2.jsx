@@ -152,6 +152,13 @@ const SmallCards = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+    @media(max-width:768px){
+  flex-direction:row;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:center;
+  }
 `;
 
 const SmallCard = styled.div`
@@ -163,6 +170,7 @@ const SmallCard = styled.div`
   box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: 0.3s;
+ 
 
   &:hover {
     transform: translateY(-5px);
@@ -170,6 +178,7 @@ const SmallCard = styled.div`
 
   @media (max-width: 768px) {
     flex-direction: column;
+     width:300px;
   }
 `;
 

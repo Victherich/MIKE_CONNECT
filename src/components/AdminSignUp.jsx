@@ -20,6 +20,10 @@ const Page = styled.div`
   padding: 2rem;
   // background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});
   background:rgba(0,0,255,0.1);
+
+  @media(max-width:768px){
+  padding:0px;
+  }
 `;
 
 const Card = styled.div`

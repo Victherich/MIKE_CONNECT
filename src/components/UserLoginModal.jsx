@@ -277,7 +277,7 @@ const UserLoginModal = ({ isOpen, onClose }) => {
       // Auto-login after signup
       if (mode === "signup") {
         const loginRes = await axios.post(
-          "https://www.mikeconnect.com/mc_api/user_login.php",
+          "https://www.mikeconnect.com/mc_api/user1_login.php",
           { email: form.email, password: form.password }
         );
 

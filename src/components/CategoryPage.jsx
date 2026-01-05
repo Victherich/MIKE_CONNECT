@@ -188,6 +188,11 @@ const BlogsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 28px;
+
+@media(max-width:768px){
+ grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
 `;
 
 

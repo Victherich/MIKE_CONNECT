@@ -185,7 +185,11 @@ const Title = styled.h1`
   margin-bottom: 12px;
 
   @media (max-width: 768px) {
-    font-size: 2rem;
+    font-size: 1.5rem;
+  }
+
+   @media (max-width: 360px) {
+    font-size: 1rem;
   }
 `;
 
@@ -203,7 +207,7 @@ const ContentWrapper = styled.div`
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
 
   @media (max-width: 768px) {
-    margin-top: -40px;
+ 
     padding: 24px;
   }
 `;

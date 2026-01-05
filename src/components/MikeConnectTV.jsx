@@ -183,6 +183,7 @@ const Section = styled.section`
   display: flex;
   flex-direction: column;
   gap: 50px;
+  padding:20px;
 `;
 
 const VideoCard = styled.div`
@@ -206,6 +207,15 @@ const VideoContent = styled.div`
 
   h2 { font-size: 1.7rem; margin-bottom: 12px; color: #410b77ff; }
   p { margin-bottom: 20px; font-size: 1rem; line-height: 1.5; }
+
+  @media(max-width:428px){
+  h2{
+  font-size:1.2rem;
+  }
+  p{
+  font-size:0.8rem;
+  }
+  }
 `;
 
 const VideoButtons = styled.div`
