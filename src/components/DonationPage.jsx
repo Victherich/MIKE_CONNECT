@@ -243,57 +243,100 @@
 // `;
 
 
+
+
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Slide } from "react-awesome-reveal";
-import d1 from '../Images/d1.png';
+import d1 from "../Images/d1.png";
 
 export default function DonationPage() {
   const [amount, setAmount] = useState("");
   const [note, setNote] = useState("");
-  const [status, setStatus] = useState(null); // null | "error" | "success"
+  const [status, setStatus] = useState(null);
   const [message, setMessage] = useState("");
+  const [name, setName] = useState("");
+const [email, setEmail] = useState("");
 
-  const parseAmount = (val) => Number(String(val).replace(/[, ]+/g, ""));
 
-  const handlePaystackPayment = () => {
-    const num = parseAmount(amount);
-    if (!num || isNaN(num) || num <= 0) {
+
+
+  const parseAmount = (val) =>
+    Number(String(val).replace(/[, ]+/g, ""));
+
+const payWithPaystack = (donationAmount) => {
+  const handler = window.PaystackPop.setup({
+    key: "pk_test_60e1f53bba7c80b60029bf611a26a66a9a22d4e4",
+    email: email,
+    amount: donationAmount * 100,
+    currency: "NGN",
+
+    // ✅ CARD ONLY
+    channels: ["card"],
+
+    metadata: {
+      custom_fields: [
+        {
+          display_name: "Donor Name",
+          variable_name: "donor_name",
+          value: name,
+        },
+        {
+          display_name: "Donation Note",
+          variable_name: "donation_note",
+          value: note || "No note",
+        },
+      ],
+    },
+
+    callback: function (response) {
+      setStatus("success");
+      setMessage(
+        `Thank you ${name}! Your donation of ₦${donationAmount.toLocaleString()} was successful.`
+      );
+      setAmount("");
+      setNote("");
+      setName("");
+      setEmail("");
+    },
+
+    onClose: function () {
       setStatus("error");
-      setMessage("Please enter a valid donation amount (e.g. 100).");
-      return;
-    }
+      setMessage("Payment cancelled. Please try again.");
+    },
+  });
 
-    const handler = window.PaystackPop.setup({
-      key: "YOUR_PAYSTACK_PUBLIC_KEY", // <-- replace with your public key
-      email: "donor@example.com",       // in real use, get from user login or form
-      amount: num * 100,                // Paystack uses kobo
-      currency: "NGN",
-      ref: `DONATION-${Math.floor(Math.random() * 1000000000)}`, // unique ref
-      metadata: {
-        custom_fields: [
-          {
-            display_name: "Note",
-            variable_name: "note",
-            value: note || "No note provided"
-          }
-        ]
-      },
-      callback: function (response) {
-        // Payment successful
-        setStatus("success");
-        setMessage(`Payment successful! Reference: ${response.reference}`);
-        setAmount("");
-        setNote("");
-      },
-      onClose: function () {
-        setStatus("error");
-        setMessage("Payment window closed. Donation not completed.");
-      }
-    });
+  handler.openIframe();
+};
 
-    handler.openIframe();
-  };
+
+
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  const num = parseAmount(amount);
+
+  if (!name.trim()) {
+    setStatus("error");
+    setMessage("Please enter your name.");
+    return;
+  }
+
+  if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+    setStatus("error");
+    setMessage("Please enter a valid email address.");
+    return;
+  }
+
+  if (!num || isNaN(num) || num <= 0) {
+    setStatus("error");
+    setMessage("Please enter a valid donation amount.");
+    return;
+  }
+
+  payWithPaystack(num);
+};
+
 
   const Animated = ({ children }) => (
     <Slide direction="up" duration={3000} triggerOnce>
@@ -315,65 +358,73 @@ export default function DonationPage() {
       </Hero>
 
       <FormSection>
-        <FormCard noValidate>
-          <Animated>
-            <Label htmlFor="amount">₦ Amount</Label>
-          </Animated>
+        <FormCard onSubmit={handleSubmit}>
+          {/* <Animated> */}
+           
+          {/* </Animated> */}
+<Label>Full Name</Label>
+<AmountInput
+  type="text"
+  placeholder="John Doe"
+  value={name}
+  onChange={(e) => setName(e.target.value)}
+/>
 
-          <Animated>
+<Label>Email Address</Label>
+<AmountInput
+  type="email"
+  placeholder="john@example.com"
+  value={email}
+  onChange={(e) => setEmail(e.target.value)}
+/>
+ <Label>₦ Amount</Label>
+          {/* <Animated> */}
             <AmountRow>
               {/* <Currency>₦</Currency> */}
               <AmountInput
-                id="amount"
-                name="amount"
-                inputMode="decimal"
-                placeholder="Ex.100"
+                placeholder="Ex. 100"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
               />
             </AmountRow>
-          </Animated>
+          {/* </Animated> */}
 
-          <Animated>
-            <Label htmlFor="note">Note (optional)</Label>
-          </Animated>
+          {/* <Animated> */}
+            <Label>Note (optional)</Label>
+          {/* </Animated> */}
 
-          <Animated>
+          {/* <Animated> */}
             <NoteInput
-              id="note"
-              name="note"
               rows={3}
               placeholder="Add a short note"
               value={note}
               onChange={(e) => setNote(e.target.value)}
             />
-          </Animated>
+          {/* </Animated> */}
 
-          <Animated>
+          {/* <Animated> */}
             <ButtonRow>
-              <SubmitButton type="button" onClick={handlePaystackPayment}>
-                Donate Now
+              <SubmitButton type="submit">
+                Donate with Paystack
               </SubmitButton>
             </ButtonRow>
-          </Animated>
+          {/* </Animated>/ */}
 
           {status && (
             <Animated>
-              <Alert role={status === "error" ? "alert" : "status"} $variant={status}>
-                {message}
-              </Alert>
+              <Alert $variant={status}>{message}</Alert>
             </Animated>
           )}
         </FormCard>
       </FormSection>
-
-      {/* Paystack script */}
-      <script src="https://js.paystack.co/v1/inline.js"></script>
     </PageWrapper>
   );
 }
 
+
+
 /* ================= STYLES ================= */
+
 const PageWrapper = styled.div`
   font-family: "Poppins", sans-serif;
   color: #222;
@@ -393,6 +444,7 @@ const Hero = styled.section`
 const HeroInner = styled.div`
   max-width: 900px;
   margin: 0 auto;
+
   h1 {
     font-size: 3rem;
     margin: 0 0 12px;
@@ -412,7 +464,7 @@ const FormSection = styled.section`
   padding: 0 20px;
 `;
 
-const FormCard = styled.div`
+const FormCard = styled.form`
   background: #fff;
   border-radius: 12px;
   padding: 28px;
@@ -454,6 +506,7 @@ const AmountInput = styled.input`
   border-radius: 8px;
   border: 1px solid #e6e6e6;
   outline: none;
+
   &:focus {
     border-color: #410b77ff;
     box-shadow: 0 0 0 4px rgba(65,11,119,0.06);
@@ -467,6 +520,7 @@ const NoteInput = styled.textarea`
   border: 1px solid #e6e6e6;
   resize: vertical;
   min-height: 72px;
+
   &:focus {
     border-color: #410b77ff;
     box-shadow: 0 0 0 4px rgba(65,11,119,0.06);
@@ -488,7 +542,11 @@ const SubmitButton = styled.button`
   font-weight: 700;
   cursor: pointer;
   transition: transform .12s ease, box-shadow .12s ease;
-  &:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(255,159,28,0.18); }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(255,159,28,0.18);
+  }
   &:active { transform: translateY(0); }
 `;
 
@@ -503,3 +561,4 @@ const Alert = styled.div`
       ? `background: #ffe9e9; color: #b00020; border: 1px solid rgba(176,0,32,0.08);`
       : `background: #e9fbe9; color: #167f3f; border: 1px solid rgba(22,127,63,0.08);`}
 `;
+
