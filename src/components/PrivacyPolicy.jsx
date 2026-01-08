@@ -172,7 +172,7 @@ const Title = styled.h1`
   font-size: 42px;
   font-weight: 800;
   margin-bottom: 15px;
-  background: linear-gradient(90deg, #ff6b81, #ffb347);
+  background: linear-gradient(90deg, green, green);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
@@ -223,7 +223,7 @@ const SectionHeading = styled.h2`
     bottom: -4px;
     width: 40px;
     height: 3px;
-    background: #ffb347;
+    background: green;
     border-radius: 2px;
   }
 `;
