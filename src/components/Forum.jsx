@@ -34,7 +34,7 @@ const DashboardContainer = styled.div`
 `;
 
 const Sidebar = styled.div`
-  background: ${colors.sidebarBg};
+  background: #f2f2f2;
   color: ${colors.textLight};
   width: ${({ isOpen }) => (isOpen ? '250px' : '0')};
   transition: width 0.3s ease;
@@ -44,6 +44,7 @@ const Sidebar = styled.div`
   position: fixed;
   z-index: 100;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+  border-top:3px solid green;
 
   @media (min-width: 768px) {
     width: 250px;
@@ -56,7 +57,7 @@ const SidebarHeader = styled.div`
   font-size: 1.4rem;
   font-weight: 700;
   text-align: center;
-  color: ${colors.primary};
+  color:green;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 `;
 

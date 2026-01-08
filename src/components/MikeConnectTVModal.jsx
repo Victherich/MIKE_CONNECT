@@ -42,7 +42,7 @@ const CloseBtn = styled.button`
 const Title = styled.h3`
   text-align: center;
   margin-bottom: 25px;
-  color: #4f46e5;
+  color: green;
 `;
 
 const Label = styled.label`

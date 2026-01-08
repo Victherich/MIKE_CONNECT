@@ -10,6 +10,7 @@ import { Context } from "./Context";
 import axios from "axios";
 import FeaturedPosts from "./FeaturedPosts";
 import FeaturedPosts2 from "./FeaturedPosts2";
+import HeroSection from "./HeroSection";
 
 /* -------------------- CONFIG -------------------- */
 const CATEGORY_ID = 0; // 🔥 change to any category id you want
@@ -105,10 +106,12 @@ const getCategoryNames = (categoryString) => {
   }, []);
 
   return (
-    <PageContainer>
+    <>
+    <HeroSection/>
+        <PageContainer>
 
       {/* TRENDING CAROUSEL */}
-      <SectionTitle>🔥 Trending Articles</SectionTitle>
+      <SectionTitle style={{color:"green"}}>🔥 Trending Articles</SectionTitle>
       <CarouselContainer>
         <CarouselWrapper>
           {trendingArticles.map((p, i) => (
@@ -123,7 +126,7 @@ const getCategoryNames = (categoryString) => {
       <EntertainmentPosts />
 
       {/* EDITORIALS GRID */}
-      <SectionTitle>📝 Digital Skills / Tech</SectionTitle>
+      <SectionTitle style={{color:"green"}}>📝 Digital Skills / Tech</SectionTitle>
       <EditorialsGrid>
         {articles2.slice(0,8).map((a, i) => (
           <EditorialCard key={i} onClick={()=>navigate(`/post/${a.id}`)}>
@@ -133,7 +136,7 @@ const getCategoryNames = (categoryString) => {
   {getCategoryNames(a.category)}
 </EditorialCategory>
 
-              <EditorialTitle>{a.title}</EditorialTitle>
+              <EditorialTitle style={{color:"green"}}>{a.title}</EditorialTitle>
               <EditorialMeta>
                 {new Date(a.created_at).toDateString()} • admin
               </EditorialMeta>
@@ -146,7 +149,7 @@ const getCategoryNames = (categoryString) => {
       </EditorialsGrid>
 
       {/* CATEGORIES SECTION */}
-      <SectionTitle2>📌 Categories Spotlight</SectionTitle2>
+      <SectionTitle2 style={{color:"green"}}>📌 Categories Spotlight</SectionTitle2>
       <CategoryGrid>
         {categories.map((c, i) => (
           <CategoryCard key={i}>
@@ -162,6 +165,8 @@ const getCategoryNames = (categoryString) => {
       <RelationshipPosts />
 
     </PageContainer>
+    </>
+
   );
 }
 
@@ -183,18 +188,18 @@ const SectionTitle = styled.h2`
   font-size: 26px;
   font-weight: 700;
   margin: 40px 0 20px;
-  background: linear-gradient(90deg, #ff4d4d, #ff9900, #00ccff, #9933ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  // background: linear-gradient(90deg, #ff4d4d, #ff9900, #00ccff, #9933ff);
+  // -webkit-background-clip: text;
+  // -webkit-text-fill-color: transparent;
 `;
 
 const SectionTitle2 = styled.h2`
   font-size: 26px;
   font-weight: 700;
   margin: 40px 0 20px;
-  background: linear-gradient(90deg, #ff4d4d, #ff9900, #00ccff, #9933ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  // background: linear-gradient(90deg, #ff4d4d, #ff9900, #00ccff, #9933ff);
+  // -webkit-background-clip: text;
+  // -webkit-text-fill-color: transparent;
 
 @media(max-width:768px){
 display:none;
@@ -211,7 +216,7 @@ const CarouselContainer = styled.div`
   overflow: hidden;
   white-space: nowrap;
   border-radius: 10px;
-  background: #111;
+  background: rgba(0,0,0,0.7);
   padding: 20px 0;
   margin-bottom: 40px;
 `;

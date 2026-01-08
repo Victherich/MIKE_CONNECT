@@ -494,7 +494,7 @@ const Header = styled.div`
   }
 
   h1 {
-    color: #410b77ff;
+    color: green;
     font-size:1.5rem;
   }
 `;
@@ -519,7 +519,7 @@ const ScrollableTable = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #410b77ff;
+    background: green;
     border-radius: 10px;
   }
 `;
@@ -556,7 +556,7 @@ const Table = styled.table`
   }
 
   th {
-    background: #410b77ff;
+    background: green;
     color: white;
   }
 

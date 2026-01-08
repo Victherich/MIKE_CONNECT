@@ -28,6 +28,7 @@ const colors = {
 const Page = styled.div`
   min-height: 100vh;
   background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});
+  // background:rgba(0,255,0, 0.2);
   padding: 2rem;
 `;
 

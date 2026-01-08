@@ -46,7 +46,7 @@ export default function FeaturedPosts2() {
 
   return (
     <Container>
-      <SectionTitle>All Stories</SectionTitle>
+      <SectionTitle style={{color:"green"}}>All Stories</SectionTitle>
       <Grid>
 
          {/* Small Cards */}
@@ -95,9 +95,9 @@ const SectionTitle = styled.h2`
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 25px;
-  background: linear-gradient(90deg, #ff6b81, #ffb347, #ff6b6b);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  // background: linear-gradient(90deg, #ff6b81, #ffb347, #ff6b6b);
+  // -webkit-background-clip: text;
+  // -webkit-text-fill-color: transparent;
 `;
 
 const Grid = styled.div`

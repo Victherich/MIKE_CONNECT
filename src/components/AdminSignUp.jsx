@@ -38,7 +38,7 @@ const Card = styled.div`
 
 const Title = styled.h2`
   text-align: center;
-  color: ${colors.primary};
+  color: green;
   margin-bottom: 0.3rem;
 `;
 

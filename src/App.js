@@ -24,6 +24,7 @@ import Forum from './components/Forum';
 import SearchPage from './components/SearchPage';
 import ScrollToTopButton from './components/ScrollToTopButton';
 import PrivacyPolicy from './components/PrivacyPolicy';
+import Supernatural from './components/Supernatural';
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
     <Route path='/forum' element ={<Forum/>}/>
     <Route path="/search" element={<SearchPage />} />
     <Route path='/privacypolicy' element={<PrivacyPolicy/>}/>
+    {/* <Route path='/supernatural' element={<Supernatural/>}/> */}
     
 
 

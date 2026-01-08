@@ -205,7 +205,7 @@ const VideoContent = styled.div`
   flex: 2 1 500px;
   padding: 30px;
 
-  h2 { font-size: 1.7rem; margin-bottom: 12px; color: #410b77ff; }
+  h2 { font-size: 1.7rem; margin-bottom: 12px; color:green; }
   p { margin-bottom: 20px; font-size: 1rem; line-height: 1.5; }
 
   @media(max-width:428px){

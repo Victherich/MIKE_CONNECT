@@ -253,7 +253,7 @@ const Trigger = styled.button`
   }
 
   &:focus {
-    outline: 3px solid rgba(99, 102, 241, 0.25);
+    outline: 3px solid green;
   }
 `;
 
@@ -261,14 +261,14 @@ const Label = styled.span`
   flex: 1;
   font-weight: 600;
   font-size: 0.8rem;
-  color: #1e3a8a;
+  color: green;
   text-align: left;
 `;
 
 const Caret = styled(FaChevronDown)`
   transition: transform 0.3s ease;
   transform: ${({ open }) => (open ? "rotate(180deg)" : "rotate(0deg)")};
-  color: #1e3a8a;
+  color: green;
 `;
 
 const Menu = styled.ul`
@@ -295,14 +295,14 @@ const Item = styled.li`
   cursor: pointer;
   font-size: 0.95rem;
   font-weight: 500;
-  color: #1e3a8a; /* default text color */
+  color: green; /* default text color */
   transition: background 0.2s ease, transform 0.2s ease;
 
   &:hover,
   &[data-focused="true"] {
-    background: rgba(59, 130, 246, 0.1);
+    background: rgba(0, 0, 0, 0.1);
     transform: translateX(4px);
-    color: #1e40af; /* hover/focus color */
+    color: green; /* hover/focus color */
   }
 
   span {

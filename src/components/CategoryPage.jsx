@@ -153,13 +153,13 @@ const PageButton = styled.button`
   padding: 8px 12px;
   border-radius: 8px;
   border: none;
-  background: ${({ active }) => (active ? "#4f46e5" : "#e5e7eb")};
+  background: ${({ active }) => (active ? "green" : "#e5e7eb")};
   color: ${({ active }) => (active ? "#fff" : "#333")};
   cursor: pointer;
   font-weight: 500;
 
   &:hover {
-    background: #4f46e5;
+    background: green;
     color: #fff;
   }
 `;
@@ -177,7 +177,7 @@ const PageWrapper = styled.div`
 const CategoryTitle = styled.h1`
   font-size: 2rem;
   margin-bottom: 30px;
-  color: #4f46e5;
+  color: green;
   text-align: center;
 `;
 

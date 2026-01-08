@@ -113,7 +113,7 @@ const PageWrapper = styled.div`
 const SearchTitle = styled.h1`
   font-size: 2rem;
   margin-bottom: 30px;
-  color: #4f46e5;
+  color: green;
   text-align: center;
 `;
 

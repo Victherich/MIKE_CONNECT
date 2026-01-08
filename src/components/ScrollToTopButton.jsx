@@ -43,7 +43,7 @@ const Button = styled.button`
   height: 48px;
   border-radius: 50%;
   border: none;
-  background: #410b77ff;
+  background: green;
   color: white;
   font-size: 22px;
   font-weight: bold;

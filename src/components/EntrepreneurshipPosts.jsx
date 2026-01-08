@@ -222,7 +222,7 @@ export default function EntrepreneurshipPosts() {
 
 return (
   <Container>
-    <SectionTitle>💼 Entrepreneurship & Business</SectionTitle>
+    <SectionTitle style={{color:"green"}}>💼 Entrepreneurship & Business</SectionTitle>
 
     <Grid>
       {posts.map((post, i) => (
@@ -345,9 +345,9 @@ const SectionTitle = styled.h2`
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 25px;
-  background: linear-gradient(90deg, #00ccff, #ff9900, #33ff77, #ff33cc);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  // background: linear-gradient(90deg, #00ccff, #ff9900, #33ff77, #ff33cc);
+  // -webkit-background-clip: text;
+  // -webkit-text-fill-color: transparent;
 `;
 
 const Grid = styled.div`

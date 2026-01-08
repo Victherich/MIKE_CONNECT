@@ -331,7 +331,7 @@ const Container = styled.div`
 
 const PageTitle = styled.h2`
   text-align: center;
-  color: #4f46e5;
+  color: green;
   margin-bottom: 30px;
   font-size: 2.2rem;
 
@@ -416,7 +416,7 @@ const VideoContent = styled.div`
   h2 {
     font-size: 1.7rem;
     margin-bottom: 12px;
-    color: #410b77ff;
+    color: green;
   }
 
   p {

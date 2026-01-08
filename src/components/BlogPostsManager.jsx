@@ -208,7 +208,7 @@ const Container = styled.div`
 
 const PageTitle = styled.h2`
   text-align: center;
-  color: #4f46e5;
+  color: green;
   margin-bottom: 30px;
   font-size: 2.2rem;
 `;

@@ -406,6 +406,6 @@ const ValueItem = styled.div`
 
   h3 {
     margin-bottom: 12px;
-    color: #410b77ff;
+    color: green;
   }
 `;

@@ -170,7 +170,7 @@ const FormTitle = styled.h2`
   text-align: center;
   font-size: 2rem;
   margin-bottom: 30px;
-  color: #410b77ff;
+  color: green;
 `;
 
 const FormCard = styled.form`

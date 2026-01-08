@@ -147,8 +147,9 @@ const CategoryCard = styled.div`
   }
 
   h2 {
-    color: #410b77;
+    color: green;
     margin-bottom: 8px;
+    font-size:1rem;
   }
 
   p {

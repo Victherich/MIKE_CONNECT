@@ -240,7 +240,7 @@ export default function RelationshipPosts() {
 
   return (
     <Container>
-      <SectionTitle>💖 Relationship</SectionTitle>
+      <SectionTitle style={{color:'green'}}>💖 Relationship</SectionTitle>
       <Grid>
         {/* Feature Card */}
         <Slide direction="up" duration={2000} triggerOnce>
@@ -286,9 +286,9 @@ const SectionTitle = styled.h2`
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 25px;
-  background: linear-gradient(90deg, #ff6b81, #ffb347, #ff6b6b);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  // background: linear-gradient(90deg, #ff6b81, #ffb347, #ff6b6b);
+  // -webkit-background-clip: text;
+  // -webkit-text-fill-color: transparent;
 `;
 
 const Grid = styled.div`

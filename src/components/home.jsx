@@ -150,7 +150,7 @@ const handleNewsletterSubmit = async () => {
       {/* 🟢 TOP SPEAKER SECTION */}
   <TopSpeakerSection>
   <Slide direction="up" duration={3000}>
-    <h2>Top Awarded Speaker</h2>
+    <h2 style={{color:"green"}}>Top Awarded Speaker</h2>
   </Slide>
   <Fade duration={3000}>
     <p>Have a totally different life.</p>
@@ -164,7 +164,7 @@ const handleNewsletterSubmit = async () => {
       {/* 🟢 PROGRAMS */}
       <Section style={{ backgroundColor: "rgba(0,0,255,0.1)" }}>
         <JackInTheBox duration={3000}>
-          <h2>MIKE-CONNECT Programs</h2>
+          <h2 style={{color:"green"}}>MIKE-CONNECT Programs</h2>
           <p>Mike-Connect specialised on six main areas of life</p>
         </JackInTheBox>
         <Slide direction="left" duration={3000}>
@@ -186,21 +186,21 @@ const handleNewsletterSubmit = async () => {
           </ProgramsGrid>
         </Slide>
         <Fade duration={3000}>
-          <ViewAllButton as={Link} to="/resources">VIEW ALL PROGRAMS</ViewAllButton>
+          <ViewAllButton as={Link} to="/resources" style={{color:"green"}}>VIEW ALL PROGRAMS</ViewAllButton>
         </Fade>
       </Section>
 
       {/* 🟢 BLOG */}
       <Section style={{ maxWidth: "1100px" }}>
         <Slide direction="left" duration={3000}>
-          <h2>Mike-Connect Blog</h2>
+          <h2 style={{color:"green"}}>Mike-Connect Blog</h2>
         </Slide>
         <Fade cascade duration={3000}>
           <BlogGrid>
             {posts.slice(0,3).map((blog, i) => (
               <BlogCard key={i} as={Link} to={`/post/${blog.id}`}>
                 <img src={blog.image} alt="" />
-                <h3>{blog.title}</h3>
+                <p>{blog.title}</p>
                 <span>{blog.date}</span>
               </BlogCard>
             ))}
@@ -218,7 +218,7 @@ const handleNewsletterSubmit = async () => {
       {/* 🟢 COMMUNITY */}
       <SectionCenter style={{ background: "rgba(0,0,255,0.1)" }}>
         <Zoom duration={3000}>
-          <h2>JOIN OUR WEB COMMUNITY</h2>
+          <h2 style={{color:"green"}}>JOIN OUR WEB COMMUNITY</h2>
         </Zoom>
         <Fade delay={200} duration={3000}>
           <p>Get connected with friends and family members...</p>
@@ -234,7 +234,7 @@ const handleNewsletterSubmit = async () => {
       {/* 🟢 TESTIMONIALS */}
       <Section style={{ background: "white", borderRadius: "20px", maxWidth: "1100px" }}>
         <Slide direction="up" duration={3000}>
-          <h2>What They Say</h2>
+          <h2 style={{color:"green"}}>What They Say</h2>
         </Slide>
         <Fade cascade damping={0.15} duration={3000}>
           <TestimonialsGrid>
@@ -275,14 +275,15 @@ const handleNewsletterSubmit = async () => {
       <Section style={{
         background: `linear-gradient(
           135deg,
-          #ffe4e4ff,
-          #ff99007a,
-          #00ccff,
-          #9933ff
+          
+           #ffffff,
+        
+          
+          lightgreen
         )`
       }}>
         <Rotate duration={3000}>
-          <h2>LIFE-CHANGING EXPERIENCES</h2>
+          <h2 style={{color:"green"}}>LIFE-CHANGING EXPERIENCES</h2>
         </Rotate>
         <Fade duration={3000}>
           <p>Upcoming events — SOON TO BE ANNOUNCED.</p>
@@ -330,7 +331,7 @@ textDecoration:"underline"
       {/* 🟢 NEWSLETTER */}
       <SectionCenter>
         <Slide direction="up" duration={3000}>
-          <h2>Sign up For Our Newsletter</h2>
+          <h2 style={{color:"green"}}>Sign up For Our Newsletter</h2>
         </Slide>
         <Fade duration={3000}>
       <NewsletterForm>
@@ -539,9 +540,10 @@ const BlogCard = styled.div`
     margin-bottom: 12px;
   }
 
-  h3 {
-    font-size: 1.1rem;
+  p {
+    font-size: 1rem;
     margin-bottom: 6px;
+    
   }
 
   span {
@@ -603,3 +605,7 @@ const NewsletterForm = styled.div`
 `;
 
 
+// #ffe4e4ff,
+          // #ff99007a,
+          // #00ccff,
+          // #9933ff,

@@ -129,7 +129,8 @@ const ResourceCard = styled.div`
   }
 
   h2 {
-    color: #410b77;
+    color: green;
+    font-size:1rem;
     margin-bottom: 12px;
   }
 

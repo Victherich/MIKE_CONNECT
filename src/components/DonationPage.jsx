@@ -349,7 +349,7 @@ const handleSubmit = (e) => {
       <Hero>
         <HeroInner>
           <Animated>
-            <h1>Donation</h1>
+            <h1 >Donation</h1>
           </Animated>
           <Animated>
             <Lead>Support our work — every contribution counts.</Lead>
@@ -477,7 +477,7 @@ const FormCard = styled.form`
 const Label = styled.label`
   font-size: 0.95rem;
   font-weight: 600;
-  color: #000080;
+  color: green;
 `;
 
 const AmountRow = styled.div`

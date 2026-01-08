@@ -586,7 +586,7 @@ const Header = styled.div`
   margin-bottom: 20px;
 
   h1 {
-    color: #410b77ff;
+    color: green;
     font-size: 1.5rem;
   }
 
@@ -635,7 +635,7 @@ const Table = styled.table`
   }
 
   th {
-    background: #410b77ff;
+    background: green;
     color: white;
   }
 

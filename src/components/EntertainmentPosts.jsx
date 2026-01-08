@@ -259,7 +259,7 @@ useEffect(()=>{
 
   return (
     <Container>
-      <SectionTitle>🎬 Entertainment</SectionTitle>
+      <SectionTitle style={{color:"green"}}>🎬 Entertainment</SectionTitle>
       <Grid>
         {/* Feature Card */}
         <Zoom duration={3000} triggerOnce>
@@ -304,9 +304,10 @@ const SectionTitle = styled.h2`
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 25px;
-  background: linear-gradient(90deg, #ff4d4d, #ff9900, #00ccff, #9933ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  
+  // background: linear-gradient(90deg, #ff4d4d, #ff9900, #00ccff, #9933ff);
+  // -webkit-background-clip: text;
+  // -webkit-text-fill-color: transparent;
 `;
 
 const Grid = styled.div`

@@ -368,7 +368,7 @@ const Title = styled.h3`
   margin-bottom: 25px;
   font-size: 1.6rem;
   font-weight: 700;
-  color: #4f46e5;
+  color: green;
 `;
 
 const Label = styled.label`
