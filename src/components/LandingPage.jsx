@@ -216,13 +216,13 @@ const CarouselContainer = styled.div`
   overflow: hidden;
   white-space: nowrap;
   border-radius: 10px;
-  background: rgba(0,0,0,0.7);
+  background: green;
   padding: 20px 0;
   margin-bottom: 40px;
 `;
 const CarouselWrapper = styled.div`
   display: inline-block;
-  animation: ${scroll} 20s linear infinite;
+  animation: ${scroll} 40s linear infinite;
 `;
 const CarouselItem = styled.span`
   display: inline-block;
@@ -328,7 +328,7 @@ const RouterButton = styled(Link)`
   display: inline-block;
   margin-top: 10px;
   padding: 10px 18px;
-  background: rgba(0,0,0,0.4);
+  background: rgba(65, 163, 65, 0.9);
   border-radius: 6px;
   color: white;
   font-weight: 600;

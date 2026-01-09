@@ -157,7 +157,7 @@ import axios from "axios";
 import { Context } from "./Context";
 
 export default function TrendingPosts() {
-  const categoryId = 11; // Use 0 or leave undefined if you want all categories
+  const categoryId = 18; // Use 0 or leave undefined if you want all categories
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -212,7 +212,10 @@ export default function TrendingPosts() {
 
   if (loading) return <Status>Loading posts...</Status>;
   if (error) return <Status>{error}</Status>;
-  if (posts.length === 0) return <Status>No posts available.</Status>;
+  if (posts.length === 0) return <Container>
+  <SectionTitle style={{color:"green"}}>🔥 Trending Posts</SectionTitle>
+  <Status>No posts available.</Status>
+  </Container>;
 
   return (
     <Container>

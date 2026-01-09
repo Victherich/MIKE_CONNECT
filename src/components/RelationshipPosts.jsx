@@ -236,7 +236,10 @@ export default function RelationshipPosts() {
 
   if (loading) return <Status>Loading posts...</Status>;
   if (error) return <Status>{error}</Status>;
-  if (posts.length === 0) return <Status>No posts available.</Status>;
+  if (posts.length === 0) return <Container>
+    <SectionTitle style={{color:'green'}}>💖 Relationship</SectionTitle>
+    <Status>No posts available...</Status>
+    </Container>;
 
   return (
     <Container>
