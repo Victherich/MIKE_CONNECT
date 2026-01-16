@@ -70,14 +70,15 @@ const SidebarMenu = styled.ul`
 const SidebarMenuItem = styled.li`
   padding: 14px 20px;
   cursor: pointer;
-  color: ${({ active }) => (active ? colors.primary : colors.textLight)};
+  color: ${({ active }) => (active ? 'green' : 'green')};
   background: ${({ active }) => (active ? colors.hover : 'transparent')};
   font-weight: ${({ active }) => (active ? '600' : '400')};
   transition: all 0.25s ease;
+  font-weight:500;
 
   &:hover {
     background: ${colors.hover};
-    color: ${colors.primary};
+    color: green;
   }
 `;
 
@@ -92,7 +93,7 @@ const Hamburger = styled.div`
   position: fixed;
   top: 120px;
   right: 10px;
-  background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});
+  background: linear-gradient(135deg, green, green);
   color: white;
   padding: 12px;
   border-radius: 50%;

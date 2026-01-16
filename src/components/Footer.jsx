@@ -201,7 +201,9 @@ export default function Footer() {
         <FooterSection>
           <SectionTitle>Social Media</SectionTitle>
           <SocialBox>
-            <SocialItem>Facebook</SocialItem>
+            <SocialItem onClick={()=>window.open('https://www.facebook.com/share/171ty7zc2J/','_blank')}>Facebook</SocialItem>
+             <SocialItem onClick={()=>window.open('https://www.instagram.com/mikeconect?igsh=MXFxdjdlaTk2djhuZw==','_blank')}>Instagram</SocialItem>
+          
             <SocialItem onClick={()=>window.open('https://www.youtube.com/channel/UCfKMnagD3ytQAH47-p0inng','_blank')}>YouTube</SocialItem>
           </SocialBox>
         </FooterSection>

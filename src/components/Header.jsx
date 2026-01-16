@@ -731,7 +731,7 @@ const MobileCategories = styled.div`
   justify-content: center;
 
   span {
-    background: gray;
+    background: ${colors.dark};
     padding: 4px 12px;
     border-radius: 6px;
     cursor: pointer;

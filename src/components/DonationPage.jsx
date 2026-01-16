@@ -266,7 +266,8 @@ const [email, setEmail] = useState("");
 
 const payWithPaystack = (donationAmount) => {
   const handler = window.PaystackPop.setup({
-    key: "pk_test_60e1f53bba7c80b60029bf611a26a66a9a22d4e4",
+    // key: "pk_test_60e1f53bba7c80b60029bf611a26a66a9a22d4e4",
+    key: "pk_live_3626fe7772aaca28a10724ebb1f9727dfcc5d6cb",
     email: email,
     amount: donationAmount * 100,
     currency: "NGN",

@@ -198,9 +198,9 @@ const SwitchBtn = styled.button`
   font-weight: 600;
   background: ${({ active }) =>
     active
-      ? "linear-gradient(135deg, #5B6CFF, #7C4DFF)"
+      ? "linear-gradient(135deg, green, green)"
       : "#EAEAFF"};
-  color: ${({ active }) => (active ? "#fff" : "#5B6CFF")};
+  color: ${({ active }) => (active ? "#fff" : "green")};
 `;
 
 const Input = styled.input`
@@ -214,7 +214,7 @@ const Input = styled.input`
 const Button = styled.button`
   width: 100%;
   padding: 12px;
-  background: linear-gradient(135deg, #5B6CFF, #7C4DFF);
+  background: linear-gradient(135deg, green, green);
   color: white;
   border-radius: 6px;
   font-size: 16px;
