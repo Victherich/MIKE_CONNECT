@@ -25,12 +25,14 @@ import SearchPage from './components/SearchPage';
 import ScrollToTopButton from './components/ScrollToTopButton';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsConditions from './components/TermsConditions';
+import AppUpdate from './components/AppUpdate';
 
 
 function App() {
   return (
   <BrowserRouter>
   <ScrollToTop/>
+  <AppUpdate/>
   <Header/>
   <Routes>
     <Route path ='/' element={<LandingPage/>}/>
