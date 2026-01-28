@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import Comments from "./Comments";
+import DOMPurify from "dompurify";
 
 
 
@@ -91,11 +92,14 @@ export default function PostPage() {
 
 
       <ContentWrapper>
-  <Article
-    dangerouslySetInnerHTML={{
-      __html: formatContentWithLinks(post.content),
-    }}
-  />
+
+
+<Article
+  dangerouslySetInnerHTML={{
+    __html: DOMPurify.sanitize(post.content),
+  }}
+/>
+
 
   {post.links && post.links.length > 0 && (
     <LinksSection>
