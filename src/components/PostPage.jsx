@@ -23,7 +23,7 @@ function formatContentWithLinks(content) {
   );
 
   // 🧱 Break sentences into new lines
-  formatted = formatted.replace(/\. +/g, ".<br /><br />");
+  // formatted = formatted.replace(/\. +/g, ".<br /><br />");
 
   return formatted;
 }
@@ -32,41 +32,75 @@ function formatContentWithLinks(content) {
 
 
 export default function PostPage() {
-  const { id } = useParams();
-  const postId = Number(id);
+  // const { id } = useParams();
+  // const postId = Number(id);
+  const { slug } = useParams();
 
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   if (!postId) return;
+
+  //   setLoading(true);
+  //   setError(null);
+
+  //   axios
+  //     .get(
+  //       `https://www.mikeconnect.com/mc_api/get_post_by_id.php?id=${postId}&t=${Date.now()}`,
+  //       {
+  //         headers: {
+  //           "Cache-Control": "no-cache",
+  //           Pragma: "no-cache",
+  //         },
+  //       }
+  //     )
+  //     .then(res => {
+  //       if (res.data?.success) {
+  //         setPost(res.data.post);
+  //       } else {
+  //         setError(res.data?.error || "Post not found");
+  //       }
+  //     })
+  //     .catch(() => setError("Network error"))
+  //     .finally(() => setLoading(false));
+  // }, [postId]);
+
+
+
+
   useEffect(() => {
-    if (!postId) return;
+  if (!slug) return;
 
-    setLoading(true);
-    setError(null);
+  setLoading(true);
+  setError(null);
 
-    axios
-      .get(
-        `https://www.mikeconnect.com/mc_api/get_post_by_id.php?id=${postId}&t=${Date.now()}`,
-        {
-          headers: {
-            "Cache-Control": "no-cache",
-            Pragma: "no-cache",
-          },
-        }
-      )
-      .then(res => {
-        if (res.data?.success) {
-          setPost(res.data.post);
-        } else {
-          setError(res.data?.error || "Post not found");
-        }
-      })
-      .catch(() => setError("Network error"))
-      .finally(() => setLoading(false));
-  }, [postId]);
-
+  axios
+    .get(
+      `https://www.mikeconnect.com/mc_api/get_post_by_slug.php?slug=${slug}&t=${Date.now()}`,
+      {
+        headers: {
+          "Cache-Control": "no-cache",
+          Pragma: "no-cache",
+        },
+      }
+    )
+    .then((res) => {
+      if (res.data?.success) {
+        setPost(res.data.post);
+      } else {
+        setError(res.data?.error || "Post not found");
+      }
+    })
+    .catch(() => {
+      setError("Network error");
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+}, [slug]);
 
 
 
@@ -126,7 +160,7 @@ export default function PostPage() {
   </BackButton>
 </BackWrapper>
 <Comments
-postId={postId}
+postId={post?.id}
 />
     </Wrapper>
   );
@@ -157,8 +191,9 @@ const Overlay = styled.div`
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.15),
-    rgba(0, 0, 0, 0.85)
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.7),
+    rgba(0, 0, 0, 1)
   );
 `;
 
@@ -217,8 +252,8 @@ const ContentWrapper = styled.div`
 `;
 
 const Article = styled.div`
-  font-size: 1.1rem;
-  line-height: 1.9;
+  font-size: 0.9rem;
+  // line-height: 1.9;
   color: #333;
 
   a {
@@ -235,6 +270,18 @@ const Article = styled.div`
   br {
     display: block;
     margin-bottom: 12px;
+  }
+
+
+  /* ✅ Headings in green */
+  h1, h2, h3, h4, h5, h6 {
+    color: #16a34a; /* nice green */
+  }
+
+    /* ✅ Move lists slightly to the right */
+  ul, ol {
+    padding-left: 20px;
+    margin-left: 10px;
   }
 `;
 
@@ -290,6 +337,7 @@ const LinksTitle = styled.h4`
   font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 12px;
+  color:green;
 `;
 
 const LinkItem = styled.div`

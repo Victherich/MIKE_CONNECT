@@ -42,7 +42,7 @@ export default function FeaturedPosts2() {
 
   if (loading) return <Status>Loading posts...</Status>;
   if (error) return <Status>{error}</Status>;
-  if (posts.length === 0) return <Status>No posts available.</Status>;
+  if (posts.length === 0) return;
 
   return (
     <Container>
@@ -53,7 +53,7 @@ export default function FeaturedPosts2() {
         <SmallCards>
           {posts.slice(1).map((post, i) => (
             <Slide key={i} direction="up" duration={2000} delay={i * 200} triggerOnce>
-              <RouterButton to={`/post/${post.id}`}>
+              <RouterButton to={`/post/${post.slug}`}>
                 <SmallCard>
                   <SmallImage src={post.image} />
                   <SmallContent>
@@ -68,7 +68,7 @@ export default function FeaturedPosts2() {
         
         {/* Feature Card */}
         <Slide direction="up" duration={2000} triggerOnce>
-          <RouterButton to={`/post/${posts[0].id}`}>
+          <RouterButton to={`/post/${posts[0].slug}`}>
             <FeatureCard>
               <FeatureImage src={posts[0].image} />
               <FeatureContent>
@@ -121,7 +121,23 @@ const FeatureCard = styled.div`
   &:hover {
     transform: scale(1.03);
   }
+
+  /* Overlay */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 1) 0%,   /* dark at bottom */
+      rgba(0, 0, 0, 0.5) 40%,
+      rgba(0, 0, 0, 0.05) 70%,
+      rgba(0, 0, 0, 0) 100%   /* transparent at top */
+    );
+    z-index: 1;
+  }
 `;
+
 
 const FeatureImage = styled.img`
   width: 100%;
@@ -135,11 +151,12 @@ const FeatureContent = styled.div`
   bottom: 15px;
   left: 15px;
   color: white;
+  z-index: 2; /* important */
   text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.7);
 `;
 
 const FeatureTitle = styled.h3`
-  font-size: 22px;
+  font-size: 0.9rem;
   font-weight: 700;
 `;
 
@@ -186,6 +203,7 @@ const SmallImage = styled.img`
   width: 120px;
   height: 100px;
   object-fit: cover;
+  object-position:top;
   flex-shrink: 0;
 
   @media (max-width: 768px) {
@@ -202,7 +220,7 @@ const SmallContent = styled.div`
 `;
 
 const SmallTitle = styled.h4`
-  font-size: 14px;
+  font-size: 0.8rem;
   font-weight: 600;
 `;
 

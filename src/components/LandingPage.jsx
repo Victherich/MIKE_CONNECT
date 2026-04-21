@@ -11,11 +11,12 @@ import axios from "axios";
 import FeaturedPosts from "./FeaturedPosts";
 import FeaturedPosts2 from "./FeaturedPosts2";
 import HeroSection from "./HeroSection";
+import SidebarPostTicker from "./SidebarPostTicker";
 
 /* -------------------- CONFIG -------------------- */
 const CATEGORY_ID = 0; // 🔥 change to any category id you want
 const CATEGORY_ID2 = 5;
-const CATEGORY_ID3 = 11;
+const CATEGORY_ID3 = 0;
 /* -------------------- COMPONENT -------------------- */
 export default function LandingPage() {
   const { categories } = useContext(Context);
@@ -97,6 +98,7 @@ const getCategoryNames = (categoryString) => {
           // setArticles2(posts);
           // Trending = just titles
           setTrendingArticles(posts);
+          console.log(posts)
         }
       })
       .catch(() => {
@@ -108,6 +110,9 @@ const getCategoryNames = (categoryString) => {
   return (
     <>
     <HeroSection/>
+   
+    <Layout>
+    
         <PageContainer>
 
       {/* TRENDING CAROUSEL */}
@@ -126,7 +131,7 @@ const getCategoryNames = (categoryString) => {
       <EntertainmentPosts />
 
       {/* EDITORIALS GRID */}
-      <SectionTitle style={{color:"green"}}>📝 Digital Skills / Tech</SectionTitle>
+      {articles2.length>0&&<SectionTitle style={{color:"green"}}>📝 Digital Skills / Tech</SectionTitle>}
       <EditorialsGrid>
         {articles2.slice(0,8).map((a, i) => (
           <EditorialCard key={i} onClick={()=>navigate(`/post/${a.id}`)}>
@@ -165,8 +170,9 @@ const getCategoryNames = (categoryString) => {
       <RelationshipPosts />
 
     </PageContainer>
-    </>
-
+    <SidebarPostTicker/>
+    </Layout>
+ </>
   );
 }
 
@@ -178,7 +184,11 @@ const PageContainer = styled.div`
   font-family: "Poppins", sans-serif;
   background: #f9f9f9;
   color: #222;
+width:80%;
 
+ @media (max-width: 1100px) {
+    width:100%;
+  }
   @media(max-width:768px){
     padding:10px;
   }
@@ -285,7 +295,7 @@ const EditorialCard = styled.div`
 `;
 const EditorialImage = styled.img`
   width: 100%;
-  height: 140px;
+  height: 200px;
   object-fit: cover;
 `;
 const EditorialBody = styled.div`
@@ -294,7 +304,7 @@ const EditorialBody = styled.div`
 const EditorialCategory = styled.span`
   font-size: 12px;
   font-weight: 600;
-  color: #00ccff;
+  color: gray;
 `;
 const EditorialTitle = styled.h4`
   font-size: 0.9rem;
@@ -310,8 +320,8 @@ const EditorialMeta = styled.div`
 const CategoryGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content:space-between;
-  gap: 12px;
+  justify-content:center;
+  gap: 6px;
 
   @media(max-width:768px){
   display:none;
@@ -326,16 +336,21 @@ const CategoryName = styled.span``;
 /* ---------- REACT ROUTER BUTTON ---------- */
 const RouterButton = styled(Link)`
   display: inline-block;
-  margin-top: 10px;
-  padding: 10px 18px;
+
+  padding: 5px 9px;
   background: rgba(65, 163, 65, 0.9);
-  border-radius: 6px;
+  border-radius: 10px;
   color: white;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
   transition: 0.3s;
+  font-size:0.8rem;
 
   &:hover { transform: scale(1.05); }
 `;
 
+
+const Layout = styled.div`
+display:flex;
+`

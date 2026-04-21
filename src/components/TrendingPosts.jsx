@@ -212,17 +212,15 @@ export default function TrendingPosts() {
 
   if (loading) return <Status>Loading posts...</Status>;
   if (error) return <Status>{error}</Status>;
-  if (posts.length === 0) return <Container>
-  <SectionTitle style={{color:"green"}}>🔥 Trending Posts</SectionTitle>
-  <Status>No posts available.</Status>
-  </Container>;
+  if (posts.length === 0) return ;
+ 
 
   return (
     <Container>
       <SectionTitle style={{color:"green"}}>🔥 Trending Posts</SectionTitle>
       <PostsGrid>
         {posts.map((post, i) => (
-          <RouterButton key={i} to={`/post/${post.id}`}>
+          <RouterButton key={i} to={`/post/${post.slug}`}>
             <PostCard large={i % 3 === 0}>
               <PostImage src={post.image} large={i % 3 === 0} />
               <PostContent>
@@ -270,6 +268,7 @@ const PostCard = styled.div.withConfig({
   box-shadow: 0px 8px 25px rgba(0,0,0,0.1);
   transition: 0.3s;
   cursor: pointer;
+  max-width:400px;
 
   &:hover {
     transform: translateY(-5px);
@@ -284,8 +283,9 @@ const PostImage = styled.img.withConfig({
   shouldForwardProp: (prop) => prop !== "large",
 })`
   width: ${({ large }) => (large ? "100%" : "150px")};
-  height: ${({ large }) => (large ? "220px" : "100px")};
+  height: ${({ large }) => (large ? "300px" : "100px")};
   object-fit: cover;
+  object-position:top;
   flex-shrink: 0;
 `;
 
@@ -299,7 +299,7 @@ const PostContent = styled.div`
 const PostCategory = styled.span`
   font-size: 12px;
   font-weight: 700;
-  color: #ff9900;
+  color: green;
   margin-bottom: 6px;
 `;
 

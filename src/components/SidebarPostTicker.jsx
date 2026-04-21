@@ -35,7 +35,7 @@ export default function SidebarPostTicker() {
           {posts.map((post, i) => (
             <PostItem
               key={i}
-              onClick={() => navigate(`/post/${post.id}`)}
+              onClick={() => navigate(`/post/${post.slug}`)}
             >
               <Thumb src={post.image} />
               <PostInfo>
@@ -66,7 +66,8 @@ const Sidebar = styled.aside`
   background: #ffffff;
   border-radius: 18px;
   padding: 16px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+border-top:1px solid lightgreen;
 
   @media (max-width: 1100px) {
     display: none;
@@ -77,7 +78,7 @@ const Title = styled.h3`
   font-size: 1.1rem;
   font-weight: 700;
   margin-bottom: 12px;
-  color: #4f46e5;
+  color: green;
 `;
 
 const TickerContainer = styled.div`
@@ -92,7 +93,7 @@ const TickerContainer = styled.div`
 const Ticker = styled.div`
   display: flex;
   flex-direction: column;
-  animation: ${slideUp} 100s linear infinite;
+  animation: ${slideUp} 10s linear infinite;
 `;
 
 const PostItem = styled.div`
@@ -121,7 +122,7 @@ const PostInfo = styled.div`
 `;
 
 const PostTitle = styled.div`
-  font-size: 0.85rem;
+  font-size: 0.6rem;
   font-weight: 600;
   color: #222;
   line-height: 1.2;

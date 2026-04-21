@@ -99,7 +99,7 @@ export default function CategoryPage() {
               <BlogCard
   key={post.id}
   bg={post.image || "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4"}
-  onClick={()=>navigate(`/post/${post.id}`)}
+  onClick={()=>navigate(`/post/${post.slug}`)}
 >
   <Overlay />
   <CardContent>
@@ -196,27 +196,27 @@ const BlogsGrid = styled.div`
 `;
 
 
-const BlogCard = styled.div`
-  position: relative;
-  height: 220px;
-  border-radius: 18px;
-  overflow: hidden;
-  background-image: url(${props => props.bg});
-  background-size: cover;
-  background-position: center;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+// const BlogCard = styled.div`
+//   position: relative;
+//   height: 220px;
+//   border-radius: 18px;
+//   overflow: hidden;
+//   background-image: url(${props => props.bg});
+//   background-size: cover;
+//   background-position: center;
+//   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+//   cursor: pointer;
+//   transition: transform 0.4s ease, box-shadow 0.4s ease;
 
-  &:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
-  }
+//   &:hover {
+//     transform: translateY(-8px) scale(1.02);
+//     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+//   }
 
-  &:hover ${'' /* zoom image illusion */} {
-    background-size: 110%;
-  }
-`;
+//   &:hover ${'' /* zoom image illusion */} {
+//     background-size: 110%;
+//   }
+// `;
 
 const BlogImage = styled.img`
   width: 100%;
@@ -237,38 +237,38 @@ const NoBlogs = styled.p`
 `;
 
 
-const Overlay = styled.div`
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 1),
-    rgba(0, 0, 0, 0.25),
-    rgba(0, 0, 0, 0.05)
-  );
-`;
+// const Overlay = styled.div`
+//   position: absolute;
+//   inset: 0;
+//   background: linear-gradient(
+//     to top,
+//     rgba(0, 0, 0, 1),
+//     rgba(0, 0, 0, 0.25),
+//     rgba(0, 0, 0, 0.05)
+//   );
+// `;
 
 
-const CardContent = styled.div`
-  position: absolute;
-  bottom: 0;
-  padding: 10px;
-  z-index: 2;
-  color: #fff;
+// const CardContent = styled.div`
+//   position: absolute;
+//   bottom: 0;
+//   padding: 10px;
+//   z-index: 2;
+//   color: #fff;
 
-  h3 {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 5px;
-    // line-height: 1.3;
-  }
-`;
+//   h3 {
+//     font-size: 1rem;
+//     font-weight: 600;
+//     margin-bottom: 5px;
+//     // line-height: 1.3;
+//   }
+// `;
 
-const BlogMeta = styled.div`
-  font-size: 0.7rem;
-  color: #d1d5db;
-  font-style:italic;
-`;
+// const BlogMeta = styled.div`
+//   font-size: 0.7rem;
+//   color: #d1d5db;
+//   font-style:italic;
+// `;
 
 // const Layout = styled.div`
 //   display: grid;
@@ -285,3 +285,56 @@ const Layout = styled.div`
 display:flex;
 
 `
+
+
+const BlogCard = styled.div`
+  position: relative;
+  height: 220px;
+  border-radius: 18px;
+  overflow: hidden;
+  background-image: url(${props => props.bg});
+  background-size: contain;
+  background-position: center;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+    max-width:500px;
+
+  &:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+    background-size: 110%;
+  }
+`;
+
+const Overlay = styled.div`
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1),
+    rgba(0, 0, 0, 0.7),
+    rgba(0, 0, 0, 0.05)
+  );
+`;
+
+const CardContent = styled.div`
+  position: absolute;
+  bottom: 0;
+  padding: 12px;
+  z-index: 2;
+  color: #fff;
+
+  h3 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+`;
+
+const BlogMeta = styled.div`
+  font-size: 0.7rem;
+  color: #d1d5db;
+  font-style: italic;
+`;
+

@@ -197,6 +197,15 @@ const BlogPostModal = ({ post, onClose, onSaved }) => {
     setLinks(copy);
   };
 
+
+  const slugify = (text) => {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")   // replace spaces & symbols with -
+    .replace(/(^-|-$)/g, "");      // remove leading/trailing -
+};
+
   /* ---------- SAVE / UPDATE ---------- */
   const savePost = async () => {
     if (!title || !content || selectedCategories.length === 0) {
@@ -210,6 +219,12 @@ const BlogPostModal = ({ post, onClose, onSaved }) => {
     formData.append("content", content);
     formData.append("category", selectedCategories.join(","));
     formData.append("links", JSON.stringify(links));
+
+     // ✅ ONLY generate slug when creating
+  if (!post) {
+    const slug = `${slugify(title)}-${Date.now()}`;
+    formData.append("slug", slug);
+  }
 
     if (imageFile) {
       formData.append("image", imageFile);

@@ -625,7 +625,7 @@ const Menu = styled.nav`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: 7px;
   margin-top: 30px;
 
   @media (max-width: 768px) {
@@ -633,13 +633,13 @@ const Menu = styled.nav`
   }
 
   a {
-    padding: 10px 16px;
+    padding: 5px 8px;
     border-radius: 10px;
     background: ${colors.soft};
     color: ${colors.dark};
     text-decoration: none;
-    font-weight: 700;
-    
+    font-weight: bold;
+    font-size:0.9rem;
   }
 
   a.active {
@@ -652,7 +652,7 @@ const Categories = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 6px;
   margin-top: 22px;
 
   @media (max-width: 768px) {
@@ -661,11 +661,12 @@ const Categories = styled.div`
 `;
 
 const CategoryItem = styled.span`
-  padding: 8px 16px;
-  background: #e6e6e6;
+  padding: 4px 10px;
+  background: #d3d3d3;
   border-radius: 999px;
   cursor: pointer;
   font-weight: 600;
+  font-size:0.8rem;
 
   &.active {
     background: ${colors.dark2};

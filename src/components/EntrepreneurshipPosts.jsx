@@ -218,7 +218,7 @@ export default function EntrepreneurshipPosts() {
 
   if (loading) return <Status>Loading posts...</Status>;
   if (error) return <Status>{error}</Status>;
-  if (posts.length === 0) return <Status>No posts available.</Status>;
+  if (posts.length === 0) return ;
 
 return (
   <Container>
@@ -229,7 +229,7 @@ return (
         <Slide key={post.id} direction="up" duration={1200} triggerOnce>
           <BlogCard
             bg={post.image}
-            onClick={() => window.location.href = `/post/${post.id}`}
+            onClick={() => window.location.href = `/post/${post.slug}`}
           >
             <Overlay />
             <CardContent>
@@ -368,6 +368,7 @@ const BlogCard = styled.div`
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
   cursor: pointer;
   transition: transform 0.4s ease, box-shadow 0.4s ease;
+  max-width:400px;
 
   &:hover {
     transform: translateY(-8px) scale(1.02);
@@ -382,7 +383,7 @@ const Overlay = styled.div`
   background: linear-gradient(
     to top,
     rgba(0, 0, 0, 1),
-    rgba(0, 0, 0, 0.25),
+    rgba(0, 0, 0, 0.7),
     rgba(0, 0, 0, 0.05)
   );
 `;
@@ -395,7 +396,7 @@ const CardContent = styled.div`
   color: #fff;
 
   h3 {
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: 600;
     margin: 4px 0;
   }

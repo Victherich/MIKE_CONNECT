@@ -255,7 +255,7 @@ useEffect(()=>{
 
   if (loading) return <Status>Loading entertainment posts...</Status>;
   if (error) return <Status>{error}</Status>;
-  if (!posts.length) return <Status>No posts available.</Status>;
+  if (posts.length === 0) return ;
 
   return (
     <Container>
@@ -264,7 +264,7 @@ useEffect(()=>{
         {/* Feature Card */}
         <Zoom duration={3000} triggerOnce>
           <FeatureCard>
-            <RouterButton to={`/post/${posts[0].id}`}>
+            <RouterButton to={`/post/${posts[0].slug}`}>
               <FeatureImage src={posts[0].image || "https://source.unsplash.com/400x300/?entertainment"} />
               <FeatureContent>
                 <FeatureTitle>{posts[0].title}</FeatureTitle>
@@ -278,7 +278,7 @@ useEffect(()=>{
         <SmallCards>
           {posts.slice(1).map((post, i) => (
             <Slide key={i} direction="up" duration={3000} triggerOnce>
-              <RouterButton to={`/post/${post.id}`}>
+              <RouterButton to={`/post/${post.slug}`}>
                 <SmallCard>
                   <SmallImage src={post.image || "https://source.unsplash.com/400x300/?entertainment"} />
                   <SmallContent>

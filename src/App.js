@@ -46,7 +46,8 @@ function App() {
     <Route path='/resources' element={<ResourcesPage/>}/>
     <Route path='/login' element={<LoginPage/>}/>
     <Route path='/signup' element={<SignupPage/>}/>
-    <Route path='/post/:id' element={<PostPage/>}/>
+    {/* <Route path='/post/:id' element={<PostPage/>}/> */}
+    <Route path='/post/:slug' element={<PostPage/>}/>
     <Route path='/forum' element ={<Forum/>}/>
     <Route path="/search" element={<SearchPage />} />
     <Route path='/privacypolicy' element={<PrivacyPolicy/>}/>
@@ -73,3 +74,8 @@ function App() {
 }
 
 export default App;
+
+
+//github push code
+//4/21/2026
+//8:54am

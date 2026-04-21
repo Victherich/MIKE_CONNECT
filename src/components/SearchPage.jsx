@@ -50,7 +50,7 @@ export default function SearchPage() {
               <BlogCard
                 key={post.id}
                 bg={post.image}
-                onClick={() => navigate(`/post/${post.id}`)}
+                onClick={() => navigate(`/post/${post.slug}`)}
               >
                 <Overlay />
                 <CardContent>

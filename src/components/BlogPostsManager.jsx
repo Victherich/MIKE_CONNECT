@@ -238,7 +238,7 @@ const BlogCard = styled.div`
   border-radius: 18px;
   overflow: hidden;
   background-image: url(${props => props.bg});
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
   cursor: pointer;
@@ -257,7 +257,7 @@ const Overlay = styled.div`
   background: linear-gradient(
     to top,
     rgba(0, 0, 0, 1),
-    rgba(0, 0, 0, 0.25),
+    rgba(0, 0, 0, 0.8),
     rgba(0, 0, 0, 0.05)
   );
 `;
@@ -270,7 +270,7 @@ const CardContent = styled.div`
   color: #fff;
 
   h3 {
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: 600;
     margin-bottom: 6px;
   }
@@ -470,14 +470,14 @@ const deletePost = async (id) => {
             <BlogCard
               key={post.id}
               bg={post.image || "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4"}
-              onClick={()=>navigate(`/post/${post.id}`)}
+              onClick={()=>navigate(`/post/${post.slug}`)}
             >
               <Overlay />
               <CardContent>
-                <h3>{post.title}</h3>
+                {/* <h3>{post.title}</h3> */}
                 <BlogMeta>{category?.title}</BlogMeta>
                 <BlogMeta>{new Date(post.created_at).toDateString()}</BlogMeta>
-
+<h3>{post.title}</h3>
                 <Actions>
   <Action
     color="#34d399"

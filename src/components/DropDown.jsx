@@ -237,7 +237,7 @@ const Trigger = styled.button`
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 10px 16px;
+  padding: 5px 8px;
   font-size: 14px;
   border-radius: 12px;
   background: linear-gradient(180deg, #ffffff, #f7f9fc);

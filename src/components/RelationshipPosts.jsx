@@ -236,10 +236,11 @@ export default function RelationshipPosts() {
 
   if (loading) return <Status>Loading posts...</Status>;
   if (error) return <Status>{error}</Status>;
-  if (posts.length === 0) return <Container>
-    <SectionTitle style={{color:'green'}}>💖 Relationship</SectionTitle>
-    <Status>No posts available...</Status>
-    </Container>;
+  if (posts.length === 0) return;
+  // <Container>
+  //   <SectionTitle style={{color:'green'}}>💖 Relationship</SectionTitle>
+  //   <Status>No posts available...</Status>
+  //   </Container>;
 
   return (
     <Container>
@@ -247,7 +248,7 @@ export default function RelationshipPosts() {
       <Grid>
         {/* Feature Card */}
         <Slide direction="up" duration={2000} triggerOnce>
-          <RouterButton to={`/post/${posts[0].id}`}>
+          <RouterButton to={`/post/${posts[0].slug}`}>
             <FeatureCard>
               <FeatureImage src={posts[0].image} />
               <FeatureContent>
@@ -262,7 +263,7 @@ export default function RelationshipPosts() {
         <SmallCards>
           {posts.slice(1).map((post, i) => (
             <Slide key={i} direction="up" duration={2000} delay={i * 200} triggerOnce>
-              <RouterButton to={`/post/${post.id}`}>
+              <RouterButton to={`/post/${post.slug}`}>
                 <SmallCard>
                   <SmallImage src={post.image} />
                   <SmallContent>
