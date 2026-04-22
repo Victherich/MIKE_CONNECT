@@ -120,7 +120,7 @@ const getCategoryNames = (categoryString) => {
       <CarouselContainer>
         <CarouselWrapper>
           {trendingArticles.map((p, i) => (
-            <CarouselItem key={i} onClick={()=>navigate(`/post/${p.id}`)}>{p.title}</CarouselItem>
+            <CarouselItem key={i} onClick={()=>navigate(`/post/${p.slug}`)}>{p.title}</CarouselItem>
           ))}
         </CarouselWrapper>
       </CarouselContainer>
