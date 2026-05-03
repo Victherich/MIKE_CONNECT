@@ -69,43 +69,151 @@ const getCategoryNames = (categoryString) => {
 
 
 
-    useEffect(() => {
-    axios
-      .get(
-        `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${CATEGORY_ID2}&t=${Date.now()}`
-      )
-      .then(res => {
-        if (res.data?.success) {
-          const posts = res.data.posts || [];
-          setArticles2(posts);
-        }
-      })
-      .catch(() => {
-        setArticles2([]);
+  //   useEffect(() => {
+  //   axios
+  //     .get(
+  //       `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${CATEGORY_ID2}&t=${Date.now()}`
+  //     )
+  //     .then(res => {
+  //       if (res.data?.success) {
+  //         const posts = res.data.posts || [];
+  //         setArticles2(posts);
+  //       }
+  //     })
+  //     .catch(() => {
+  //       setArticles2([]);
         
-      });
-  }, []);
+  //     });
+  // }, []);
 
 
-      useEffect(() => {
-    axios
-      .get(
-        `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${CATEGORY_ID3}&t=${Date.now()}`
-      )
-      .then(res => {
-        if (res.data?.success) {
-          const posts = res.data.posts || [];
-          // setArticles2(posts);
-          // Trending = just titles
-          setTrendingArticles(posts);
-          console.log(posts)
+useEffect(() => {
+  const cacheKey = "all_posts";
+  let attempts = 0;
+  const maxAttempts = 100;
+
+  const interval = setInterval(() => {
+    attempts++;
+
+    try {
+      const cached = localStorage.getItem(cacheKey);
+
+      if (!cached) {
+        console.log(`Attempt ${attempts}: waiting for posts...`);
+
+        if (attempts >= maxAttempts) {
+          console.log("Max retries reached");
+          setArticles2([]);
+          clearInterval(interval);
         }
-      })
-      .catch(() => {
-        setTrendingArticles([]);
-        
+
+        return;
+      }
+
+      const allPosts = JSON.parse(cached);
+      if (!allPosts.length) {
+        if (attempts >= maxAttempts) {
+          setArticles2([]);
+          clearInterval(interval);
+        }
+        return;
+      }
+
+      // ✅ Filter category 5
+      const categoryPosts = allPosts.filter(post => {
+        if (!post.category) return false;
+        const cats = post.category.split(",").map(Number);
+        return cats.includes(5);
       });
-  }, []);
+
+      // ✅ Sort latest
+      const sorted = [...categoryPosts].sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+
+      // ✅ Take latest 2
+      const lastTwo = sorted.slice(0, 2);
+
+      setArticles2(lastTwo);
+
+      // ✅ success → stop polling
+      clearInterval(interval);
+
+    } catch (err) {
+      setArticles2([]);
+      clearInterval(interval);
+    }
+  }, 500);
+
+  return () => clearInterval(interval);
+}, []);
+
+
+
+// useEffect(() => {
+//     axios
+//       .get(
+//         `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${CATEGORY_ID3}&t=${Date.now()}`
+//       )
+//       .then(res => {
+//         if (res.data?.success) {
+//           const posts = res.data.posts || [];
+//           // setArticles2(posts);
+//           // Trending = just titles
+//           setTrendingArticles(posts);
+//           console.log(posts)
+//         }
+//       })
+//       .catch(() => {
+//         setTrendingArticles([]);
+        
+//       });
+//   }, []);
+
+useEffect(() => {
+  const cacheKey = "all_posts";
+
+  const interval = setInterval(() => {
+    try {
+      const cached = localStorage.getItem(cacheKey);
+
+      if (!cached) {
+        console.log("Waiting for trending posts...");
+        return;
+      }
+
+      const allPosts = JSON.parse(cached);
+
+      if (!allPosts.length) return;
+
+      // ✅ Sort latest
+      const sorted = [...allPosts].sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+
+      // ✅ Top 10 trending
+      const trending = sorted.slice(0, 10);
+
+      setTrendingArticles(trending);
+
+      console.log(trending);
+
+      // ✅ stop polling
+      clearInterval(interval);
+
+    } catch (err) {
+      setTrendingArticles([]);
+      clearInterval(interval);
+    }
+  }, 500);
+
+  return () => clearInterval(interval);
+}, []);
+
+
+
+
+
 
   return (
     <>
@@ -134,7 +242,7 @@ const getCategoryNames = (categoryString) => {
       {articles2.length>0&&<SectionTitle style={{color:"green"}}>📝 Digital Skills / Tech</SectionTitle>}
       <EditorialsGrid>
         {articles2.slice(0,8).map((a, i) => (
-          <EditorialCard key={i} onClick={()=>navigate(`/post/${a.id}`)}>
+          <EditorialCard key={i} onClick={()=>navigate(`/post/${a.slug}`)}>
             <EditorialImage src={a.image} />
             <EditorialBody>
               <EditorialCategory>

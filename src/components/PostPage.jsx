@@ -71,35 +71,74 @@ export default function PostPage() {
 
 
 
-  useEffect(() => {
+//   useEffect(() => {
+//   if (!slug) return;
+
+//   setLoading(true);
+//   setError(null);
+
+//   axios
+//     .get(
+//       `https://www.mikeconnect.com/mc_api/get_post_by_slug.php?slug=${slug}&t=${Date.now()}`,
+//       {
+//         headers: {
+//           "Cache-Control": "no-cache",
+//           Pragma: "no-cache",
+//         },
+//       }
+//     )
+//     .then((res) => {
+//       if (res.data?.success) {
+//         setPost(res.data.post);
+//       } else {
+//         setError(res.data?.error || "Post not found");
+//       }
+//     })
+//     .catch(() => {
+//       setError("Network error");
+//     })
+//     .finally(() => {
+//       setLoading(false);
+//     });
+// }, [slug]);
+
+
+
+
+
+
+useEffect(() => {
   if (!slug) return;
 
   setLoading(true);
   setError(null);
 
-  axios
-    .get(
-      `https://www.mikeconnect.com/mc_api/get_post_by_slug.php?slug=${slug}&t=${Date.now()}`,
-      {
-        headers: {
-          "Cache-Control": "no-cache",
-          Pragma: "no-cache",
-        },
-      }
-    )
-    .then((res) => {
-      if (res.data?.success) {
-        setPost(res.data.post);
-      } else {
-        setError(res.data?.error || "Post not found");
-      }
-    })
-    .catch(() => {
-      setError("Network error");
-    })
-    .finally(() => {
-      setLoading(false);
-    });
+  try {
+    const cached = localStorage.getItem("all_posts");
+
+    if (!cached) {
+      setError("No cached posts found");
+      setPost(null);
+      return;
+    }
+
+    const allPosts = JSON.parse(cached);
+
+    // 🔍 find post by slug
+    const foundPost = allPosts.find(p => p.slug === slug);
+
+    if (!foundPost) {
+      setError("Post not found");
+      setPost(null);
+    } else {
+      setPost(foundPost);
+    }
+  } catch (err) {
+    setError("Error loading post");
+    setPost(null);
+  } finally {
+    setLoading(false);
+  }
 }, [slug]);
 
 
@@ -108,7 +147,7 @@ export default function PostPage() {
 
 
 
-  if (loading) return <Status>Loading post...</Status>;
+  // if (loading) return <Status>Loading post...</Status>;
   if (error) return <Status>{error}</Status>;
   if (!post) return null;
 

@@ -187,36 +187,115 @@ export default function EntrepreneurshipPosts() {
 };
 
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      setLoading(true);
-      setError(null);
+  // useEffect(() => {
+  //   const fetchPosts = async () => {
+  //     setLoading(true);
+  //     setError(null);
 
-      try {
-        const res = await axios.get(
-          `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${categoryId}&t=${Date.now()}`
-        );
+  //     try {
+  //       const res = await axios.get(
+  //         `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${categoryId}&t=${Date.now()}`
+  //       );
 
-        if (res.data?.success) {
-          const fetchedPosts = res.data.posts || [];
-          const lastFourPosts = fetchedPosts.slice(-4); // last 4 posts
-          setPosts(lastFourPosts);
-        } else {
+  //       if (res.data?.success) {
+  //         const fetchedPosts = res.data.posts || [];
+  //         const lastFourPosts = fetchedPosts.slice(-4); // last 4 posts
+  //         setPosts(lastFourPosts);
+  //       } else {
+  //         setPosts([]);
+  //         setError(res.data?.error || "No posts found");
+  //       }
+  //     } catch (err) {
+  //       setPosts([]);
+  //       setError("Network error");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchPosts();
+  // }, []);
+
+useEffect(() => {
+  const cacheKey = "all_posts";
+  let attempts = 0;
+  const maxAttempts = 100;
+
+  const interval = setInterval(() => {
+    attempts++;
+
+    try {
+      const cached = localStorage.getItem(cacheKey);
+
+      if (!cached) {
+        console.log(`Attempt ${attempts}: no cached posts`);
+
+        if (attempts >= maxAttempts) {
           setPosts([]);
-          setError(res.data?.error || "No posts found");
+          setError("No cached posts");
+          setLoading(false);
+          clearInterval(interval);
         }
-      } catch (err) {
-        setPosts([]);
-        setError("Network error");
-      } finally {
-        setLoading(false);
+
+        return;
       }
-    };
 
-    fetchPosts();
-  }, []);
+      const allPosts = JSON.parse(cached);
+      if (!allPosts.length) {
+        if (attempts >= maxAttempts) {
+          setPosts([]);
+          setError("No posts available");
+          setLoading(false);
+          clearInterval(interval);
+        }
+        return;
+      }
 
-  if (loading) return <Status>Loading posts...</Status>;
+      // ✅ Filter category 3 (handles "3,15")
+      const categoryPosts = allPosts.filter(post => {
+        if (!post.category) return false;
+
+        const cats = post.category.split(",").map(Number);
+        return cats.includes(3);
+      });
+
+      // ⚠️ wait specifically for category 3
+      if (!categoryPosts.length) {
+        if (attempts >= maxAttempts) {
+          setPosts([]);
+          setError("No posts");
+          setLoading(false);
+          clearInterval(interval);
+        }
+        return;
+      }
+
+      // ✅ Sort latest first
+      const sorted = [...categoryPosts].sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+
+      // ✅ Take last 4
+      const lastFour = sorted.slice(0, 4);
+
+      setPosts(lastFour);
+      setLoading(false);
+
+      // ✅ stop polling on success
+      clearInterval(interval);
+
+    } catch (err) {
+      setPosts([]);
+      setError("Error loading cached posts");
+      setLoading(false);
+      clearInterval(interval);
+    }
+  }, 500);
+
+  return () => clearInterval(interval);
+}, []);
+
+  // if (loading) return <Status>Loading posts...</Status>;
   if (error) return <Status>{error}</Status>;
   if (posts.length === 0) return ;
 
@@ -226,8 +305,9 @@ return (
 
     <Grid>
       {posts.map((post, i) => (
-        <Slide key={post.id} direction="up" duration={1200} triggerOnce>
+        // <Slide key={post.id} direction="up" duration={1200} triggerOnce>
           <BlogCard
+          key={post.id}
             bg={post.image}
             onClick={() => window.location.href = `/post/${post.slug}`}
           >
@@ -238,7 +318,7 @@ return (
               <Meta>{new Date(post.created_at).toDateString()}</Meta>
             </CardContent>
           </BlogCard>
-        </Slide>
+        // </Slide>
       ))}
     </Grid>
   </Container>

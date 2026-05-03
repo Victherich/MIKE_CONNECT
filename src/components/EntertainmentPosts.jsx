@@ -220,40 +220,122 @@ export default function EntertainmentPosts() {
   //     .finally(() => setLoading(false));
   // }, []);
 
-const fetchPosts = () => {
-  setLoading(true);
-  setError(null);
+// const fetchPosts = () => {
+//   setLoading(true);
+//   setError(null);
 
-  axios
-    .get(
-      `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${categoryId}&t=${Date.now()}`
-    )
-    .then(res => {
-      if (res.data?.success) {
-        const fetchedPosts = res.data.posts || [];
+//   axios
+//     .get(
+//       `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${categoryId}&t=${Date.now()}`
+//     )
+//     .then(res => {
+//       if (res.data?.success) {
+//         const fetchedPosts = res.data.posts || [];
 
-        // Take only the last 4 posts
-        const lastFourPosts = fetchedPosts.slice(0,4);
+//         // Take only the last 4 posts
+//         const lastFourPosts = fetchedPosts.slice(0,4);
 
-        setPosts(lastFourPosts);
-      } else {
-        setPosts([]);
-        setError(res.data?.error || "No posts found");
+//         setPosts(lastFourPosts);
+//       } else {
+//         setPosts([]);
+//         setError(res.data?.error || "No posts found");
+//       }
+//     })
+//     .catch(() => {
+//       setPosts([]);
+//       setError("Network or server error");
+//     })
+//     .finally(() => setLoading(false));
+// };
+
+
+// useEffect(()=>{
+//   fetchPosts()
+// },[])
+
+
+
+useEffect(() => {
+  const cacheKey = "all_posts";
+  let attempts = 0;
+  const maxAttempts = 100;
+
+  const interval = setInterval(() => {
+    attempts++;
+
+    try {
+      const cached = localStorage.getItem(cacheKey);
+
+      if (!cached) {
+        console.log(`Attempt ${attempts}: no cached posts`);
+
+        if (attempts >= maxAttempts) {
+          setError("No posts");
+          setLoading(false);
+          clearInterval(interval);
+        }
+
+        return;
       }
-    })
-    .catch(() => {
-      setPosts([]);
-      setError("Network or server error");
-    })
-    .finally(() => setLoading(false));
-};
+
+      const allPosts = JSON.parse(cached);
+      if (!allPosts.length) {
+        if (attempts >= maxAttempts) {
+          setError("No posts available");
+          setLoading(false);
+          clearInterval(interval);
+        }
+        return;
+      }
+
+      // ✅ Filter category 13
+      const categoryPosts = allPosts.filter(post => {
+        if (!post.category) return false;
+
+        const cats = post.category.split(",").map(Number);
+        return cats.includes(13);
+      });
+
+      // ⚠️ Optional: wait specifically for category 13 posts
+      if (!categoryPosts.length) {
+        if (attempts >= maxAttempts) {
+          // setError("No category posts found");
+          setLoading(false);
+          clearInterval(interval);
+        }
+        return;
+      }
+
+      // ✅ Sort latest first
+      const sorted = [...categoryPosts].sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+
+      // ✅ Take latest 4
+      const lastFour = sorted.slice(0, 4);
+
+      setPosts(lastFour);
+      setLoading(false);
+
+      // ✅ success → stop polling
+      clearInterval(interval);
+
+    } catch (err) {
+      setError("Error loading posts");
+      setLoading(false);
+      clearInterval(interval);
+    }
+  }, 500);
+
+  return () => clearInterval(interval);
+}, []);
 
 
-useEffect(()=>{
-  fetchPosts()
-},[])
 
-  if (loading) return <Status>Loading entertainment posts...</Status>;
+
+
+
+  // if (loading) return <Status>Loading entertainment posts...</Status>;
   if (error) return <Status>{error}</Status>;
   if (posts.length === 0) return ;
 
@@ -262,7 +344,7 @@ useEffect(()=>{
       <SectionTitle style={{color:"green"}}>🎬 Entertainment</SectionTitle>
       <Grid>
         {/* Feature Card */}
-        <Zoom duration={3000} triggerOnce>
+        {/* <Zoom duration={3000} triggerOnce> */}
           <FeatureCard>
             <RouterButton to={`/post/${posts[0].slug}`}>
               <FeatureImage src={posts[0].image || "https://source.unsplash.com/400x300/?entertainment"} />
@@ -272,12 +354,12 @@ useEffect(()=>{
               </FeatureContent>
             </RouterButton>
           </FeatureCard>
-        </Zoom>
+        {/* </Zoom> */}
 
         {/* Smaller Cards */}
         <SmallCards>
           {posts.slice(1).map((post, i) => (
-            <Slide key={i} direction="up" duration={3000} triggerOnce>
+            // <Slide key={i} direction="up" duration={3000} triggerOnce>
               <RouterButton to={`/post/${post.slug}`}>
                 <SmallCard>
                   <SmallImage src={post.image || "https://source.unsplash.com/400x300/?entertainment"} />
@@ -287,7 +369,7 @@ useEffect(()=>{
                   </SmallContent>
                 </SmallCard>
               </RouterButton>
-            </Slide>
+            // </Slide>
           ))}
         </SmallCards>
       </Grid>

@@ -205,36 +205,121 @@ export default function RelationshipPosts() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      setLoading(true);
-      setError(null);
+  // useEffect(() => {
+  //   const fetchPosts = async () => {
+  //     setLoading(true);
+  //     setError(null);
 
-      try {
-        const res = await axios.get(
-          `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${categoryId}&t=${Date.now()}`
-        );
+  //     try {
+  //       const res = await axios.get(
+  //         `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${categoryId}&t=${Date.now()}`
+  //       );
 
-        if (res.data?.success) {
-          const fetchedPosts = res.data.posts || [];
-          const lastFourPosts = fetchedPosts.slice(0,4); // Take only last 4 posts
-          setPosts(lastFourPosts);
-        } else {
+  //       if (res.data?.success) {
+  //         const fetchedPosts = res.data.posts || [];
+  //         const lastFourPosts = fetchedPosts.slice(0,4); // Take only last 4 posts
+  //         setPosts(lastFourPosts);
+  //       } else {
+  //         setPosts([]);
+  //         setError(res.data?.error || "No posts found");
+  //       }
+  //     } catch (err) {
+  //       setPosts([]);
+  //       setError("Network error");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchPosts();
+  // }, []);
+
+
+useEffect(() => {
+  const cacheKey = "all_posts";
+  let attempts = 0;
+  const maxAttempts = 100;
+
+  const interval = setInterval(() => {
+    attempts++;
+
+    try {
+      const cached = localStorage.getItem(cacheKey);
+
+      if (!cached) {
+        console.log(`Attempt ${attempts}: no cached posts`);
+
+        if (attempts >= maxAttempts) {
           setPosts([]);
-          setError(res.data?.error || "No posts found");
+          setError("No cached posts");
+          setLoading(false);
+          clearInterval(interval);
         }
-      } catch (err) {
-        setPosts([]);
-        setError("Network error");
-      } finally {
-        setLoading(false);
+
+        return;
       }
-    };
 
-    fetchPosts();
-  }, []);
+      const allPosts = JSON.parse(cached);
+      if (!allPosts.length) {
+        if (attempts >= maxAttempts) {
+          setPosts([]);
+          setError("No posts");
+          setLoading(false);
+          clearInterval(interval);
+        }
+        return;
+      }
 
-  if (loading) return <Status>Loading posts...</Status>;
+      // ✅ Filter category 2 (supports "2,5,18")
+      const categoryPosts = allPosts.filter(post => {
+        if (!post.category) return false;
+
+        const cats = post.category.split(",").map(Number);
+        return cats.includes(2);
+      });
+
+      // ⚠️ wait specifically for category 2
+      if (!categoryPosts.length) {
+        if (attempts >= maxAttempts) {
+          setPosts([]);
+          // setError("No category posts found");
+          setLoading(false);
+          clearInterval(interval);
+        }
+        return;
+      }
+
+      // ✅ Sort latest first
+      const sorted = [...categoryPosts].sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+
+      // ✅ Take latest 4
+      const lastFour = sorted.slice(0, 4);
+
+      setPosts(lastFour);
+      setLoading(false);
+
+      // ✅ stop polling on success
+      clearInterval(interval);
+
+    } catch (err) {
+      setPosts([]);
+      setError("Error loading cached posts");
+      setLoading(false);
+      clearInterval(interval);
+    }
+  }, 500);
+
+  return () => clearInterval(interval);
+}, []);
+
+
+
+
+
+
+  // if (loading) return <Status>Loading posts...</Status>;
   if (error) return <Status>{error}</Status>;
   if (posts.length === 0) return;
   // <Container>

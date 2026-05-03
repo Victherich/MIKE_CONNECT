@@ -11,36 +11,97 @@ export default function FeaturedPosts() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      setLoading(true);
-      setError(null);
+  // useEffect(() => {
+  //   const fetchPosts = async () => {
+  //     setLoading(true);
+  //     setError(null);
 
-      try {
-        const res = await axios.get(
-          `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${categoryId}&t=${Date.now()}`
-        );
+  //     try {
+  //       const res = await axios.get(
+  //         `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${categoryId}&t=${Date.now()}`
+  //       );
 
-        if (res.data?.success) {
-          const fetchedPosts = res.data.posts || [];
-          const lastFourPosts = fetchedPosts.slice(0,4); // Take only last 4 posts
-          setPosts(lastFourPosts);
-        } else {
-          setPosts([]);
-          setError(res.data?.error || "No posts found");
-        }
-      } catch (err) {
-        setPosts([]);
-        setError("Network error");
-      } finally {
-        setLoading(false);
+  //       if (res.data?.success) {
+  //         const fetchedPosts = res.data.posts || [];
+  //         const lastFourPosts = fetchedPosts.slice(0,4); // Take only last 4 posts
+  //         setPosts(lastFourPosts);
+  //       } else {
+  //         setPosts([]);
+  //         setError(res.data?.error || "No posts found");
+  //       }
+  //     } catch (err) {
+  //       setPosts([]);
+  //       setError("Network error");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchPosts();
+  // }, []);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+useEffect(() => {
+  const cacheKey = "all_posts";
+
+  const interval = setInterval(() => {
+    try {
+      const cached = localStorage.getItem(cacheKey);
+
+      if (!cached) {
+        console.log("Waiting for posts...");
+        return; // keep trying
       }
-    };
 
-    fetchPosts();
-  }, []);
+      const allPosts = JSON.parse(cached);
 
-  if (loading) return <Status>Loading posts...</Status>;
+      if (!allPosts.length) return;
+
+      // ✅ Sort latest first
+      const sorted = [...allPosts].sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+
+      // ✅ Take last 4
+      const lastFour = sorted.slice(0, 4);
+
+      setPosts(lastFour);
+      setLoading(false);
+
+      // ✅ STOP polling once data is found
+      clearInterval(interval);
+
+    } catch (err) {
+      setError("Error reading cache");
+      setLoading(false);
+      clearInterval(interval);
+    }
+  }, 500); // every 1 second
+
+  // cleanup (important)
+  return () => clearInterval(interval);
+}, []);
+
+
+
+
+
+
+
+
+  // if (loading) return <Status>Loading posts...</Status>;
   if (error) return <Status>{error}</Status>;
   if (posts.length === 0) return <Status>No posts available.</Status>;
 
@@ -49,7 +110,7 @@ export default function FeaturedPosts() {
       <SectionTitle style={{color:"green"}}>Featured Posts</SectionTitle>
       <Grid>
         {/* Feature Card */}
-        <Slide direction="up" duration={2000} triggerOnce>
+        {/* <Slide direction="up" duration={2000} triggerOnce> */}
           <RouterButton to={`/post/${posts[0].slug}`}>
             <FeatureCard>
               <FeatureImage src={posts[0].image} />
@@ -59,13 +120,13 @@ export default function FeaturedPosts() {
               </FeatureContent>
             </FeatureCard>
           </RouterButton>
-        </Slide>
+        {/* </Slide> */}
 
         {/* Small Cards */}
         <SmallCards>
           {posts.slice(1).map((post, i) => (
-            <Slide key={i} direction="up" duration={2000} delay={i * 200} triggerOnce>
-              <RouterButton to={`/post/${post.slug}`}>
+            // <Slide key={i} direction="up" duration={2000} delay={i * 200} triggerOnce>
+              <RouterButton to={`/post/${post.slug}`} key={post.id}>
                 <SmallCard>
                   <SmallImage src={post.image} />
                   <SmallContent>
@@ -74,7 +135,7 @@ export default function FeaturedPosts() {
                   </SmallContent>
                 </SmallCard>
               </RouterButton>
-            </Slide>
+            // </Slide>
           ))}
         </SmallCards>
       </Grid>

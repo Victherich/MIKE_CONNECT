@@ -29,42 +29,123 @@ export default function CategoryPage() {
     return categories.find(c => Number(c.id) === categoryId);
   }, [categories, categoryId]);
 
-  const fetchPosts = (pageNum = 1) => {
-    if (!isValidCategoryId) return;
 
-    setLoading(true);
-    setError(null);
 
-    axios
-      .get(
-        `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${categoryId}&page=${pageNum}&t=${Date.now()}`
-      )
-      .then(res => {
-        if (res.data?.success) {
-          const fetchedPosts = res.data.posts || [];
+  
+//   const fetchPosts = (pageNum = 1) => {
+//     if (!isValidCategoryId) return;
 
-          setPosts(fetchedPosts);
+//     setLoading(true);
+//     setError(null);
+
+//     axios
+//       .get(
+//         `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${categoryId}&page=${pageNum}&t=${Date.now()}`
+//       )
+//       .then(res => {
+//         if (res.data?.success) {
+//           const fetchedPosts = res.data.posts || [];
+
+//           setPosts(fetchedPosts);
        
 
-          // If full page returned, assume next page exists
-         if (fetchedPosts.length === limit) {
-  setAvailablePages(prev => {
-    const nextPage = pageNum + 1;
-    return prev.includes(nextPage) ? prev : [...prev, nextPage];
-  });
-}
+//           // If full page returned, assume next page exists
+//          if (fetchedPosts.length === limit) {
+//   setAvailablePages(prev => {
+//     const nextPage = pageNum + 1;
+//     return prev.includes(nextPage) ? prev : [...prev, nextPage];
+//   });
+// }
 
-        } else {
+//         } else {
+//           setPosts([]);
+//           setError(res.data?.error || "No posts found");
+//         }
+//       })
+//       .catch(() => {
+//         setPosts([]);
+//         setError("Network or server error");
+//       })
+//       .finally(() => setLoading(false));
+//   };
+
+
+
+
+const fetchPosts = (pageNum = 1) => {
+  if (!isValidCategoryId) return;
+
+  setLoading(true);
+  setError(null);
+
+  let retries = 0;
+  const maxRetries = 1000;
+
+  const interval = setInterval(() => {
+    try {
+      const cached = localStorage.getItem("all_posts");
+
+      if (!cached) {
+        retries += 1;
+        console.log(`Retrying... (${retries}/${maxRetries})`);
+
+        if (retries >= maxRetries) {
+          clearInterval(interval);
           setPosts([]);
-          setError(res.data?.error || "No posts found");
+          setError("No cached posts found after retries");
+          setLoading(false);
         }
-      })
-      .catch(() => {
+        return;
+      }
+
+      const allPosts = JSON.parse(cached);
+
+      // 🔥 filter by category
+      const categoryPosts = allPosts.filter(post => {
+        if (!post.category) return false;
+
+        const cats = post.category.split(",").map(Number);
+        return cats.includes(categoryId);
+      });
+
+      // 🔥 sort latest first
+      const sorted = [...categoryPosts].sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+
+      // 🔥 pagination
+      const start = (pageNum - 1) * limit;
+      const end = start + limit;
+
+      const paginated = sorted.slice(start, end);
+
+      setPosts(paginated);
+
+      // 🔥 update pagination
+      if (sorted.length > end) {
+        setAvailablePages(prev => {
+          const nextPage = pageNum + 1;
+          return prev.includes(nextPage) ? prev : [...prev, nextPage];
+        });
+      }
+
+      clearInterval(interval); // stop on success
+      setLoading(false);
+
+    } catch (err) {
+      retries += 1;
+
+      if (retries >= maxRetries) {
+        clearInterval(interval);
         setPosts([]);
-        setError("Network or server error");
-      })
-      .finally(() => setLoading(false));
-  };
+        setError("Error loading cached posts");
+        setLoading(false);
+      }
+    }
+  }, 100); // retry every 1 second
+};
+
+
 
   // Initial load
   useEffect(() => {
@@ -73,11 +154,17 @@ export default function CategoryPage() {
     fetchPosts(1);
   }, [categoryId, isValidCategoryId]);
 
+
+
+
+
+
   const handlePageClick = pageNum => {
     if (pageNum === page) return;
     setPage(pageNum);
     fetchPosts(pageNum);
   };
+
 
   return (
     <Layout>
@@ -87,7 +174,7 @@ export default function CategoryPage() {
      
       </CategoryTitle>
 
-      {loading && <Loading>Loading posts...</Loading>}
+      {/* {loading && <Loading>Loading posts...</Loading>} */}
       {error && <NoBlogs>{error}</NoBlogs>}
 
       {!loading && !error && posts.length > 0 && (

@@ -10,19 +10,58 @@ export default function SidebarPostTicker() {
 
   const [posts, setPosts] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get(
-        `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${CATEGORY_ID}&t=${Date.now()}`
-      )
-      .then(res => {
-        if (res.data?.success) {
-          // duplicate list for seamless loop
-          setPosts([...res.data.posts, ...res.data.posts]);
-        }
-      })
-      .catch(() => setPosts([]));
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${CATEGORY_ID}&t=${Date.now()}`
+  //     )
+  //     .then(res => {
+  //       if (res.data?.success) {
+  //         // duplicate list for seamless loop
+  //         setPosts([...res.data.posts, ...res.data.posts]);
+  //       }
+  //     })
+  //     .catch(() => setPosts([]));
+  // }, []);
+
+
+useEffect(() => {
+  const cacheKey = "all_posts";
+
+  const interval = setInterval(() => {
+    try {
+      const cached = localStorage.getItem(cacheKey);
+
+      if (!cached) {
+        console.log("Waiting for posts in localStorage...");
+        return; // keep retrying forever
+      }
+
+      const allPosts = JSON.parse(cached);
+
+      if (!allPosts || allPosts.length === 0) return;
+
+      // optional: ensure latest first
+      const sorted = [...allPosts].sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+
+      // duplicate list for seamless loop
+      setPosts([...sorted, ...sorted]);
+
+      console.log("Posts loaded from cache");
+
+      // stop retry ONLY after success
+      clearInterval(interval);
+    } catch (err) {
+      console.log("Error reading cache, retrying...");
+      setPosts([]);
+    }
+  }, 500); // retry every 1 second
+
+  return () => clearInterval(interval);
+}, []);
+
 
   if (!posts.length) return null;
 
