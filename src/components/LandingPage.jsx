@@ -392,10 +392,10 @@ const EditorialsGrid = styled.div`
   gap: 25px;
 `;
 const EditorialCard = styled.div`
-  background: white;
+  // background: white;
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0px 6px 18px rgba(0,0,0,0.1);
+  // box-shadow: 0px 6px 18px rgba(0,0,0,0.1);
   transition: 0.3s;
   cursor: pointer;
 
@@ -404,7 +404,7 @@ const EditorialCard = styled.div`
 const EditorialImage = styled.img`
   width: 100%;
   height: 200px;
-  object-fit: cover;
+  object-fit: contain;
 `;
 const EditorialBody = styled.div`
   padding: 15px;

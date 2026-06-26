@@ -1,98 +1,57 @@
 
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { Slide } from "react-awesome-reveal";
-import { Link } from "react-router-dom";
-import axios from "axios";
+// import React, { useEffect, useState } from "react";
+// import styled from "styled-components";
+// import { Slide } from "react-awesome-reveal";
+// import { Link } from "react-router-dom";
+// import axios from "axios";
 
-export default function FeaturedPosts() {
-  const categoryId = 0; // Relationship posts category ID
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  // useEffect(() => {
-  //   const fetchPosts = async () => {
-  //     setLoading(true);
-  //     setError(null);
-
-  //     try {
-  //       const res = await axios.get(
-  //         `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${categoryId}&t=${Date.now()}`
-  //       );
-
-  //       if (res.data?.success) {
-  //         const fetchedPosts = res.data.posts || [];
-  //         const lastFourPosts = fetchedPosts.slice(0,4); // Take only last 4 posts
-  //         setPosts(lastFourPosts);
-  //       } else {
-  //         setPosts([]);
-  //         setError(res.data?.error || "No posts found");
-  //       }
-  //     } catch (err) {
-  //       setPosts([]);
-  //       setError("Network error");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchPosts();
-  // }, []);
+// export default function FeaturedPosts() {
+//   const categoryId = 0; // Relationship posts category ID
+//   const [posts, setPosts] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
 
 
+// useEffect(() => {
+//   const cacheKey = "all_posts";
 
+//   const interval = setInterval(() => {
+//     try {
+//       const cached = localStorage.getItem(cacheKey);
 
+//       if (!cached) {
+//         console.log("Waiting for posts...");
+//         return; // keep trying
+//       }
 
+//       const allPosts = JSON.parse(cached);
 
+//       if (!allPosts.length) return;
 
+//       // ✅ Sort latest first
+//       const sorted = [...allPosts].sort(
+//         (a, b) => new Date(b.created_at) - new Date(a.created_at)
+//       );
 
+//       // ✅ Take last 4
+//       const lastFour = sorted.slice(0, 4);
 
+//       setPosts(lastFour);
+//       setLoading(false);
 
+//       // ✅ STOP polling once data is found
+//       clearInterval(interval);
 
+//     } catch (err) {
+//       setError("Error reading cache");
+//       setLoading(false);
+//       clearInterval(interval);
+//     }
+//   }, 500); // every 1 second
 
-
-
-useEffect(() => {
-  const cacheKey = "all_posts";
-
-  const interval = setInterval(() => {
-    try {
-      const cached = localStorage.getItem(cacheKey);
-
-      if (!cached) {
-        console.log("Waiting for posts...");
-        return; // keep trying
-      }
-
-      const allPosts = JSON.parse(cached);
-
-      if (!allPosts.length) return;
-
-      // ✅ Sort latest first
-      const sorted = [...allPosts].sort(
-        (a, b) => new Date(b.created_at) - new Date(a.created_at)
-      );
-
-      // ✅ Take last 4
-      const lastFour = sorted.slice(0, 4);
-
-      setPosts(lastFour);
-      setLoading(false);
-
-      // ✅ STOP polling once data is found
-      clearInterval(interval);
-
-    } catch (err) {
-      setError("Error reading cache");
-      setLoading(false);
-      clearInterval(interval);
-    }
-  }, 500); // every 1 second
-
-  // cleanup (important)
-  return () => clearInterval(interval);
-}, []);
+//   // cleanup (important)
+//   return () => clearInterval(interval);
+// }, []);
 
 
 
@@ -101,74 +60,75 @@ useEffect(() => {
 
 
 
-  // if (loading) return <Status>Loading posts...</Status>;
-  if (error) return <Status>{error}</Status>;
-  if (posts.length === 0) return <Status>No posts available.</Status>;
+//   // if (loading) return <Status>Loading posts...</Status>;
+//   if (error) return <Status>{error}</Status>;
+//   if (posts.length === 0) return <Status>No posts available.</Status>;
 
-  return (
-    <Container>
-      <SectionTitle style={{color:"green"}}>Featured Posts</SectionTitle>
-      <Grid>
-        {/* Feature Card */}
-        {/* <Slide direction="up" duration={2000} triggerOnce> */}
-          <RouterButton to={`/post/${posts[0].slug}`}>
-            <FeatureCard>
-              <FeatureImage src={posts[0].image} />
-              <FeatureContent>
-                <FeatureTitle>{posts[0].title}</FeatureTitle>
-                <FeatureDate>{new Date(posts[0].created_at).toDateString()}</FeatureDate>
-              </FeatureContent>
-            </FeatureCard>
-          </RouterButton>
-        {/* </Slide> */}
+//   return (
+//     <Container>
+//       <SectionTitle style={{color:"green"}}>Featured Posts</SectionTitle>
+//       <Grid>
+//         {/* Feature Card */}
+//         {/* <Slide direction="up" duration={2000} triggerOnce> */}
+//           <RouterButton to={`/post/${posts[0].slug}`}>
+//             <FeatureCard>
+//               <FeatureImage src={posts[0].image} />
+//               <FeatureContent>
+//                 <FeatureTitle>{posts[0].title}</FeatureTitle>
+//                 <FeatureDate>{new Date(posts[0].created_at).toDateString()}</FeatureDate>
+//               </FeatureContent>
+//             </FeatureCard>
+//           </RouterButton>
+//         {/* </Slide> */}
 
-        {/* Small Cards */}
-        <SmallCards>
-          {posts.slice(1).map((post, i) => (
-            // <Slide key={i} direction="up" duration={2000} delay={i * 200} triggerOnce>
-              <RouterButton to={`/post/${post.slug}`} key={post.id}>
-                <SmallCard>
-                  <SmallImage src={post.image} />
-                  <SmallContent>
-                    <SmallTitle>{post.title}</SmallTitle>
-                    <SmallDate>{new Date(post.created_at).toDateString()}</SmallDate>
-                  </SmallContent>
-                </SmallCard>
-              </RouterButton>
-            // </Slide>
-          ))}
-        </SmallCards>
-      </Grid>
-    </Container>
-  );
-}
+//         {/* Small Cards */}
+//         <SmallCards>
+//           {posts.slice(1).map((post, i) => (
+//             // <Slide key={i} direction="up" duration={2000} delay={i * 200} triggerOnce>
+//               <RouterButton to={`/post/${post.slug}`} key={post.id}>
+//                 <SmallCard>
+//                   <SmallImage src={post.image} />
+//                   <SmallContent>
+//                     <SmallTitle>{post.title}</SmallTitle>
+//                     <SmallDate>{new Date(post.created_at).toDateString()}</SmallDate>
+//                   </SmallContent>
+//                 </SmallCard>
+//               </RouterButton>
+//             // </Slide>
+//           ))}
+//         </SmallCards>
+//       </Grid>
+//     </Container>
+//   );
+// }
 
-// ---------------- STYLES ---------------- //
+// // ---------------- STYLES ---------------- //
 
-const Container = styled.div`
-  margin: 60px 0;
-`;
+// const Container = styled.div`
+//   margin: 60px 0;
+// `;
 
-const SectionTitle = styled.h2`
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 25px;
-  // background: linear-gradient(90deg, #ff6b81, #ffb347, #ff6b6b);
-  // -webkit-background-clip: text;
-  // -webkit-text-fill-color: transparent;
-`;
+// const SectionTitle = styled.h2`
+//   font-size: 28px;
+//   font-weight: 700;
+//   margin-bottom: 25px;
+//   // background: linear-gradient(90deg, #ff6b81, #ffb347, #ff6b6b);
+//   // -webkit-background-clip: text;
+//   // -webkit-text-fill-color: transparent;
+// `;
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 20px;
+// const Grid = styled.div`
+//   display: grid;
+//   grid-template-columns: 2fr 1fr;
+//   gap: 20px;
 
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
+//   @media (max-width: 768px) {
+//     grid-template-columns: 1fr;
+//   }
 
    
-`;
+// `;
+
 
 // const FeatureCard = styled.div`
 //   position: relative;
@@ -181,138 +141,403 @@ const Grid = styled.div`
 //   &:hover {
 //     transform: scale(1.03);
 //   }
+
+//   /* Overlay */
+//   &::after {
+//     content: "";
+//     position: absolute;
+//     inset: 0;
+//     background: linear-gradient(
+//       to top,
+//       rgba(0, 0, 0, 1) 0%,   /* dark at bottom */
+//       rgba(0, 0, 0, 0.5) 40%,
+//       rgba(0, 0, 0, 0.05) 70%,
+//       rgba(0, 0, 0, 0) 100%   /* transparent at top */
+//     );
+//     z-index: 1;
+//   }
 // `;
 
-const FeatureCard = styled.div`
-  position: relative;
-  border-radius: 14px;
-  overflow: hidden;
-  cursor: pointer;
-  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1);
-  transition: 0.3s;
-
-  &:hover {
-    transform: scale(1.03);
-  }
-
-  /* Overlay */
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 1) 0%,   /* dark at bottom */
-      rgba(0, 0, 0, 0.5) 40%,
-      rgba(0, 0, 0, 0.05) 70%,
-      rgba(0, 0, 0, 0) 100%   /* transparent at top */
-    );
-    z-index: 1;
-  }
-`;
 
 
 
+// const FeatureImage = styled.img`
+//   width: 100%;
+//   height: 350px;
+//   object-fit: cover;
+//   object-position:top;
+// `;
 
-const FeatureImage = styled.img`
-  width: 100%;
-  height: 350px;
-  object-fit: cover;
-  object-position:top;
-`;
+
 
 // const FeatureContent = styled.div`
 //   position: absolute;
 //   bottom: 15px;
 //   left: 15px;
 //   color: white;
+//   z-index: 2; /* important */
 //   text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.7);
 // `;
 
+// const FeatureTitle = styled.h3`
+//   font-size: 1rem;
+//   font-weight: 700;
+// `;
+
+// const FeatureDate = styled.div`
+//   font-size: 14px;
+//   margin-top: 6px;
+// `;
+
+// const SmallCards = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 20px;
+
+//   @media(max-width:768px){
+//   flex-direction:row;
+//   flex-wrap:wrap;
+//   justify-content:center;
+//   align-items:center;
+//   }
+// `;
+
+// const SmallCard = styled.div`
+//   display: flex;
+//   gap: 12px;
+//   // background: #fff0f5;
+//   background:white;
+//   border-radius: 12px;
+//   overflow: hidden;
+//   box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
+//   cursor: pointer;
+//   transition: 0.3s;
+
+
+//   &:hover {
+//     transform: translateY(-5px);
+//   }
+
+//   @media (max-width: 768px) {
+//     flex-direction: column;
+//      width:300px;
+//   }
+// `;
+
+// const SmallImage = styled.img`
+//   width: 120px;
+//   height: 100px;
+//   object-fit: cover;
+//   object-position:top;
+//   flex-shrink: 0;
+
+//   @media (max-width: 768px) {
+//     width: 100%;
+//     height: 180px;
+//   }
+// `;
+
+// const SmallContent = styled.div`
+//   padding: 10px;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+// `;
+
+// const SmallTitle = styled.h4`
+//   font-size: 0.7rem;
+//   font-weight: 600;
+//   color:green;
+//   margin-bottom:5px;
+// `;
+
+// const SmallDate = styled.div`
+//   font-size: 0.7rem;
+//   opacity: 0.6;
+// `;
+
+// const RouterButton = styled(Link)`
+//   display: block;
+//   text-decoration: none;
+//   color: inherit;
+// `;
+
+// const Status = styled.div`
+//   text-align: center;
+//   font-size: 1.2rem;
+//   color: #555;
+//   margin: 40px 0;
+// `;
+
+
+
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+
+export default function FeaturedPosts() {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const cacheKey = "all_posts";
+
+    const interval = setInterval(() => {
+      try {
+        const cached = localStorage.getItem(cacheKey);
+
+        if (!cached) {
+          console.log("Waiting for posts...");
+          return;
+        }
+
+        const allPosts = JSON.parse(cached);
+
+        if (!allPosts.length) return;
+
+        // ✅ Sort latest first
+        const sorted = [...allPosts].sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        );
+
+        // ✅ Take first 4 for top features
+        const lastFour = sorted.slice(0, 4);
+
+        setPosts(lastFour);
+        setLoading(false);
+        clearInterval(interval);
+
+      } catch (err) {
+        setError("Error reading cache");
+        setLoading(false);
+        clearInterval(interval);
+      }
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  if (error) return <Status>{error}</Status>;
+  if (posts.length === 0) return <Status>No posts available.</Status>;
+
+  return (
+    <Container>
+      <SectionTitle>Featured Posts</SectionTitle>
+      <Grid>
+        {/* Main Big Feature Card */}
+        <RouterButton to={`/post/${posts[0].slug}`}>
+          <FeatureCard>
+            <FeatureImageWrapper>
+              <FeatureImage src={posts[0].image} alt={posts[0].title} />
+            </FeatureImageWrapper>
+            <FeatureContent>
+              <FeatureTitle>{posts[0].title}</FeatureTitle>
+              <FeatureDate>
+                {new Date(posts[0].created_at).toDateString()}
+              </FeatureDate>
+            </FeatureContent>
+          </FeatureCard>
+        </RouterButton>
+
+        {/* Small Sidebar Cards */}
+        <SmallCardsContainer>
+          {posts.slice(1).map((post) => (
+            <RouterButton to={`/post/${post.slug}`} key={post.id}>
+              <SmallCard>
+                <SmallImageWrapper>
+                  <SmallImage src={post.image} alt={post.title} />
+                </SmallImageWrapper>
+                <SmallContent>
+                  <SmallTitle>{post.title}</SmallTitle>
+                  <SmallDate>
+                    {new Date(post.created_at).toDateString()}
+                  </SmallDate>
+                </SmallContent>
+              </SmallCard>
+            </RouterButton>
+          ))}
+        </SmallCardsContainer>
+      </Grid>
+    </Container>
+  );
+}
+
+// ---------------- STYLES ---------------- //
+
+const Container = styled.div`
+  margin: 60px 0;
+  font-family: "Poppins", sans-serif;
+`;
+
+const SectionTitle = styled.h2`
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: green;
+`;
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 32px;
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+`;
+
+/* --- Big Main Feature Card Styles --- */
+const FeatureCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  // background: #ffffff;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  // box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+
+  &:hover {
+    transform: translateY(-4px);
+    // box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const FeatureImageWrapper = styled.div`
+  max-width: 100%;
+  max-height: 360px;
+  // background-color: #f3f4f6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+  @media (max-width: 576px) {
+    max-height: 240px;
+  }
+`;
+
+const FeatureImage = styled.img`
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+`;
+
 const FeatureContent = styled.div`
-  position: absolute;
-  bottom: 15px;
-  left: 15px;
-  color: white;
-  z-index: 2; /* important */
-  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.7);
+  padding: 20px 8px 12px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;
 
 const FeatureTitle = styled.h3`
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 700;
+  // color: #111827;
+  color:green;
+  margin: 0;
+  line-height: 1.4;
 `;
 
 const FeatureDate = styled.div`
-  font-size: 14px;
-  margin-top: 6px;
+  font-size: 0.85rem;
+  color: #6b7280;
 `;
 
-const SmallCards = styled.div`
+/* --- Smaller Sidebar Cards Styles --- */
+const SmallCardsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
 
-  @media(max-width:768px){
-  flex-direction:row;
-  flex-wrap:wrap;
-  justify-content:center;
-  align-items:center;
+  @media (max-width: 992px) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
   }
 `;
 
 const SmallCard = styled.div`
   display: flex;
-  gap: 12px;
-  // background: #fff0f5;
-  background:white;
+  gap: 16px;
+  background: #ffffff;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: 0.3s;
-
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.04);
 
   &:hover {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.08);
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 576px) {
     flex-direction: column;
-     width:300px;
+    gap: 0;
   }
 `;
 
-const SmallImage = styled.img`
-  width: 120px;
-  height: 100px;
-  object-fit: cover;
-  object-position:top;
+const SmallImageWrapper = styled.div`
+  width: 140px;
+  height: 110px;
+  background-color: #f3f4f6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
   flex-shrink: 0;
 
-  @media (max-width: 768px) {
+  @media (max-width: 576px) {
     width: 100%;
     height: 180px;
   }
 `;
 
+// const SmallImage = styled.img`
+//   max-width: 100%;
+//   max-height: 100%;
+//   object-fit: cover;
+//   display: block;
+// `;
+
+const SmallImage = styled.img`
+  width: 100%;
+  height: 100%;
+  
+  /* Forces the small image to scale up and fully cover its box frame */
+  object-fit: cover; 
+  
+  /* Focuses the crop perspective toward the top-center of the image */
+  object-position: top center; 
+  display: block;
+`;
+
 const SmallContent = styled.div`
-  padding: 10px;
+  padding: 12px 8px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 6px;
 `;
 
 const SmallTitle = styled.h4`
-  font-size: 0.7rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  color:green;
-  margin-bottom:5px;
+  color: green;
+  margin: 0;
+  line-height: 1.4;
+  
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `;
 
 const SmallDate = styled.div`
-  font-size: 0.7rem;
-  opacity: 0.6;
+  font-size: 0.8rem;
+  color: #6b7280;
 `;
 
 const RouterButton = styled(Link)`
@@ -323,171 +548,7 @@ const RouterButton = styled(Link)`
 
 const Status = styled.div`
   text-align: center;
-  font-size: 1.2rem;
-  color: #555;
+  font-size: 1.1rem;
+  color: #6b7280;
   margin: 40px 0;
 `;
-
-
-
-
-
-
-
-
-
-// import React, { useEffect, useState } from "react";
-// import styled from "styled-components";
-// import { Slide } from "react-awesome-reveal";
-// import { useNavigate } from "react-router-dom";
-// import axios from "axios";
-
-// export default function FeaturedPosts() {
-//   const categoryId = 0;
-//   const [posts, setPosts] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     const fetchPosts = async () => {
-//       setLoading(true);
-//       setError(null);
-
-//       try {
-//         const res = await axios.get(
-//           `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${categoryId}&t=${Date.now()}`
-//         );
-
-//         if (res.data?.success) {
-//           const fetchedPosts = res.data.posts || [];
-//           const lastFourPosts = fetchedPosts.slice(0, 4);
-//           setPosts(lastFourPosts);
-//         } else {
-//           setPosts([]);
-//           setError(res.data?.error || "No posts found");
-//         }
-//       } catch (err) {
-//         setPosts([]);
-//         setError("Network error");
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchPosts();
-//   }, []);
-
-//   if (loading) return <Status>Loading posts...</Status>;
-//   if (error) return <Status>{error}</Status>;
-//   if (posts.length === 0) return <Status>No posts available.</Status>;
-
-//   return (
-//     <Container>
-//       <SectionTitle>Featured Posts</SectionTitle>
-
-//       <Grid>
-//         {posts.map((post, i) => (
-//           <Slide
-//             key={post.id}
-//             direction="up"
-//             duration={1200}
-//             delay={i * 150}
-//             triggerOnce
-//           >
-//             <BlogCard
-//               bg={post.image}
-//               onClick={() => navigate(`/post/${post.slug}`)}
-//             >
-//               <Overlay />
-//               <CardContent>
-//                 <h3>{post.title}</h3>
-//                 <BlogMeta>
-//                   {new Date(post.created_at).toDateString()}
-//                 </BlogMeta>
-//               </CardContent>
-//             </BlogCard>
-//           </Slide>
-//         ))}
-//       </Grid>
-//     </Container>
-//   );
-// }
-
-// /* ================= STYLES ================= */
-
-// const Container = styled.div`
-//   margin: 60px 0;
-// `;
-
-// const SectionTitle = styled.h2`
-//   font-size: 28px;
-//   font-weight: 700;
-//   margin-bottom: 25px;
-//   color: green;
-// `;
-
-// const Grid = styled.div`
-//   display: grid;
-//   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-
-//   gap: 25px;
-// `;
-
-// const BlogCard = styled.div`
-//   position: relative;
-//   height: 220px;
-//   border-radius: 18px;
-//   overflow: hidden;
-//   background-image: url(${props => props.bg});
-//   background-size: contain;
-//   background-position: center;
-//   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
-//   cursor: pointer;
-//   transition: transform 0.4s ease, box-shadow 0.4s ease;
-//     max-width:600px;
-
-//   &:hover {
-//     transform: translateY(-8px) scale(1.02);
-//     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
-//     background-size: 110%;
-//   }
-// `;
-
-// const Overlay = styled.div`
-//   position: absolute;
-//   inset: 0;
-//   background: linear-gradient(
-//     to top,
-//     rgba(0, 0, 0, 1),
-//     rgba(0, 0, 0, 0.7),
-//     rgba(0, 0, 0, 0.05)
-//   );
-// `;
-
-// const CardContent = styled.div`
-//   position: absolute;
-//   bottom: 0;
-//   padding: 12px;
-//   z-index: 2;
-//   color: #fff;
-
-//   h3 {
-//     font-size: 0.8rem;
-//     font-weight: 600;
-//     margin-bottom: 5px;
-//   }
-// `;
-
-// const BlogMeta = styled.div`
-//   font-size: 0.7rem;
-//   color: #d1d5db;
-//   font-style: italic;
-// `;
-
-// const Status = styled.div`
-//   text-align: center;
-//   font-size: 1.2rem;
-//   color: #555;
-//   margin: 40px 0;
-// `;

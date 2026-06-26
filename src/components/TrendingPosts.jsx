@@ -345,10 +345,10 @@ const PostCard = styled.div.withConfig({
 })`
   display: flex;
   flex-direction: ${({ large }) => (large ? "column" : "row")};
-  background: white;
+  // background: white;
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0px 8px 25px rgba(0,0,0,0.1);
+  // box-shadow: 0px 8px 25px rgba(0,0,0,0.1);
   transition: 0.3s;
   cursor: pointer;
   max-width:400px;
@@ -365,9 +365,9 @@ const PostCard = styled.div.withConfig({
 const PostImage = styled.img.withConfig({
   shouldForwardProp: (prop) => prop !== "large",
 })`
-  width: ${({ large }) => (large ? "100%" : "150px")};
-  height: ${({ large }) => (large ? "300px" : "100px")};
-  object-fit: cover;
+  max-width: ${({ large }) => (large ? "100%" : "150px")};
+  max-height: ${({ large }) => (large ? "300px" : "100px")};
+  object-fit: contain;
   object-position:top;
   flex-shrink: 0;
 `;

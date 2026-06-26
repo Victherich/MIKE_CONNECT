@@ -198,7 +198,7 @@ const handleNewsletterSubmit = async () => {
         <Fade cascade duration={3000}>
           <BlogGrid>
             {posts.slice(0,3).map((blog, i) => (
-              <BlogCard key={i} as={Link} to={`/post/${blog.id}`}>
+              <BlogCard key={i} as={Link} to={`/post/${blog.slug}`}>
                 <img src={blog.image} alt="" />
                 <p>{blog.title}</p>
                 <span>{blog.date}</span>
@@ -207,7 +207,7 @@ const handleNewsletterSubmit = async () => {
           </BlogGrid>
         </Fade>
 
-        <EntertainmentPosts />
+        <EntertainmentPosts/>
         <RelationshipPosts />
 
         <Fade duration={3000}>
@@ -535,7 +535,7 @@ const BlogGrid = styled.div`
 
 const BlogCard = styled.div`
   img {
-    width: 100%;
+    max-width: 100%;
     border-radius: 8px;
     margin-bottom: 12px;
   }

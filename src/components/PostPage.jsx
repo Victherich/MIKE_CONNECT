@@ -41,68 +41,6 @@ export default function PostPage() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (!postId) return;
-
-  //   setLoading(true);
-  //   setError(null);
-
-  //   axios
-  //     .get(
-  //       `https://www.mikeconnect.com/mc_api/get_post_by_id.php?id=${postId}&t=${Date.now()}`,
-  //       {
-  //         headers: {
-  //           "Cache-Control": "no-cache",
-  //           Pragma: "no-cache",
-  //         },
-  //       }
-  //     )
-  //     .then(res => {
-  //       if (res.data?.success) {
-  //         setPost(res.data.post);
-  //       } else {
-  //         setError(res.data?.error || "Post not found");
-  //       }
-  //     })
-  //     .catch(() => setError("Network error"))
-  //     .finally(() => setLoading(false));
-  // }, [postId]);
-
-
-
-
-//   useEffect(() => {
-//   if (!slug) return;
-
-//   setLoading(true);
-//   setError(null);
-
-//   axios
-//     .get(
-//       `https://www.mikeconnect.com/mc_api/get_post_by_slug.php?slug=${slug}&t=${Date.now()}`,
-//       {
-//         headers: {
-//           "Cache-Control": "no-cache",
-//           Pragma: "no-cache",
-//         },
-//       }
-//     )
-//     .then((res) => {
-//       if (res.data?.success) {
-//         setPost(res.data.post);
-//       } else {
-//         setError(res.data?.error || "Post not found");
-//       }
-//     })
-//     .catch(() => {
-//       setError("Network error");
-//     })
-//     .finally(() => {
-//       setLoading(false);
-//     });
-// }, [slug]);
-
-
 
 
 
@@ -153,13 +91,26 @@ useEffect(() => {
 
   return (
     <Wrapper>
-      <Hero style={{ backgroundImage: `url(${post.image})` }}>
+
+      <HeaderContainer>
+    <Title>{post.title}</Title>
+    <Meta>Published on {new Date(post.created_at).toDateString()}</Meta>
+  </HeaderContainer>
+
+  {post.image && (
+    <ImageWrapper>
+      <BlogImage src={post.image} alt={post.title} />
+    </ImageWrapper>
+  )}
+
+
+      {/* <Hero style={{ backgroundImage: `url(${post.image})` }}>
         <Overlay />
         <HeroContent>
           <Title>{post.title}</Title>
           <Meta>{new Date(post.created_at).toDateString()}</Meta>
         </HeroContent>
-      </Hero>
+      </Hero> */}
 
 
 
@@ -257,24 +208,24 @@ const HeroContent = styled.div`
   }
 `;
 
-const Title = styled.h1`
-  font-size: 2rem;
-  line-height: 1.2;
-  margin-bottom: 12px;
+// const Title = styled.h1`
+//   font-size: 2rem;
+//   line-height: 1.2;
+//   margin-bottom: 12px;
 
-  @media (max-width: 768px) {
-    font-size: 1.5rem;
-  }
+//   @media (max-width: 768px) {
+//     font-size: 1.5rem;
+//   }
 
-   @media (max-width: 360px) {
-    font-size: 1rem;
-  }
-`;
+//    @media (max-width: 360px) {
+//     font-size: 1rem;
+//   }
+// `;
 
-const Meta = styled.div`
-  font-size: 0.95rem;
-  opacity: 0.85;
-`;
+// const Meta = styled.div`
+//   font-size: 0.95rem;
+//   opacity: 0.85;
+// `;
 
 const ContentWrapper = styled.div`
   max-width: 900px;
@@ -282,7 +233,7 @@ const ContentWrapper = styled.div`
   padding: 40px;
   background: white;
   border-radius: 16px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  // box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
 
   @media (max-width: 768px) {
  
@@ -391,4 +342,93 @@ const LinkItem = styled.div`
       color: #1e40af;
     }
   }
+`;
+
+
+const HeaderContainer = styled.header`
+  max-width: 740px;      /* Matches clean, readable modern reading widths */
+  margin: 0 auto;
+  padding: 40px 20px 24px 20px;
+`;
+
+const Title = styled.h1`
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: 900;
+  // color: #111827;        /* Crisp, modern near-black */
+  margin-bottom: 12px;
+  color:green;
+  text-align:center;
+
+  @media (max-width: 768px) {
+    font-size: 1.85rem;
+  }
+`;
+
+const Meta = styled.div`
+  font-size: 0.95rem;
+  color: #6b7280;        /* Sleek modern gray */
+  text-align:center;
+`;
+
+// const ImageWrapper = styled.div`
+//   max-width: 900px;
+//   margin: 0 auto 40px auto;
+//   // background-color: #f3f4f6; /* Subdued gray canvas background so odd-sized images blend nicely */
+//   border-radius: 12px;
+//   overflow: hidden;
+  
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+  
+//   /* Hard ceiling ensures portrait images don't stretch excessively vertical */
+//   max-height: 500px; 
+//   width: 100%;
+//   padding: 0;
+// `;
+
+
+
+// const BlogImage = styled.img`
+//   max-width: 100%;
+//   height: auto;          /* Keep this! It ensures the aspect ratio scales correctly */
+//   // max-height: 500px;     /* Keep this! It caps tall portrait images so they don't break the page */
+  
+//   /* Keeps original aspect ratio entirely visible without cropping */
+//   object-fit: contain; 
+//   display: block;
+// `;
+
+
+
+const ImageWrapper = styled.div`
+  max-width: 900px;
+  margin: 0 auto 40px auto;
+  border-radius: 12px;
+  overflow: hidden;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* Caps the container height for tall portrait images */
+  max-height: 500px; 
+  width: 100%;
+  padding: 0;
+`;
+
+const BlogImage = styled.img`
+  /* Small images stay small/sharp; large images shrink safely */
+  max-width: 100%;
+  
+  /* Scales the image proportionally */
+  height: auto;          
+  
+  /* Caps the image height so it matches the wrapper and won't overflow */
+  max-height: 500px;     
+  
+  /* Keeps the full image visible without stretching or cropping */
+  object-fit: contain; 
+  display: block;
 `;

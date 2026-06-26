@@ -1,129 +1,380 @@
 
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { Slide } from "react-awesome-reveal";
-import { Link } from "react-router-dom";
-import axios from "axios";
+// import React, { useEffect, useState } from "react";
+// import styled from "styled-components";
+// import { Slide } from "react-awesome-reveal";
+// import { Link } from "react-router-dom";
+// import axios from "axios";
 
-export default function FeaturedPosts2() {
-  const categoryId = 0; // Relationship posts category ID
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+// export default function FeaturedPosts2() {
+//   const categoryId = 0; // Relationship posts category ID
+//   const [posts, setPosts] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchPosts = async () => {
-  //     setLoading(true);
-  //     setError(null);
+//   // useEffect(() => {
+//   //   const fetchPosts = async () => {
+//   //     setLoading(true);
+//   //     setError(null);
 
-  //     try {
-  //       const res = await axios.get(
-  //         `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${categoryId}&t=${Date.now()}`
-  //       );
+//   //     try {
+//   //       const res = await axios.get(
+//   //         `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${categoryId}&t=${Date.now()}`
+//   //       );
 
-  //       if (res.data?.success) {
-  //         const fetchedPosts = res.data.posts || [];
-  //         const lastFourPosts = fetchedPosts.slice(5,9); // Take only last 4 posts
-  //         setPosts(lastFourPosts);
-  //       } else {
-  //         setPosts([]);
-  //         setError(res.data?.error || "No posts found");
-  //       }
-  //     } catch (err) {
-  //       setPosts([]);
-  //       setError("Network error");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+//   //       if (res.data?.success) {
+//   //         const fetchedPosts = res.data.posts || [];
+//   //         const lastFourPosts = fetchedPosts.slice(5,9); // Take only last 4 posts
+//   //         setPosts(lastFourPosts);
+//   //       } else {
+//   //         setPosts([]);
+//   //         setError(res.data?.error || "No posts found");
+//   //       }
+//   //     } catch (err) {
+//   //       setPosts([]);
+//   //       setError("Network error");
+//   //     } finally {
+//   //       setLoading(false);
+//   //     }
+//   //   };
 
-  //   fetchPosts();
-  // }, []);
+//   //   fetchPosts();
+//   // }, []);
 
-useEffect(() => {
-  const cacheKey = "all_posts";
+// useEffect(() => {
+//   const cacheKey = "all_posts";
 
-  const interval = setInterval(() => {
-    try {
-      const cached = localStorage.getItem(cacheKey);
+//   const interval = setInterval(() => {
+//     try {
+//       const cached = localStorage.getItem(cacheKey);
 
-      if (!cached) {
-        console.log("Waiting for posts...");
-        return;
-      }
+//       if (!cached) {
+//         console.log("Waiting for posts...");
+//         return;
+//       }
 
-      const allPosts = JSON.parse(cached);
+//       const allPosts = JSON.parse(cached);
 
-      if (!allPosts.length) return;
+//       if (!allPosts.length) return;
 
-      // ✅ Sort latest first
-      const sorted = [...allPosts].sort(
-        (a, b) => new Date(b.created_at) - new Date(a.created_at)
-      );
+//       // ✅ Sort latest first
+//       const sorted = [...allPosts].sort(
+//         (a, b) => new Date(b.created_at) - new Date(a.created_at)
+//       );
 
-      // ✅ Get 5th → 8th posts
-      const postsSlice = sorted.slice(4, 8);
+//       // ✅ Get 5th → 8th posts
+//       const postsSlice = sorted.slice(4, 8);
 
-      setPosts(postsSlice);
-      setLoading(false);
+//       setPosts(postsSlice);
+//       setLoading(false);
 
-      // ✅ stop polling
-      clearInterval(interval);
+//       // ✅ stop polling
+//       clearInterval(interval);
 
-    } catch (err) {
-      setError("Error loading posts");
-      setLoading(false);
-      clearInterval(interval);
-    }
-  }, 500);
+//     } catch (err) {
+//       setError("Error loading posts");
+//       setLoading(false);
+//       clearInterval(interval);
+//     }
+//   }, 500);
 
-  return () => clearInterval(interval);
-}, []);
+//   return () => clearInterval(interval);
+// }, []);
 
 
 
 
  
-  // if (loading) return <Status>Loading posts...</Status>;
+//   // if (loading) return <Status>Loading posts...</Status>;
+//   if (error) return <Status>{error}</Status>;
+//   if (posts.length === 0) return;
+
+//   return (
+//     <Container>
+//       <SectionTitle style={{color:"green"}}>All Stories</SectionTitle>
+//       <Grid>
+
+//          {/* Small Cards */}
+//         <SmallCards>
+//           {posts.slice(1).map((post, i) => (
+//             // <Slide key={i} direction="up" duration={2000} delay={i * 200} triggerOnce>
+//               <RouterButton to={`/post/${post.slug}`} key={post.id}>
+//                 <SmallCard>
+//                   <SmallImage src={post.image} />
+//                   <SmallContent>
+//                     <SmallTitle>{post.title}</SmallTitle>
+//                     <SmallDate>{new Date(post.created_at).toDateString()}</SmallDate>
+//                   </SmallContent>
+//                 </SmallCard>
+//               </RouterButton>
+//             // </Slide>
+//           ))}
+//         </SmallCards>
+        
+//         {/* Feature Card */}
+//         {/* <Slide direction="up" duration={2000} triggerOnce> */}
+//           <RouterButton to={`/post/${posts[0].slug}`}>
+//             <FeatureCard>
+//               <FeatureImage src={posts[0].image} />
+//               <FeatureContent>
+//                 <FeatureTitle>{posts[0].title}</FeatureTitle>
+//                 <FeatureDate>{new Date(posts[0].created_at).toDateString()}</FeatureDate>
+//               </FeatureContent>
+//             </FeatureCard>
+//           </RouterButton>
+//         {/* </Slide> */}
+
+       
+//       </Grid>
+//     </Container>
+//   );
+// }
+
+// // ---------------- STYLES ---------------- //
+
+// const Container = styled.div`
+//   margin: 60px 0;
+// `;
+
+// const SectionTitle = styled.h2`
+//   font-size: 28px;
+//   font-weight: 700;
+//   margin-bottom: 25px;
+//   // background: linear-gradient(90deg, #ff6b81, #ffb347, #ff6b6b);
+//   // -webkit-background-clip: text;
+//   // -webkit-text-fill-color: transparent;
+// `;
+
+// const Grid = styled.div`
+//   display: grid;
+//   grid-template-columns: 2fr 1fr;
+//   gap: 20px;
+
+//   @media (max-width: 768px) {
+//     grid-template-columns: 1fr;
+//   }
+// `;
+
+// const FeatureCard = styled.div`
+//   position: relative;
+//   border-radius: 14px;
+//   overflow: hidden;
+//   cursor: pointer;
+//   box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1);
+//   transition: 0.3s;
+
+//   &:hover {
+//     transform: scale(1.03);
+//   }
+
+//   /* Overlay */
+//   &::after {
+//     content: "";
+//     position: absolute;
+//     inset: 0;
+//     background: linear-gradient(
+//       to top,
+//       rgba(0, 0, 0, 1) 0%,   /* dark at bottom */
+//       rgba(0, 0, 0, 0.5) 40%,
+//       rgba(0, 0, 0, 0.05) 70%,
+//       rgba(0, 0, 0, 0) 100%   /* transparent at top */
+//     );
+//     z-index: 1;
+//   }
+// `;
+
+
+// const FeatureImage = styled.img`
+//   width: 100%;
+//   height: 350px;
+//   object-fit: cover;
+//   object-position:top;
+// `;
+
+// const FeatureContent = styled.div`
+//   position: absolute;
+//   bottom: 15px;
+//   left: 15px;
+//   color: white;
+//   z-index: 2; /* important */
+//   text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.7);
+// `;
+
+// const FeatureTitle = styled.h3`
+//   font-size: 0.9rem;
+//   font-weight: 700;
+// `;
+
+// const FeatureDate = styled.div`
+//   font-size: 14px;
+//   margin-top: 6px;
+// `;
+
+// const SmallCards = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 20px;
+
+//     @media(max-width:768px){
+//   flex-direction:row;
+//   flex-wrap:wrap;
+//   justify-content:center;
+//   align-items:center;
+//   }
+// `;
+
+// const SmallCard = styled.div`
+//   display: flex;
+//   gap: 12px;
+//   background:white;
+//   border-radius: 12px;
+//   overflow: hidden;
+//   box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
+//   cursor: pointer;
+//   transition: 0.3s;
+ 
+
+//   &:hover {
+//     transform: translateY(-5px);
+//   }
+
+//   @media (max-width: 768px) {
+//     flex-direction: column;
+//      width:300px;
+//   }
+// `;
+
+// const SmallImage = styled.img`
+//   width: 120px;
+//   height: 100px;
+//   object-fit: cover;
+//   object-position:top;
+//   flex-shrink: 0;
+
+//   @media (max-width: 768px) {
+//     width: 100%;
+//     height: 180px;
+//   }
+// `;
+
+// const SmallContent = styled.div`
+//   padding: 10px;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+// `;
+
+// const SmallTitle = styled.h4`
+//   font-size: 0.8rem;
+//   font-weight: 600;
+// `;
+
+// const SmallDate = styled.div`
+//   font-size: 12px;
+//   opacity: 0.6;
+// `;
+
+// const RouterButton = styled(Link)`
+//   display: block;
+//   text-decoration: none;
+//   color: inherit;
+// `;
+
+// const Status = styled.div`
+//   text-align: center;
+//   font-size: 1.2rem;
+//   color: #555;
+//   margin: 40px 0;
+// `;
+
+
+
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+
+export default function FeaturedPosts2() {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const cacheKey = "all_posts";
+
+    const interval = setInterval(() => {
+      try {
+        const cached = localStorage.getItem(cacheKey);
+
+        if (!cached) {
+          console.log("Waiting for posts...");
+          return;
+        }
+
+        const allPosts = JSON.parse(cached);
+
+        if (!allPosts.length) return;
+
+        // ✅ Sort latest first
+        const sorted = [...allPosts].sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        );
+
+        // ✅ Get 5th → 8th posts
+        const postsSlice = sorted.slice(4, 8);
+
+        setPosts(postsSlice);
+        setLoading(false);
+        clearInterval(interval);
+
+      } catch (err) {
+        setError("Error loading posts");
+        setLoading(false);
+        clearInterval(interval);
+      }
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, []);
+
   if (error) return <Status>{error}</Status>;
-  if (posts.length === 0) return;
+  if (posts.length === 0) return null;
 
   return (
     <Container>
-      <SectionTitle style={{color:"green"}}>All Stories</SectionTitle>
+      <SectionTitle>All Stories</SectionTitle>
       <Grid>
-
-         {/* Small Cards */}
-        <SmallCards>
-          {posts.slice(1).map((post, i) => (
-            // <Slide key={i} direction="up" duration={2000} delay={i * 200} triggerOnce>
-              <RouterButton to={`/post/${post.slug}`} key={post.id}>
-                <SmallCard>
-                  <SmallImage src={post.image} />
-                  <SmallContent>
-                    <SmallTitle>{post.title}</SmallTitle>
-                    <SmallDate>{new Date(post.created_at).toDateString()}</SmallDate>
-                  </SmallContent>
-                </SmallCard>
-              </RouterButton>
-            // </Slide>
+        {/* Small Cards Layout (Left Sidebar) */}
+        <SmallCardsContainer>
+          {posts.slice(1).map((post) => (
+            <RouterButton to={`/post/${post.slug}`} key={post.id}>
+              <SmallCard>
+                <SmallImageWrapper>
+                  <SmallImage src={post.image} alt={post.title} />
+                </SmallImageWrapper>
+                <SmallContent>
+                  <SmallTitle>{post.title}</SmallTitle>
+                  <SmallDate>
+                    {new Date(post.created_at).toDateString()}
+                  </SmallDate>
+                </SmallContent>
+              </SmallCard>
+            </RouterButton>
           ))}
-        </SmallCards>
-        
-        {/* Feature Card */}
-        {/* <Slide direction="up" duration={2000} triggerOnce> */}
-          <RouterButton to={`/post/${posts[0].slug}`}>
-            <FeatureCard>
-              <FeatureImage src={posts[0].image} />
-              <FeatureContent>
-                <FeatureTitle>{posts[0].title}</FeatureTitle>
-                <FeatureDate>{new Date(posts[0].created_at).toDateString()}</FeatureDate>
-              </FeatureContent>
-            </FeatureCard>
-          </RouterButton>
-        {/* </Slide> */}
+        </SmallCardsContainer>
 
-       
+        {/* Feature Card Layout (Right Spotlight) */}
+        <RouterButton to={`/post/${posts[0].slug}`}>
+          <FeatureCard>
+            <FeatureImageWrapper>
+              <FeatureImage src={posts[0].image} alt={posts[0].title} />
+            </FeatureImageWrapper>
+            <FeatureContent>
+              <FeatureTitle>{posts[0].title}</FeatureTitle>
+              <FeatureDate>
+                {new Date(posts[0].created_at).toDateString()}
+              </FeatureDate>
+            </FeatureContent>
+          </FeatureCard>
+        </RouterButton>
       </Grid>
     </Container>
   );
@@ -133,144 +384,164 @@ useEffect(() => {
 
 const Container = styled.div`
   margin: 60px 0;
+  font-family: "Poppins", sans-serif;
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: 700;
-  margin-bottom: 25px;
-  // background: linear-gradient(90deg, #ff6b81, #ffb347, #ff6b6b);
-  // -webkit-background-clip: text;
-  // -webkit-text-fill-color: transparent;
+  margin-bottom: 24px;
+  color: green;
 `;
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 20px;
+  grid-template-columns: 1fr 1.6fr; /* Flipped order layout */
+  gap: 32px;
 
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+  @media (max-width: 992px) {
+    display: flex;
+    flex-direction: column-reverse; /* Small cards flow above big hero naturally on mobile */
+    gap: 24px;
   }
 `;
 
+/* --- Big Main Spotlight Feature Card Styles --- */
 const FeatureCard = styled.div`
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  // background: #ffffff;
   border-radius: 14px;
   overflow: hidden;
-  cursor: pointer;
-  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1);
-  transition: 0.3s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  // box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
 
   &:hover {
-    transform: scale(1.03);
-  }
-
-  /* Overlay */
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 1) 0%,   /* dark at bottom */
-      rgba(0, 0, 0, 0.5) 40%,
-      rgba(0, 0, 0, 0.05) 70%,
-      rgba(0, 0, 0, 0) 100%   /* transparent at top */
-    );
-    z-index: 1;
+    transform: translateY(-4px);
+    // box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
   }
 `;
 
+const FeatureImageWrapper = styled.div`
+  max-width: 100%;
+  max-height: 360px;
+  // background-color: #f3f4f6; /* Blends portrait/landscape assets nicely */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+  @media (max-width: 576px) {
+    max-height: 240px;
+  }
+`;
 
 const FeatureImage = styled.img`
-  width: 100%;
-  height: 350px;
-  object-fit: cover;
-  object-position:top;
+  max-width: 100%;
+max-height: 100%;
+  object-fit: contain; /* Keeps whole vertical or wide layout un-cropped */
+  // object-fit:cover;
+  display: block;
+  // object-position:top;
 `;
 
 const FeatureContent = styled.div`
-  position: absolute;
-  bottom: 15px;
-  left: 15px;
-  color: white;
-  z-index: 2; /* important */
-  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.7);
+  padding: 20px 8px 12px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;
 
 const FeatureTitle = styled.h3`
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 700;
+  // color: #111827;
+  color:green;
+  margin: 0;
+  line-height: 1.4;
 `;
 
 const FeatureDate = styled.div`
-  font-size: 14px;
-  margin-top: 6px;
+  font-size: 0.85rem;
+  color: #6b7280;
 `;
 
-const SmallCards = styled.div`
+/* --- Left Sided Smaller Items Styles --- */
+const SmallCardsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
 
-    @media(max-width:768px){
-  flex-direction:row;
-  flex-wrap:wrap;
-  justify-content:center;
-  align-items:center;
+  @media (max-width: 992px) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
   }
 `;
 
 const SmallCard = styled.div`
   display: flex;
-  gap: 12px;
-  background:white;
+  gap: 16px;
+  background: #ffffff;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: 0.3s;
- 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.04);
 
   &:hover {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.08);
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 576px) {
     flex-direction: column;
-     width:300px;
+    gap: 0;
   }
 `;
 
-const SmallImage = styled.img`
-  width: 120px;
-  height: 100px;
-  object-fit: cover;
-  object-position:top;
+const SmallImageWrapper = styled.div`
+  width: 140px;
+  height: 110px;
+  overflow: hidden;
   flex-shrink: 0;
 
-  @media (max-width: 768px) {
+  @media (max-width: 576px) {
     width: 100%;
     height: 180px;
   }
 `;
 
+const SmallImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Fills and covers the small square bounds fully */
+  display: block;
+`;
+
 const SmallContent = styled.div`
-  padding: 10px;
+  padding: 12px 8px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 6px;
 `;
 
 const SmallTitle = styled.h4`
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   font-weight: 600;
+  color: green;
+  margin: 0;
+  line-height: 1.4;
+  
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `;
 
 const SmallDate = styled.div`
-  font-size: 12px;
-  opacity: 0.6;
+  font-size: 0.8rem;
+  color: #6b7280;
 `;
 
 const RouterButton = styled(Link)`
@@ -281,7 +552,7 @@ const RouterButton = styled(Link)`
 
 const Status = styled.div`
   text-align: center;
-  font-size: 1.2rem;
-  color: #555;
+  font-size: 1.1rem;
+  color: #6b7280;
   margin: 40px 0;
 `;

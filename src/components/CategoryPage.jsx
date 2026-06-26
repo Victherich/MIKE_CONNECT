@@ -1,11 +1,397 @@
 
 
 
+// import React, { useContext, useEffect, useState, useMemo } from "react";
+// import { useNavigate, useParams } from "react-router-dom";
+// import styled from "styled-components";
+// import { Context } from "./Context";
+// import axios from "axios";
+// import SidebarPostTicker from "./SidebarPostTicker";
+
+// export default function CategoryPage() {
+//   const { categories = [] } = useContext(Context);
+//   const { id } = useParams();
+
+//   const categoryId = Number(id);
+//   const isValidCategoryId = Number.isInteger(categoryId);
+
+//   const [posts, setPosts] = useState([]);
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState(null);
+//   const [page, setPage] = useState(1);
+//   const [availablePages, setAvailablePages] = useState([1]);
+//   const navigate = useNavigate();
+
+
+//   const limit = 50;
+
+//   const category = useMemo(() => {
+//     return categories.find(c => Number(c.id) === categoryId);
+//   }, [categories, categoryId]);
+
+
+
+// const fetchPosts = (pageNum = 1) => {
+//   if (!isValidCategoryId) return;
+
+//   setLoading(true);
+//   setError(null);
+
+//   let retries = 0;
+//   const maxRetries = 1000;
+
+//   const interval = setInterval(() => {
+//     try {
+//       const cached = localStorage.getItem("all_posts");
+
+//       if (!cached) {
+//         retries += 1;
+//         console.log(`Retrying... (${retries}/${maxRetries})`);
+
+//         if (retries >= maxRetries) {
+//           clearInterval(interval);
+//           setPosts([]);
+//           setError("No cached posts found after retries");
+//           setLoading(false);
+//         }
+//         return;
+//       }
+
+//       const allPosts = JSON.parse(cached);
+
+//       // 🔥 filter by category
+//       const categoryPosts = allPosts.filter(post => {
+//         if (!post.category) return false;
+
+//         const cats = post.category.split(",").map(Number);
+//         return cats.includes(categoryId);
+//       });
+
+//       // 🔥 sort latest first
+//       const sorted = [...categoryPosts].sort(
+//         (a, b) => new Date(b.created_at) - new Date(a.created_at)
+//       );
+
+//       // 🔥 pagination
+//       const start = (pageNum - 1) * limit;
+//       const end = start + limit;
+
+//       const paginated = sorted.slice(start, end);
+
+//       setPosts(paginated);
+
+//       // 🔥 update pagination
+//       if (sorted.length > end) {
+//         setAvailablePages(prev => {
+//           const nextPage = pageNum + 1;
+//           return prev.includes(nextPage) ? prev : [...prev, nextPage];
+//         });
+//       }
+
+//       clearInterval(interval); // stop on success
+//       setLoading(false);
+
+//     } catch (err) {
+//       retries += 1;
+
+//       if (retries >= maxRetries) {
+//         clearInterval(interval);
+//         setPosts([]);
+//         setError("Error loading cached posts");
+//         setLoading(false);
+//       }
+//     }
+//   }, 100); // retry every 1 second
+// };
+
+
+
+//   // Initial load
+//   useEffect(() => {
+//     setPage(1);
+//     setAvailablePages([1]);
+//     fetchPosts(1);
+//   }, [categoryId, isValidCategoryId]);
+
+
+
+
+
+
+//   const handlePageClick = pageNum => {
+//     if (pageNum === page) return;
+//     setPage(pageNum);
+//     fetchPosts(pageNum);
+//   };
+
+
+//   return (
+//     <Layout>
+//  <PageWrapper>
+//       <CategoryTitle>
+//         {category?.title || "Category"} 
+     
+//       </CategoryTitle>
+
+//       {/* {loading && <Loading>Loading posts...</Loading>} */}
+//       {error && <NoBlogs>{error}</NoBlogs>}
+
+//       {!loading && !error && posts.length > 0 && (
+//         <>
+//           <BlogsGrid>
+//             {posts.map(post => (
+         
+
+//               <BlogCard
+//   key={post.id}
+//   bg={post.image || "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4"}
+//   onClick={()=>navigate(`/post/${post.slug}`)}
+// >
+//   <Overlay />
+//   <CardContent>
+//     <h3>{post.title}</h3>
+
+//     <BlogMeta>
+//       {new Date(post.created_at).toDateString()}
+//     </BlogMeta>
+//   </CardContent>
+// </BlogCard>
+
+//             ))}
+//           </BlogsGrid>
+
+//           {/* PAGINATION */}
+//           <PaginationWrapper>
+//             {availablePages.map(p => (
+//               <PageButton
+//                 key={p}
+//                 active={p === page}
+//                 onClick={() => handlePageClick(p)}
+//               >
+//                 {p}
+//               </PageButton>
+//             ))}
+//           </PaginationWrapper>
+//         </>
+//       )}
+
+//       {!loading && !error && posts.length === 0 && (
+//         <NoBlogs>No posts available in this category.</NoBlogs>
+//       )}
+//     </PageWrapper>
+    
+// <SidebarPostTicker/>
+
+//     </Layout>
+   
+//   );
+// }
+
+// const PaginationWrapper = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   margin-top: 40px;
+//   gap: 10px;
+// `;
+
+// const PageButton = styled.button`
+//   min-width: 40px;
+//   padding: 8px 12px;
+//   border-radius: 8px;
+//   border: none;
+//   background: ${({ active }) => (active ? "green" : "#e5e7eb")};
+//   color: ${({ active }) => (active ? "#fff" : "#333")};
+//   cursor: pointer;
+//   font-weight: 500;
+
+//   &:hover {
+//     background: green;
+//     color: #fff;
+//   }
+// `;
+
+
+
+// /* ================= STYLES ================= */
+// const PageWrapper = styled.div`
+//   // max-width: 1000px;
+//   margin: 50px auto;
+//   padding: 0 20px;
+//   font-family: "Poppins", sans-serif;
+//   width:100%;
+// `;
+// const CategoryTitle = styled.h1`
+//   font-size: 2rem;
+//   margin-bottom: 30px;
+//   color: green;
+//   text-align: center;
+// `;
+
+
+
+
+// const BlogsGrid = styled.div`
+//   display: grid;
+//   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+//   gap: 28px;
+
+// @media(max-width:768px){
+//  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+// }
+
+// `;
+
+
+// // const BlogCard = styled.div`
+// //   position: relative;
+// //   height: 220px;
+// //   border-radius: 18px;
+// //   overflow: hidden;
+// //   background-image: url(${props => props.bg});
+// //   background-size: cover;
+// //   background-position: center;
+// //   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+// //   cursor: pointer;
+// //   transition: transform 0.4s ease, box-shadow 0.4s ease;
+
+// //   &:hover {
+// //     transform: translateY(-8px) scale(1.02);
+// //     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+// //   }
+
+// //   &:hover ${'' /* zoom image illusion */} {
+// //     background-size: 110%;
+// //   }
+// // `;
+
+// const BlogImage = styled.img`
+//   width: 100%;
+//   height: 180px;
+//   object-fit: cover;
+//   border-radius: 10px;
+// `;
+
+// const Loading = styled.p`
+//   text-align: center;
+//   font-size: 1.2rem;
+//   color: #666;
+// `;
+// const NoBlogs = styled.p`
+//   text-align: center;
+//   font-size: 1.1rem;
+//   color: #777;
+// `;
+
+
+// // const Overlay = styled.div`
+// //   position: absolute;
+// //   inset: 0;
+// //   background: linear-gradient(
+// //     to top,
+// //     rgba(0, 0, 0, 1),
+// //     rgba(0, 0, 0, 0.25),
+// //     rgba(0, 0, 0, 0.05)
+// //   );
+// // `;
+
+
+// // const CardContent = styled.div`
+// //   position: absolute;
+// //   bottom: 0;
+// //   padding: 10px;
+// //   z-index: 2;
+// //   color: #fff;
+
+// //   h3 {
+// //     font-size: 1rem;
+// //     font-weight: 600;
+// //     margin-bottom: 5px;
+// //     // line-height: 1.3;
+// //   }
+// // `;
+
+// // const BlogMeta = styled.div`
+// //   font-size: 0.7rem;
+// //   color: #d1d5db;
+// //   font-style:italic;
+// // `;
+
+// // const Layout = styled.div`
+// //   display: grid;
+// //   // grid-template-columns: 1fr 320px;
+// //   gap: 30px;
+
+// //   @media (max-width: 1100px) {
+// //     grid-template-columns: 1fr;
+// //   }
+// // `;
+
+
+// const Layout = styled.div`
+// display:flex;
+
+// `
+
+
+// const BlogCard = styled.div`
+//   position: relative;
+//   height: 220px;
+//   border-radius: 18px;
+//   overflow: hidden;
+//   background-image: url(${props => props.bg});
+//   background-size: contain;
+//   background-position: center;
+//   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+//   cursor: pointer;
+//   transition: transform 0.4s ease, box-shadow 0.4s ease;
+//     max-width:500px;
+
+//   &:hover {
+//     transform: translateY(-8px) scale(1.02);
+//     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+//     background-size: 110%;
+//   }
+// `;
+
+// const Overlay = styled.div`
+//   position: absolute;
+//   inset: 0;
+//   background: linear-gradient(
+//     to top,
+//     rgba(0, 0, 0, 1),
+//     rgba(0, 0, 0, 0.7),
+//     rgba(0, 0, 0, 0.05)
+//   );
+// `;
+
+// const CardContent = styled.div`
+//   position: absolute;
+//   bottom: 0;
+//   padding: 12px;
+//   z-index: 2;
+//   color: #fff;
+
+//   h3 {
+//     font-size: 0.8rem;
+//     font-weight: 600;
+//     margin-bottom: 5px;
+//   }
+// `;
+
+// const BlogMeta = styled.div`
+//   font-size: 0.7rem;
+//   color: #d1d5db;
+//   font-style: italic;
+// `;
+
+
+
+
+
 import React, { useContext, useEffect, useState, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Context } from "./Context";
-import axios from "axios";
 import SidebarPostTicker from "./SidebarPostTicker";
 
 export default function CategoryPage() {
@@ -22,130 +408,82 @@ export default function CategoryPage() {
   const [availablePages, setAvailablePages] = useState([1]);
   const navigate = useNavigate();
 
-
   const limit = 50;
 
   const category = useMemo(() => {
     return categories.find(c => Number(c.id) === categoryId);
   }, [categories, categoryId]);
 
+  const fetchPosts = (pageNum = 1) => {
+    if (!isValidCategoryId) return;
 
+    setLoading(true);
+    setError(null);
 
-  
-//   const fetchPosts = (pageNum = 1) => {
-//     if (!isValidCategoryId) return;
+    let retries = 0;
+    const maxRetries = 1000;
 
-//     setLoading(true);
-//     setError(null);
+    const interval = setInterval(() => {
+      try {
+        const cached = localStorage.getItem("all_posts");
 
-//     axios
-//       .get(
-//         `https://www.mikeconnect.com/mc_api/get_posts_by_category.php?category=${categoryId}&page=${pageNum}&t=${Date.now()}`
-//       )
-//       .then(res => {
-//         if (res.data?.success) {
-//           const fetchedPosts = res.data.posts || [];
+        if (!cached) {
+          retries += 1;
+          console.log(`Retrying... (${retries}/${maxRetries})`);
 
-//           setPosts(fetchedPosts);
-       
+          if (retries >= maxRetries) {
+            clearInterval(interval);
+            setPosts([]);
+            setError("No cached posts found after retries");
+            setLoading(false);
+          }
+          return;
+        }
 
-//           // If full page returned, assume next page exists
-//          if (fetchedPosts.length === limit) {
-//   setAvailablePages(prev => {
-//     const nextPage = pageNum + 1;
-//     return prev.includes(nextPage) ? prev : [...prev, nextPage];
-//   });
-// }
+        const allPosts = JSON.parse(cached);
 
-//         } else {
-//           setPosts([]);
-//           setError(res.data?.error || "No posts found");
-//         }
-//       })
-//       .catch(() => {
-//         setPosts([]);
-//         setError("Network or server error");
-//       })
-//       .finally(() => setLoading(false));
-//   };
+        // 🔥 Filter by category
+        const categoryPosts = allPosts.filter(post => {
+          if (!post.category) return false;
+          const cats = post.category.split(",").map(Number);
+          return cats.includes(categoryId);
+        });
 
+        // 🔥 Sort latest first
+        const sorted = [...categoryPosts].sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        );
 
+        // 🔥 Pagination
+        const start = (pageNum - 1) * limit;
+        const end = start + limit;
+        const paginated = sorted.slice(start, end);
 
+        setPosts(paginated);
 
-const fetchPosts = (pageNum = 1) => {
-  if (!isValidCategoryId) return;
+        // 🔥 Update pagination
+        if (sorted.length > end) {
+          setAvailablePages(prev => {
+            const nextPage = pageNum + 1;
+            return prev.includes(nextPage) ? prev : [...prev, nextPage];
+          });
+        }
 
-  setLoading(true);
-  setError(null);
+        clearInterval(interval);
+        setLoading(false);
 
-  let retries = 0;
-  const maxRetries = 1000;
-
-  const interval = setInterval(() => {
-    try {
-      const cached = localStorage.getItem("all_posts");
-
-      if (!cached) {
+      } catch (err) {
         retries += 1;
-        console.log(`Retrying... (${retries}/${maxRetries})`);
 
         if (retries >= maxRetries) {
           clearInterval(interval);
           setPosts([]);
-          setError("No cached posts found after retries");
+          setError("Error loading cached posts");
           setLoading(false);
         }
-        return;
       }
-
-      const allPosts = JSON.parse(cached);
-
-      // 🔥 filter by category
-      const categoryPosts = allPosts.filter(post => {
-        if (!post.category) return false;
-
-        const cats = post.category.split(",").map(Number);
-        return cats.includes(categoryId);
-      });
-
-      // 🔥 sort latest first
-      const sorted = [...categoryPosts].sort(
-        (a, b) => new Date(b.created_at) - new Date(a.created_at)
-      );
-
-      // 🔥 pagination
-      const start = (pageNum - 1) * limit;
-      const end = start + limit;
-
-      const paginated = sorted.slice(start, end);
-
-      setPosts(paginated);
-
-      // 🔥 update pagination
-      if (sorted.length > end) {
-        setAvailablePages(prev => {
-          const nextPage = pageNum + 1;
-          return prev.includes(nextPage) ? prev : [...prev, nextPage];
-        });
-      }
-
-      clearInterval(interval); // stop on success
-      setLoading(false);
-
-    } catch (err) {
-      retries += 1;
-
-      if (retries >= maxRetries) {
-        clearInterval(interval);
-        setPosts([]);
-        setError("Error loading cached posts");
-        setLoading(false);
-      }
-    }
-  }, 100); // retry every 1 second
-};
-
-
+    }, 100);
+  };
 
   // Initial load
   useEffect(() => {
@@ -154,79 +492,163 @@ const fetchPosts = (pageNum = 1) => {
     fetchPosts(1);
   }, [categoryId, isValidCategoryId]);
 
-
-
-
-
-
   const handlePageClick = pageNum => {
     if (pageNum === page) return;
     setPage(pageNum);
     fetchPosts(pageNum);
   };
 
-
   return (
     <Layout>
- <PageWrapper>
-      <CategoryTitle>
-        {category?.title || "Category"} 
-     
-      </CategoryTitle>
+      <PageWrapper>
+        <CategoryTitle>
+          {category?.title || "Category"}
+        </CategoryTitle>
 
-      {/* {loading && <Loading>Loading posts...</Loading>} */}
-      {error && <NoBlogs>{error}</NoBlogs>}
+        {error && <NoBlogs>{error}</NoBlogs>}
 
-      {!loading && !error && posts.length > 0 && (
-        <>
-          <BlogsGrid>
-            {posts.map(post => (
-         
+        {!loading && !error && posts.length > 0 && (
+          <>
+            <BlogsGrid>
+              {posts.map(post => (
+                <BlogCard key={post.id} onClick={() => navigate(`/post/${post.slug}`)}>
+                  <ImageWrapper>
+                    <BlogImage 
+                      src={post.image || "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4"} 
+                      alt={post.title} 
+                    />
+                  </ImageWrapper>
+                  
+                  <CardContent>
+                    <h3>{post.title}</h3>
+                    <BlogMeta>
+                      {new Date(post.created_at).toDateString()}
+                    </BlogMeta>
+                  </CardContent>
+                </BlogCard>
+              ))}
+            </BlogsGrid>
 
-              <BlogCard
-  key={post.id}
-  bg={post.image || "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4"}
-  onClick={()=>navigate(`/post/${post.slug}`)}
->
-  <Overlay />
-  <CardContent>
-    <h3>{post.title}</h3>
+            {/* PAGINATION */}
+            <PaginationWrapper>
+              {availablePages.map(p => (
+                <PageButton
+                  key={p}
+                  active={p === page}
+                  onClick={() => handlePageClick(p)}
+                >
+                  {p}
+                </PageButton>
+              ))}
+            </PaginationWrapper>
+          </>
+        )}
 
-    <BlogMeta>
-      {new Date(post.created_at).toDateString()}
-    </BlogMeta>
-  </CardContent>
-</BlogCard>
+        {!loading && !error && posts.length === 0 && (
+          <NoBlogs>No posts available in this category.</NoBlogs>
+        )}
+      </PageWrapper>
 
-            ))}
-          </BlogsGrid>
-
-          {/* PAGINATION */}
-          <PaginationWrapper>
-            {availablePages.map(p => (
-              <PageButton
-                key={p}
-                active={p === page}
-                onClick={() => handlePageClick(p)}
-              >
-                {p}
-              </PageButton>
-            ))}
-          </PaginationWrapper>
-        </>
-      )}
-
-      {!loading && !error && posts.length === 0 && (
-        <NoBlogs>No posts available in this category.</NoBlogs>
-      )}
-    </PageWrapper>
-    
-<SidebarPostTicker/>
-
+      <SidebarPostTicker />
     </Layout>
-   
   );
 }
+
+/* ================= STYLES ================= */
+
+const Layout = styled.div`
+  display: flex;
+  gap: 30px;
+  width: 100%;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+  }
+`;
+
+const PageWrapper = styled.div`
+  margin: 50px auto;
+  padding: 0 20px;
+  font-family: "Poppins", sans-serif;
+  width: 100%;
+`;
+
+const CategoryTitle = styled.h1`
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: green;
+  text-align: center;
+`;
+
+const BlogsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 32px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+`;
+
+const BlogCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+`;
+
+const ImageWrapper = styled.div`
+  width: 100%;
+  height: 200px; 
+  background-color: #f3f4f6; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+`;
+
+const BlogImage = styled.img`
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; 
+  display: block;
+`;
+
+const CardContent = styled.div`
+  padding: 16px 8px 12px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    // color: #111827;
+    color:green;
+    margin: 0;
+    line-height: 1.4;
+    
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+`;
+
+const BlogMeta = styled.div`
+  font-size: 0.8rem;
+  color: #6b7280;
+  font-weight: 400;
+`;
 
 const PaginationWrapper = styled.div`
   display: flex;
@@ -251,177 +673,8 @@ const PageButton = styled.button`
   }
 `;
 
-
-
-/* ================= STYLES ================= */
-const PageWrapper = styled.div`
-  // max-width: 1000px;
-  margin: 50px auto;
-  padding: 0 20px;
-  font-family: "Poppins", sans-serif;
-  width:100%;
-`;
-const CategoryTitle = styled.h1`
-  font-size: 2rem;
-  margin-bottom: 30px;
-  color: green;
-  text-align: center;
-`;
-
-
-
-
-const BlogsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 28px;
-
-@media(max-width:768px){
- grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-}
-
-`;
-
-
-// const BlogCard = styled.div`
-//   position: relative;
-//   height: 220px;
-//   border-radius: 18px;
-//   overflow: hidden;
-//   background-image: url(${props => props.bg});
-//   background-size: cover;
-//   background-position: center;
-//   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
-//   cursor: pointer;
-//   transition: transform 0.4s ease, box-shadow 0.4s ease;
-
-//   &:hover {
-//     transform: translateY(-8px) scale(1.02);
-//     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
-//   }
-
-//   &:hover ${'' /* zoom image illusion */} {
-//     background-size: 110%;
-//   }
-// `;
-
-const BlogImage = styled.img`
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 10px;
-`;
-
-const Loading = styled.p`
-  text-align: center;
-  font-size: 1.2rem;
-  color: #666;
-`;
 const NoBlogs = styled.p`
   text-align: center;
   font-size: 1.1rem;
   color: #777;
 `;
-
-
-// const Overlay = styled.div`
-//   position: absolute;
-//   inset: 0;
-//   background: linear-gradient(
-//     to top,
-//     rgba(0, 0, 0, 1),
-//     rgba(0, 0, 0, 0.25),
-//     rgba(0, 0, 0, 0.05)
-//   );
-// `;
-
-
-// const CardContent = styled.div`
-//   position: absolute;
-//   bottom: 0;
-//   padding: 10px;
-//   z-index: 2;
-//   color: #fff;
-
-//   h3 {
-//     font-size: 1rem;
-//     font-weight: 600;
-//     margin-bottom: 5px;
-//     // line-height: 1.3;
-//   }
-// `;
-
-// const BlogMeta = styled.div`
-//   font-size: 0.7rem;
-//   color: #d1d5db;
-//   font-style:italic;
-// `;
-
-// const Layout = styled.div`
-//   display: grid;
-//   // grid-template-columns: 1fr 320px;
-//   gap: 30px;
-
-//   @media (max-width: 1100px) {
-//     grid-template-columns: 1fr;
-//   }
-// `;
-
-
-const Layout = styled.div`
-display:flex;
-
-`
-
-
-const BlogCard = styled.div`
-  position: relative;
-  height: 220px;
-  border-radius: 18px;
-  overflow: hidden;
-  background-image: url(${props => props.bg});
-  background-size: contain;
-  background-position: center;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-    max-width:500px;
-
-  &:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
-    background-size: 110%;
-  }
-`;
-
-const Overlay = styled.div`
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 1),
-    rgba(0, 0, 0, 0.7),
-    rgba(0, 0, 0, 0.05)
-  );
-`;
-
-const CardContent = styled.div`
-  position: absolute;
-  bottom: 0;
-  padding: 12px;
-  z-index: 2;
-  color: #fff;
-
-  h3 {
-    font-size: 0.8rem;
-    font-weight: 600;
-    margin-bottom: 5px;
-  }
-`;
-
-const BlogMeta = styled.div`
-  font-size: 0.7rem;
-  color: #d1d5db;
-  font-style: italic;
-`;
-
