@@ -174,8 +174,8 @@ const BlogPostModal = ({ post, onClose, onSaved }) => {
       Swal.fire("Invalid file", "Only images allowed", "error");
       return;
     }
-    if (file.size > 500 * 1024) {
-      Swal.fire("Too large", "Image must be under 500KB", "error");
+    if (file.size > 1000 * 1024) {
+      Swal.fire("Too large", "Image must be under 1000KB", "error");
       return;
     }
 
@@ -285,7 +285,7 @@ const BlogPostModal = ({ post, onClose, onSaved }) => {
         <Label>Title</Label>
         <Input value={title} onChange={e => setTitle(e.target.value)} />
 
-        <Label>Featured Image (max 500KB)</Label>
+        <Label>Featured Image (max 1000KB)</Label>
         <Input type="file" accept="image/*" onChange={handleImageChange} />
 
         <Label>Categories</Label>
