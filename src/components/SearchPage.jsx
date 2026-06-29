@@ -236,6 +236,8 @@ export default function SearchPage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  
+  console.log(posts)
 
   useEffect(() => {
     if (!query) return;
@@ -271,6 +273,7 @@ export default function SearchPage() {
             {posts.map((post) => (
               <BlogCard
                 key={post.id}
+                // onClick={() => navigate(`/post/${post.slug}`)}
                 onClick={() => navigate(`/post/${post.slug}`)}
               >
                 <ImageWrapper>

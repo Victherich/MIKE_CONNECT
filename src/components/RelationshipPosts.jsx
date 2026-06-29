@@ -474,7 +474,7 @@ const FeatureImageWrapper = styled.div`
   overflow: hidden;
 
   @media (max-width: 576px) {
-    max-height: 240px;
+    // max-height: 240px;
   }
 `;
 

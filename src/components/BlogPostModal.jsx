@@ -320,7 +320,7 @@ const BlogPostModal = ({ post, onClose, onSaved }) => {
 /> */}
 
 
-        <Label>Links (URL & description)</Label>
+        {/* <Label>Links (URL & description)</Label>
         {links.map((l, i) => (
           <LinkRow key={i}>
             <Input
@@ -337,7 +337,37 @@ const BlogPostModal = ({ post, onClose, onSaved }) => {
               <FaTrash />
             </IconBtn>
           </LinkRow>
-        ))}
+        ))} */}
+
+
+        <Label>Links (URL & description). Url must start with "https://"</Label>
+{links.map((l, i) => (
+  <LinkRow key={i}>
+    <Input
+      placeholder="URL"
+      // Ensures it defaults to 'https://' if the value is empty
+      value={l.url || "https://"} 
+      onChange={e => {
+        let val = e.target.value;
+        
+        // Enforce the prefix: if it doesn't start with https://, force it back
+        if (!val.startsWith("https://")) {
+          val = "https://";
+        }
+        
+        updateLink(i, "url", val);
+      }}
+    />
+    <Input
+      placeholder="Description"
+      value={l.description}
+      onChange={e => updateLink(i, "description", e.target.value)}
+    />
+    <IconBtn onClick={() => setLinks(links.filter((_, x) => x !== i))}>
+      <FaTrash />
+    </IconBtn>
+  </LinkRow>
+))}
 
         <Button onClick={() => setLinks([...links, { url: "", description: "" }])}>
           <FaPlus /> Add Link

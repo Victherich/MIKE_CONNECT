@@ -402,33 +402,59 @@ const Meta = styled.div`
 
 
 
+// const ImageWrapper = styled.div`
+//   max-width: 900px;
+//   margin: 0 auto 40px auto;
+//   border-radius: 12px;
+//   overflow: hidden;
+  
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+  
+//   /* Caps the container height for tall portrait images */
+//   // max-height: 500px; 
+//   // width: 100%;
+//   padding: 0;
+// `;
+
+// const BlogImage = styled.img`
+//   /* Small images stay small/sharp; large images shrink safely */
+//   max-width: 100%;
+  
+//   /* Scales the image proportionally */
+//   height: auto;          
+  
+//   /* Caps the image height so it matches the wrapper and won't overflow */
+//   // max-height: 500px;     
+  
+//   /* Keeps the full image visible without stretching or cropping */
+//   object-fit: contain; 
+//   display: block;
+// `;
+
+
 const ImageWrapper = styled.div`
   max-width: 900px;
   margin: 0 auto 40px auto;
   border-radius: 12px;
-  overflow: hidden;
   
+  /* Flexbox centers the image if its natural size is smaller than 900px */
   display: flex;
   justify-content: center;
   align-items: center;
-  
-  /* Caps the container height for tall portrait images */
-  max-height: 500px; 
-  width: 100%;
-  padding: 0;
+  padding: 0 20px; /* Gives small breathing room on mobile screens */
 `;
 
 const BlogImage = styled.img`
-  /* Small images stay small/sharp; large images shrink safely */
+  /* 1. Forces the image to render at its exact natural size */
+  width: auto;
+  height: auto;
+
+  /* 2. Caps large images to the container width so they don't spill out */
   max-width: 100%;
-  
-  /* Scales the image proportionally */
-  height: auto;          
-  
-  /* Caps the image height so it matches the wrapper and won't overflow */
-  max-height: 500px;     
-  
-  /* Keeps the full image visible without stretching or cropping */
-  object-fit: contain; 
+
+  /* 3. Prevents any artificial stretching or squishing */
+  object-fit: normal; 
   display: block;
 `;
